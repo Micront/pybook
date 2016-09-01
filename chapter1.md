@@ -114,7 +114,50 @@ Branch master set up to track remote branch master from origin.
 
 ![alt text](source.png "")
 
-Этого на текущий момент достаточно.
+Давайте немного изменим нашу программу `hello.py`, добавив в нее функцию (на занятиях мы обязательно поговорим о функциях, но пока функцию можно воспринимать как контейнер со списком действий) и проверку на то, выполняется ли наша программа как скрипт или она используется как модуль (библиотека):
+
+```python
+def message():
+    print("Hello, World!")
+
+if __name__ == "__main__":
+    message()
+```
+
+```sh
+# Запуск программы как скрипта
+$ python3 hello.py
+Hello, World!
+
+# Использование программы как модуля
+$ python3
+>>> import hello
+>>> hello.message()
+Hello, World!
+```
+
+Итак, мы внесли нужные изменения в программу, `git` эти изменения также заметил, проверить это можно с помощью команды `git status`:
+
+```sh
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   hello.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+Теперь нам нужно сделать коммит, чтобы зафиксировать изменения в истории проекта:
+```sh
+$ git add hello.py 
+$ git commit -m "Add function message()"
+$ git push
+```
+
+Пока нам этого будет достаточно.
 
 <div class="alert alert-info">
 Если вы не будете задавать вопросы, то к сожалению вам никто не сможет помочь. Piazza является основным средством общения (после лекций и практик), где вы можете задать вопрос, попросить помощи, высказать свои пожелания или недовольства касательно курса. Постарайтесь получить удовольствие от наших занятий. Успехов!

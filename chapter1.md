@@ -111,7 +111,7 @@ Branch master set up to track remote branch master from origin.
 ```
 
 <div class="alert alert-info">
-<strong>Важно</strong>: Если после выполнения команды <tt>git init</tt> вы получили сообщение об ошибке о том, что команда <tt>git</tt> не найдена, то скорее всего вы работаете под Windows и git нужно <a href="https://git-scm.com/download/win">установить</a>.  Также обратите внимание, что пришлось выполнить простейшую настройку <tt>git</tt> с помощью команды <tt>git config</tt>.
+<strong>Важно</strong>: Если после выполнения команды <tt>git init</tt> вы получили сообщение об ошибке о том, что команда <tt>git</tt> не найдена, то скорее всего вы работаете под Windows и <tt>git</tt> нужно <a href="https://git-scm.com/download/win">установить</a>.  Также обратите внимание, что пришлось выполнить простейшую настройку <tt>git</tt> с помощью команды <tt>git config</tt>.
 </div>
 
 Теперь проверьте на https://bitbucket.org/, что новый файл появился. Для этого зайдите в раздел `Source`:

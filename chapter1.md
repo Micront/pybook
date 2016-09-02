@@ -37,7 +37,7 @@ Hello, World!
 Это интерактивный режим работы с интерпретатором языка Python ([REPL](https://ru.wikipedia.org/wiki/REPL)). Три символа больше `>>>` являются приглашением к вводу команд, чтобы завершить работу с интерпретатором нужно набрать команду `quit()`.
 
 <div class="alert alert-info">
-<strong>Важно</strong>: Если вы устанавливаете Python на Windows, то есть вероятность, что, набрав команду python или python3 после установки, вы получите сообщение об ошибке (скорее всего путь к интерпретатору не указан в переменной окружения PATH). Пожалуйста, прежде чем задавать вопросы "Почему ничего не работает?", прочитайте как правильно все настроить <a href='https://docs.python.org/3/using/windows.html#configuring-python'>https://docs.python.org/3/using/windows.html#configuring-python</a>.
+<strong>Важно</strong>: Если вы устанавливаете Python на Windows, то есть вероятность, что, набрав команду <tt>python</tt> или <tt>python3</tt> после установки, вы получите сообщение об ошибке (скорее всего путь к интерпретатору не указан в переменной окружения <tt>PATH</tt>). Пожалуйста, прежде чем задавать вопросы "Почему ничего не работает?", прочитайте как правильно все настроить <a href='https://docs.python.org/3/using/windows.html#configuring-python'>https://docs.python.org/3/using/windows.html#configuring-python</a>.
 </div>
 
 Я рекомендую установить модуль [bpython](http://www.bpython-interpreter.org). Это тоже интерпретатор Python, но с дополнительными функциями (подсветка синтаксиса, подсказки и др):

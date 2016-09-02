@@ -13,6 +13,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
+<div class="alert alert-info">
+Знак доллара <tt>$</tt> обозначает приглашение к вводу команд. В Windows такое приглашение обычно выглядит как символ больше <tt>></tt>.
+</div>
+
 Обратите внимание на версию, в моем случае это 2.7.10. Нам она не подходит ("*Почему?*" - можно почитать [тут](https://wiki.python.org/moin/Python2orPython3) и [тут](http://sebastianraschka.com/Articles/2014_python_2_3_key_diff.html)). Нам нужен интерпретатор третьей версии. Если вы видите что версия вторая, то попробуйте набрать команду `python3`:
 ```sh
 $ python3

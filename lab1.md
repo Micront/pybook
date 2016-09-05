@@ -65,3 +65,41 @@ def decrypt_caesar(ciphertext):
 
 ### Шифр Виженера
 
+[Шифр Виженера](https://ru.wikipedia.org/wiki/Шифр_Виженера) очень похож на шифр Цезаря, за тем исключением, что каждый символ сдвигается на значение, которое указано ключом. Ключ это слово, так что `A` означает сдвиг соответствующего символа на `0`, `B` на `1` и т.д.
+
+Если длина ключа меньше чем слова, которое подлежит шифрованию, то ключ повторяется необходимое число раз, например:
+
+```
+Простой текст:           ATTACKATDAWN
+Ключ:                    LEMONLEMONLE
+Зашифрованный текст:     LXFOPVEFRNHR
+```
+
+Ваша задача написать две функции:
+
+```python
+def encrypt_vigenere(plaintext, keyword):
+    """
+    >>> encrypt_vigenere("")
+    ''
+    >>> encrypt_vigenere("")
+    ''
+    >>> encrypt_vigenere("")
+    ''
+    """
+    # PUT YOUR CODE HERE
+    return ciphertext
+
+
+def decrypt_vigenere(plaintext, keyword):
+    """
+    >>> decrypt_vigenere("")
+    ''
+    >>> decrypt_vigenere("")
+    ''
+    >>> decrypt_vigenere("")
+    ''
+    """
+    # PUT YOUR CODE HERE
+    return plaintext
+```

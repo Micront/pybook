@@ -51,3 +51,14 @@ def decrypt_caesar(ciphertext):
     return plaintext
 ```
 
+<div class="alert alert-info">
+<strong>Подсказка</strong>: Воспользуйтесь встроенными функциями <tt>ord()</tt> и <tt>chr()</tt>. Функция <tt>ord()</tt> позволяет получить код символа, например:<br/>
+<tt>
+>>> ord('A')<br/>
+65<br/>
+</tt>
+Обратная ей функция <tt>chr()</tt> возвращает символ по его коду:<br>
+<tt>
+>>> chr(65)<br/>
+'A'</tt>
+</div>

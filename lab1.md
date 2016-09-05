@@ -52,7 +52,7 @@ def decrypt_caesar(ciphertext):
 ```
 
 <div class="alert alert-info">
-<strong>Подсказка</strong>: Воспользуйтесь встроенными функциями <tt>ord()</tt> и <tt>chr()</tt>. Функция <tt>ord()</tt> позволяет получить код для указанного символа, например:<br/>
+<strong><a href="https://mail.python.org/pipermail/python-win32/2005-April/003100.html">Подсказка</a></strong>: Воспользуйтесь встроенными функциями <tt>ord()</tt> и <tt>chr()</tt>. Функция <tt>ord()</tt> позволяет получить код для указанного символа, например:<br/>
 <tt>
 >>> ord('A')<br/>
 65<br/>

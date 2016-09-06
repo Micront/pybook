@@ -99,7 +99,7 @@ def encrypt_vigenere(plaintext, keyword):
     return ciphertext
 
 
-def decrypt_vigenere(plaintext, keyword):
+def decrypt_vigenere(ciphertext, keyword):
     """
     >>> decrypt_vigenere("PYTHON", "A")
     'PYTHON'
@@ -126,4 +126,12 @@ def decrypt_vigenere(plaintext, keyword):
 
 Используя идею [алфавита Бэкона](https://ru.wikipedia.org/wiki/Шифр_Бэкона), расшифруйте что скрывает за собой фраза:
 
-```наконЕц НаСтуПило Это дОлгОЖдАНное ЛЕТо```
+`наконЕц НаСтуПило Это дОлгОЖдАНное ЛЕТо`
+
+Вам нужно написать тело функции, так чтобы переменная `plaintext` содержала расшифрованное сообщение:
+
+```python
+def decrypt_bacon(ciphertext):
+    # PUT YOUR CODE HERE
+    return plaintext
+```

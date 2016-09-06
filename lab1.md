@@ -128,10 +128,18 @@ def decrypt_vigenere(ciphertext, keyword):
 
 `наконЕц НаСтуПило Это дОлгОЖдАНное ЛЕТо`
 
-Вам нужно написать тело функции `decrypt_bacon()` так, чтобы переменная `plaintext` содержала расшифрованное сообщение:
+Ваша задача написать тело для следующих двух функций так, чтобы переменные `ciphertext` и `plaintext` содержали зашифрованное и расшифрованные сообщения, соответственно.
 
 ```python
+def encrypt_bacon(plaintext):
+    # PUT YOUR CODE HERE
+    return ciphertext
+
 def decrypt_bacon(ciphertext):
     # PUT YOUR CODE HERE
     return plaintext
 ```
+
+<div class="alert alert-info">
+Существует несколько вариаций шифрования сообщения по методу Бэкона, вы должны самостоятельно определить какой способ подходит для решения этой задачи.
+</div>

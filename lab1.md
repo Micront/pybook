@@ -65,7 +65,7 @@ def decrypt_caesar(ciphertext):
 'A'</tt>
 </div>
 
-Проверить работу функций можно с помощью [доктестов](https://docs.python.org/3.5/library/doctest.html) (текст внутри функции, который заключен в тройные кавычки и похож на работу с интерпретатором в интерактивном режиме). Запустить доктесты можно с помощью следующей команды (при условии, что файл с программой называется `caesar.py`):
+Проверить работу функций можно с помощью примеров, которые приведены в [доктестах](https://docs.python.org/3.5/library/doctest.html) (текст внутри функции, который заключен в тройные кавычки и похож на работу с интерпретатором в интерактивном режиме). Запустить доктесты можно с помощью следующей команды (при условии, что файл с программой называется `caesar.py`):
 
 ```sh
 $ python3 -m doctest -v caesar.py
@@ -83,17 +83,17 @@ $ python3 -m doctest -v caesar.py
 Зашифрованный текст:     LXFOPVEFRNHR
 ```
 
-Ваша задача написать две функции:
+Ваша задача написать тело для следующих двух функций так, чтобы переменные `ciphertext` и `plaintext` содержали зашифрованное и расшифрованные сообщения, соответственно.
 
 ```python
 def encrypt_vigenere(plaintext, keyword):
     """
-    >>> encrypt_vigenere("")
-    ''
-    >>> encrypt_vigenere("")
-    ''
-    >>> encrypt_vigenere("")
-    ''
+    >>> encrypt_vigenere("PYTHON", "A")
+    'PYTHON'
+    >>> encrypt_vigenere("python", "a")
+    'python'
+    >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
+    'LXFOPVEFRNHR'
     """
     # PUT YOUR CODE HERE
     return ciphertext
@@ -101,12 +101,12 @@ def encrypt_vigenere(plaintext, keyword):
 
 def decrypt_vigenere(plaintext, keyword):
     """
-    >>> decrypt_vigenere("")
-    ''
-    >>> decrypt_vigenere("")
-    ''
-    >>> decrypt_vigenere("")
-    ''
+    >>> decrypt_vigenere("PYTHON", "A")
+    'PYTHON'
+    >>> decrypt_vigenere("python", "a")
+    'python'
+    >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
+    'ATTACKATDAWN'
     """
     # PUT YOUR CODE HERE
     return plaintext

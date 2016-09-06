@@ -111,3 +111,7 @@ def decrypt_vigenere(plaintext, keyword):
     # PUT YOUR CODE HERE
     return plaintext
 ```
+
+<div class="alert alert-info">
+Обратите внимание, что символ <tt>A</tt> или <tt>a</tt> в ключе не оказывает никакого влияния на шифруемое сообщение. 
+</div>

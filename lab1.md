@@ -137,7 +137,7 @@ def decrypt_vigenere(ciphertext, keyword):
 2. Шифрование
 3. Расшифровка
 
-На этапе генерации ключей создается два ключа: открытый (public key - ключ, с помощью которого каждый сможет зашифровать сообщение и отправить его нам) и закрытый (private key - ключ, которым мы можем расшифровать полученные сообщения). Для этого выбирается два [простых числа](https://ru.wikipedia.org/wiki/Простое_число) `p` и `q`. Давайте напишем функцию, которая проверяет является ли число простым:
+На этапе генерации ключей создается два ключа: открытый (public key - ключ, с помощью которого каждый сможет зашифровать сообщение и отправить его нам) и закрытый (private key - ключ, которым мы можем расшифровать полученные сообщения). Для этого выбирается два [простых числа](https://ru.wikipedia.org/wiki/Простое_число) `p` и `q`. Позволим пользователю вводить эти числа, но их нужно будет проверить на простоту. Давайте напишем функцию, которая проверяет является ли число простым:
 
 ```python
 def is_prime(n):
@@ -156,3 +156,32 @@ def is_prime(n):
 <div class="alert alert-info">
 Если вы не понимаете как работают функции, то напишите небольшую программу, которая выводит <code>True</code> или <code>False</code>, в зависимости от того является число простым или нет. Затем полученный код скопируйте в приведенную выше функцию (вместо ключевого слова <code>pass</code>) и замените <code>print(True)</code> на <code>return True</code>, а <code>print(False)</code> на <code>return False</code>.
 </div>
+
+После того как были выбраны два простых числа находится их произведение `n = p * q`.
+
+```python
+def generate_keypair(p, q):
+    if not (is_prime(p) and is_prime(q)):
+        raise ValueError('Both numbers must be prime.')
+    elif p == q:
+        raise ValueError('p and q cannot be equal')
+    
+    # n = pq
+    # PUT YOUR CODE HERE
+
+    # phi = (p-1)(q-1)
+    # PUT YOUR CODE HERE
+
+    # Choose an integer e such that e and phi(n) are coprime
+    # PUT YOUR CODE HERE
+
+    # Use Euclid's Algorithm to verify that e and phi(n) are comprime
+    # PUT YOUR CODE HERE
+
+    #Use Extended Euclid's Algorithm to generate the private key
+    d = multiplicative_inverse(e, phi)
+    
+    # Return public and private keypair
+    # Public key is (e, n) and private key is (d, n)
+    return ((e, n), (d, n))
+```

@@ -157,7 +157,7 @@ def is_prime(n):
 Если вы не понимаете как работают функции, то напишите небольшую программу, которая выводит <code>True</code> или <code>False</code>, в зависимости от того является число простым или нет. Затем полученный код скопируйте в приведенную выше функцию (вместо ключевого слова <code>pass</code>) и замените <code>print(True)</code> на <code>return True</code>, а <code>print(False)</code> на <code>return False</code>.
 </div>
 
-После того как были выбраны два простых числа находится их произведение `n = p * q`.
+После того как были выбраны два простых числа находится их произведение `n = p * q` (по ходу объяснения заменяйте комментарий со словами `PUT YOUR CODE HERE` в приведенной ниже функции на соответствующее решение).
 
 ```python
 def generate_keypair(p, q):
@@ -178,10 +178,28 @@ def generate_keypair(p, q):
     # Use Euclid's Algorithm to verify that e and phi(n) are comprime
     # PUT YOUR CODE HERE
 
-    #Use Extended Euclid's Algorithm to generate the private key
+    # Use Extended Euclid's Algorithm to generate the private key
     d = multiplicative_inverse(e, phi)
     
     # Return public and private keypair
     # Public key is (e, n) and private key is (d, n)
     return ((e, n), (d, n))
+```
+
+Затем вычисляется функция Эйлера по формуе $$\phi = (p-1)(q-1)$$.
+
+Далее выбирается число `e`, отвечающее следующим критериям:
+* оно должно быть простое;
+* оно должно быть меньше $$\phi$$;
+* оно должно быть [взаимно простое](https://ru.wikipedia.org/wiki/Взаимно_простые_числа) с $$\phi$$.
+
+Проверить являются ли два числа взаимно простыми можно с помощью алгоритма Евклида для нахождения наибольшего общего делителя:
+
+```python
+def gcd(a, b):
+    """
+    
+    """
+    # PUT YOUR CODE HERE
+    pass
 ```

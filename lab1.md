@@ -164,7 +164,8 @@ def generate_keypair(p, q):
     if not (is_prime(p) and is_prime(q)):
         raise ValueError('Both numbers must be prime.')
     elif p == q:
-        raise ValueError('p and q cannot be equal')    
+        raise ValueError('p and q cannot be equal')
+    
     # n = pq
     # PUT YOUR CODE HERE
 

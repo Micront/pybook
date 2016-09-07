@@ -120,7 +120,7 @@ def decrypt_vigenere(ciphertext, keyword):
 
 Одним из современных методов шифрования является алгоритм шифрования RSA, названный так по первым буквам фамилий его  авторов.
 
-Мы не будем здесь вдаваться в подробности работы этого алгоритма (хотя и рассмотрим техническую часть), но [следюущего объяснения](https://www.quora.com/How-do-you-explain-how-an-RSA-public-key-works-to-a-child) должно быть достаточно, чтобы понимать принципы шифрования с открытым ключом:
+Мы не будем здесь вдаваться в [подробности работы](http://kpfu.ru/docs/F366166681/mzi.pdf) этого алгоритма (хотя и рассмотрим техническую часть), но [следюущего объяснения](https://www.quora.com/How-do-you-explain-how-an-RSA-public-key-works-to-a-child) должно быть достаточно, чтобы понимать принципы шифрования с открытым ключом:
 
 > ![](https://qph.ec.quoracdn.net/main-qimg-8ad399b007bf86350675e8cbf5be6e34-c?convert_to_webp=true)
 > 
@@ -130,5 +130,29 @@ def decrypt_vigenere(ciphertext, keyword):
 > 
 > My friends can write me messages, put it in a box, lock it with my padlock (by clicking it) and send it to me, even over high risk networks. If the box is intercepted, it's contents will not be compromised since I still have the key with me.
 > 
-> When the box reaches me, I can open my padlock with my key and read the contents. This way, I can send padlocks (public keys) to people outside which they can use to lock boxes (encrypt messages) without being in danger of the contents being compromised as the padlock key (the private key) is always with me and never exchanged over the network
+> When the box reaches me, I can open my padlock with my key and read the contents. This way, I can send padlocks (public keys) to people outside which they can use to lock boxes (encrypt messages) without being in danger of the contents being compromised as the padlock key (the private key) is always with me and never exchanged over the network.
 
+Работу алгоритма можно разбить на три шага:
+1. Генерация ключей
+2. Шифрование
+3. Расшифровка
+
+На этапе генерации ключей создается два ключа: открытый (public key - ключ, с помощью которого каждый сможет зашифровать сообщение и отправить его нам) и закрытый (private key - ключ, которым мы можем расшифровать полученные сообщения). Для этого выбирается два [простых числа](https://ru.wikipedia.org/wiki/Простое_число) `p` и `q`. Давайте напишем функцию, которая проверяет является ли число простым:
+
+```python
+def is_prime(n):
+    """
+    >>> is_prime(2)
+    True
+    >>> is_prime(11)
+    True
+    >>> is_prime(8)
+    False
+    """
+    # PUT YOUR CODE HERE
+    pass
+```
+
+<div class="alert alert-info">
+Если вы не понимаете как работают функции, то напишите небольшую программу, которая выводит <code>True</code> или <code>False</code>, в зависимости от того является число простым или нет. Затем полученный код скопируйте в приведенную выше функцию (вместо ключевого слова <code>pass</code>) и замените <code>print(True)</code> на <code>return True</code>, а <code>print(False)</code> на <code>return False</code>.
+</div>

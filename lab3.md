@@ -48,7 +48,10 @@ def group(values, n):
 
 ```sh
 python -m doctest sudoku.py
+```
+
 Результат выполнения этой команды может быть следующим:
+```sh
 File "/Users/dementiy/Downloads/sudoku.py", line 13, in sudoku.group
 Failed example:
     group([1,2,3,4], 2)

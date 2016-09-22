@@ -103,10 +103,11 @@ user_id = # PUT USER ID HERE
 query_params = {
     'domain' : domain,
     'access_token': access_token,
-    'user_id': user_id
+    'user_id': user_id,
+    'fields': 'sex'
 }
 
-query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&v=5.53".format(**query_params)
+query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v=5.53".format(**query_params)
 response = requests.get(query)
 ```
 
@@ -124,3 +125,27 @@ response.elapsed                response.json                   response.text
 response.encoding               response.links                  response.url
 response.headers                response.ok
 ```
+
+Нас будет интересовать метод `response.json`, который возвращает [JSON](https://ru.wikipedia.org/wiki/JSON) объект:
+
+```python
+>>> response.json()
+{'response': {'count': 136,
+              'items': [{'first_name': 'Drake',
+                         'id': 1234567,
+                         'last_name': 'Wayne',
+                         'online': 0,
+                         'sex': 1},
+                        {'first_name': 'Gracie'
+                         'id': 7654321,
+                         'last_name': 'Habbard',
+                         'online': 0,
+                         'sex': 0},
+                         ...
+>>> response.json()['response']['count']
+136
+>>> response.json()['response']['items'][0]['first_name']
+'Drake'
+```
+
+Поле `count` содержит число записей, а `items` список словарей с информацией по каждому пользователю.

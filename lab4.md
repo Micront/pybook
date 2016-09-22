@@ -75,10 +75,17 @@ if __name__ == "__main__":
 
 **Задание №1**. Требуется написать функцию прогнозирования возраста пользователя по возрасту его друзей. 
 
+```python
+def get_friends(user_id, fields):
+    """ Returns a list of user IDs or detailed information about a user's friends """
+    assert isinstance(user_id, int), "user_id must be positive integer"
+    assert isinstance(fields, str), "fields must be string"
+    assert user_id > 0, "user_id must be positive integer"
+    # PUT YOUR CODE HERE
+    pass
+```
+
 Для выполнения этого задания нужно получить список всех друзей для указанного пользователя, отфильтровать тех у кого возраст не указан или указаны только день и месяц рождения.
-
-Список пользователей можно получить с помощью метода [`friends.get`](https://vk.com/dev/friends.get).
-
 
 Для выполнения запросов к API мы будем использовать библиотеку `requests`:
 
@@ -86,14 +93,19 @@ if __name__ == "__main__":
 $ pip3 install requests
 ```
 
-
-
+Список пользователей можно получить с помощью метода [`friends.get`](https://vk.com/dev/friends.get). Ниже приведен пример обращения к этому методу для получения списка всех друзей указанного пользователя:
 
 ```python
-def get_friends(user_id, fields):
-    assert isinstance(user_id, int), "user_id must be positive integer"
-    assert isinstance(fields, str), "fields must be string"
-    assert user_id > 0, "user_id must be positive integer"
-    # PUT YOUR CODE HERE
-    pass
+domain = "https://api.vk.com/method"
+access_token = # PUT YOUR ACCESS TOKEN HERE
+user_id = # PUT USER ID HERE
+
+query_params = {
+    'domain' : domain,
+    'access_token': access_token,
+    'user_id': user_id
+}
+
+query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&v=5.53".format(**query_params)
+response = requests.get(query)
 ```

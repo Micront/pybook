@@ -109,3 +109,18 @@ query_params = {
 query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&v=5.53".format(**query_params)
 response = requests.get(query)
 ```
+
+Функция `requests.get` возвращает объект `Response`, который представляет собой ответ сервера на посланный нами запрос.
+
+Объект `Response` имеет множество атрибутов:
+```python
+>>> response.<tab>
+response.apparent_encoding      response.history                response.raise_for_status
+response.close                  response.is_permanent_redirect  response.raw
+response.connection             response.is_redirect            response.reason
+response.content                response.iter_content           response.request
+response.cookies                response.iter_lines             response.status_code
+response.elapsed                response.json                   response.text
+response.encoding               response.links                  response.url
+response.headers                response.ok
+```

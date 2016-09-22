@@ -20,7 +20,9 @@ https://api.vk.com/method/METHOD_NAME?PARAMETERS&access_token=ACCESS_TOKEN&v=V
 https://api.vk.com/method/friends.get?fields=sex&access_token=0394a2ede332c9a13eb82e9b24631604c31df978b4e2f0fbd2c549944f9d79a5bc866455623bd560732ab&v=5.53
 ```
 
-Внимание: Токен доступа ненастоящий, поэтому этот запрос работать не будет.
+<div class="alert alert-danger">
+<strong>Внимание:</strong> Токен доступа ненастоящий, поэтому этот запрос работать не будет.
+</div>
 
 Чтобы получить токен доступа вы можете воспользоваться написанным для вас скриптом `access_token.py` следующим образом:
 

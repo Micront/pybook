@@ -174,6 +174,8 @@ def age_predict(user_id):
 
 **Задание №2:** Требуется написать функцию, которая бы выводила график частоты переписки с указанным пользователем.
 
+Давайте начнем с того, что получим всю или часть переписки с указанным пользователем.
+
 ```python
 def messages_get_history(user_id, offset=0, count=20):
     assert isinstance(user_id, int), "user_id must be positive integer"

@@ -111,7 +111,7 @@ query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fiel
 response = requests.get(query)
 ```
 
-Функция `requests.get` возвращает объект `Response`, который представляет собой ответ сервера на посланный нами запрос.
+Функция `requests.get` выполняет [GET запрос](https://ru.wikipedia.org/wiki/HTTP#GET) и возвращает объект `Response`, который представляет собой ответ сервера на посланный нами запрос.
 
 Объект `Response` имеет множество атрибутов:
 ```python
@@ -126,7 +126,7 @@ response.encoding               response.links                  response.url
 response.headers                response.ok
 ```
 
-Нас будет интересовать метод `response.json`, который возвращает [JSON](https://ru.wikipedia.org/wiki/JSON) объект:
+Нас будет интересовать только метод `response.json`, который возвращает [JSON](https://ru.wikipedia.org/wiki/JSON) объект:
 
 ```python
 >>> response.json()
@@ -149,3 +149,23 @@ response.headers                response.ok
 ```
 
 Поле `count` содержит число записей, а `items` список словарей с информацией по каждому пользователю.
+
+На текущий момент вы должны заполнить тело функции `get_friends` так, чтобы она возвращала список друзей для указанного пользователя. Аргумент `fields` представляет из себя строку, в которой через запятую указываются какие поля необходимо получить по каждому пользователю.
+
+Теперь мы можем написать функцию `age_predict` для "наивного" прогнозирования возраста пользователя с идентификатором `user_id`:
+
+```python
+def age_predict(user_id):
+    """
+    >>> age_predict(???)
+    ???
+    """
+    assert isinstance(user_id, int), "user_id must be positive integer"
+    assert user_id > 0, "user_id must be positive integer"
+    # PUT YOUR CODE HERE
+    pass
+```
+
+<div class="alert alert-info">
+<strong>Замечание:</strong> Для реализации этой функции вы можете использовать конструкцию <code>try...except</code>, где <code>except</code> будет содержать только <code>pass</code>.
+</div>

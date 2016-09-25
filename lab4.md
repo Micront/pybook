@@ -187,6 +187,10 @@ def messages_get_history(user_id, offset=0, count=20):
     pass
 ```
 
+<div class="alert alert-danger">
+<strong>Замечание:</strong> В реализации функции <code>messages_get_history</code> нужно учитывать, что API ВКонтакте устанавливает ограничение на число запросов в одну секунду (на сегодняшний день это три запроса). Число сообщений, которое вы можете получить за одно запрос - 200.
+</div>
+
 Далее приведен пример использования функции `messages_get_history`:
 ```python
 >>> user_id = # PUT USER ID HERE

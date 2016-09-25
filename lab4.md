@@ -268,6 +268,4 @@ py.iplot(data)
 
 Созданный график вы можете найти в своем [профиле](https://plot.ly/organize/home):
 
-<div>
-<a href="https://plot.ly/~Dementiy/2/" target="_blank" title="" style="display: block; text-align: center;"><img src="https://plot.ly/~Dementiy/2.png" alt="" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-</div>
+![](plotly.png)

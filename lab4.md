@@ -244,7 +244,7 @@ def count_dates_from_messages(messages):
 $ pip3 install plotly
 ```
 
-Перед началом его использования нужно указать провести предварительную [настройку](https://plot.ly/python/getting-started/), указав ключ доступа и имя пользователя:
+Перед началом его использования нужно провести предварительную [настройку](https://plot.ly/python/getting-started/), указав ключ доступа и имя пользователя:
 
 ```python
 import plotly

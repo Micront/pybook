@@ -225,3 +225,30 @@ def messages_get_history(user_id, offset=0, count=20):
 ```
 
 Формат представления указывается в виде [строки форматирования](https://docs.python.org/2/library/datetime.html#strftime-strptime-behavior), например, `%Y-%m-%d` - год, месяц и день, соответственно.
+
+На данный момент вашей задачей является написать функцию `count_dates`, которая возвращает два списка: список дат и список частоты каждой даты, а принимает список сообщений:
+
+```python
+def count_dates(messages):
+    #PUT YOUR CODE HERE
+    pass
+```
+
+Для отрисовки графика мы воспользуемся сервисом [plotly](https://plot.ly/).
+
+```python
+import plotly.plotly as py
+import plotly.graph_objs as go
+
+from datetime import datetime
+x = [datetime(year=2016, month=09, day=23),
+     datetime(year=2016, month=09, day=24),
+     datetime(year=2016, month=09, day=25)]
+
+data = [go.Scatter(x=x,y=[142, 50, 8])]
+py.iplot(data)
+```
+
+<div>
+<a href="https://plot.ly/~Dementiy/2/" target="_blank" title="" style="display: block; text-align: center;"><img src="https://plot.ly/~Dementiy/2.png" alt="" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+</div>

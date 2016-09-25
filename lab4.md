@@ -224,4 +224,4 @@ def messages_get_history(user_id, offset=0, count=20):
 '2016-09-25'
 ```
 
-Формат представления указывается в виде [строки форматирования](https://docs.python.org/2/library/datetime.html#strftime-strptime-behavior), например, `%Y-%m-%d` - год, месяц и день, соответственно.  
+Формат представления указывается в виде [строки форматирования](https://docs.python.org/2/library/datetime.html#strftime-strptime-behavior), например, `%Y-%m-%d` - год, месяц и день, соответственно.

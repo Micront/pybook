@@ -174,7 +174,7 @@ def age_predict(user_id):
 
 **Задание №2:** Требуется написать функцию, которая бы выводила график частоты переписки с указанным пользователем.
 
-Давайте начнем с того, что получим всю или часть переписки с указанным пользователем.
+Давайте начнем с того, что получим всю или часть переписки с указанным пользователем. Для этого вам потребуется реализовать метод API [messages.getHistory](https://vk.com/dev/messages.getHistory) по аналогии с тем, как вы реализовывали получение списка друзей пользователя:
 
 ```python
 def messages_get_history(user_id, offset=0, count=20):
@@ -186,3 +186,38 @@ def messages_get_history(user_id, offset=0, count=20):
     # PUT YOUR CODE HERE
     pass
 ```
+
+Далее приведен пример использования функции `messages_get_history`:
+```python
+>>> user_id = # PUT USER ID HERE
+>>> history = messages_get_history(user_id)
+>>> from pprint import pprint as pp
+>>> message = history['response']['items'][0]
+>>> pp(message)
+{'body': 'Это текст сообщения.',
+ 'date': 1474811631,
+ 'from_id': USER_ID_HERE,
+ 'id': 168989,
+ 'out': 0,
+ 'read_state': 1,
+ 'user_id': USER_ID_HERE}
+```
+
+Каждое сообщение содержит следующие поля:
+* `body` - текст сообщения;
+* `date` - дата отправки сообщения в формате [unixtime](https://ru.wikipedia.org/wiki/UNIX-время);
+* `from_id` - идентификатор автора сообщения;
+* `id` - идентификатор сообщения;
+* `out` - тип сообщения (0 — полученное, 1 — отправленное, не возвращается для пересланных сообщений);
+* `read_state` - статус сообщения (0 — не прочитано, 1 — прочитано, не возвращается для пересланных сообщений);
+* `user_id` - идентификатор пользователя, в диалоге с которым находится сообщение.
+
+Нас интересует поле `date`, которое представляет дату отправки сообщения в формате unixtime. Чтобы изменить формат даты представления можно воспользоваться функцией  `strftime` из модуля `datetime`:
+
+```python
+>>> from datetime import datetime
+>>> date = datetime.fromtimestamp(message['date']).strftime("%Y-%m-%d")
+'2016-09-25'
+```
+
+Формат представления указывается в виде [строки форматирования](https://docs.python.org/2/library/datetime.html#strftime-strptime-behavior), например, `%Y-%m-%d` - год, месяц и день, соответственно.  

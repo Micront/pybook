@@ -226,15 +226,32 @@ def messages_get_history(user_id, offset=0, count=20):
 
 Формат представления указывается в виде [строки форматирования](https://docs.python.org/2/library/datetime.html#strftime-strptime-behavior), например, `%Y-%m-%d` - год, месяц и день, соответственно.
 
-На данный момент вашей задачей является написать функцию `count_dates`, которая возвращает два списка: список дат и список частоты каждой даты, а принимает список сообщений:
+На данный момент вашей задачей является написать функцию `count_dates_from_messages`, которая возвращает два списка: список дат и список частоты каждой даты, а принимает список сообщений:
 
 ```python
-def count_dates(messages):
+def count_dates_from_messages(messages):
     #PUT YOUR CODE HERE
     pass
 ```
 
-Для отрисовки графика мы воспользуемся сервисом [plotly](https://plot.ly/).
+<div class="alert alert-info">
+<strong>Замечание:</strong> При большом количестве сообщений вы их можете разбить по неделям или месяцам.
+</div>
+
+Далее мы воспользуемся сервисом [Plot.ly](https://plot.ly/), который предоставляет API для рисования графиков. Запрос содержит информацию о точках, которые нужно отобразить на графике. Вам нужно зарегистрироваться и получить ключ доступа (`API KEY`). Для более простого взаимодействия с Plot.ly мы воспользуемся готовым модулем (существуют решения и для других языков):
+
+```sh
+$ pip3 install plotly
+```
+
+Перед началом его использования нужно указать провести предварительную [настройку](https://plot.ly/python/getting-started/), указав ключ доступа и имя пользователя:
+
+```python
+import plotly
+plotly.tools.set_credentials_file(username='YOUR_USER_NAME', api_key='YOUR_API_KEY')
+```
+
+Ниже приведен пример построения графика, где переменная `x` содержит даты, а `y` - количество сообщений в этот день:
 
 ```python
 import plotly.plotly as py
@@ -248,6 +265,8 @@ x = [datetime(year=2016, month=09, day=23),
 data = [go.Scatter(x=x,y=[142, 50, 8])]
 py.iplot(data)
 ```
+
+Созданный график вы можете найти в своем [профиле](https://plot.ly/organize/home):
 
 <div>
 <a href="https://plot.ly/~Dementiy/2/" target="_blank" title="" style="display: block; text-align: center;"><img src="https://plot.ly/~Dementiy/2.png" alt="" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>

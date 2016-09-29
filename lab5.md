@@ -76,21 +76,21 @@ $ python3 bot_api.py
 Чтобы получить исходный код страницы достаточно выполнить `GET` запрос. `URL`, к которому мы будем обращаться, имеет следующий формат:
 
 ```
-http://www.ifmo.ru/ru/schedule/WEEK/GROUP/raspisanie_zanyatiy_GROUP.htm
+http://www.ifmo.ru/ru/schedule/0/GROUP/WEEK/raspisanie_zanyatiy_GROUP.htm
 ```
 
-Где `WEEK` это неделя (четная-нечетная), а `GROUP` - номер группы.
+Где `WEEK` это неделя (четная-нечетная), если неделя не указана, то расписание включает и четную и нечетную недели; `GROUP` - номер группы.
 
 ```python
 import requests
+import config
 
 
-def get_page(domain, week, group):
-    domain = 'http://www.ifmo.ru/ru/schedule'
-    group = 'K3240'
-    week = 0
-    url = '{domain}/{week}/{group}/raspisanie_zanyatiy_{group}.htm'.format(
-        domain=domain, 
+def get_page(group, week=''):
+    if week:
+        week = str(week) + '/'
+    url = '{domain}/{group}/{week}raspisanie_zanyatiy_{group}.htm'.format(
+        domain=config.domain, 
         week=week, 
         group=group)
     response = requests.get(url)
@@ -101,21 +101,43 @@ def get_page(domain, week, group):
 Теперь из этой страницы нам нужно извлечь время занятий, место проведения, аудиторию и название дисциплины. Для этого нам понадобится HTML-парсер. В этой работе предлогается использовать модуль BeautifulSoup.
 
 ```python
-soup = BeautifulSoup(web_page)
+from bs4 import BeautifulSoup
 
-# Получаем таблицу с расписанием на понедельник
-schedule_table = soup.find("table", attrs={"id": "1day"})
 
-# Время проведения занятий
-times_list = schedule_table.find_all("td", attrs={"class": "time"})
-times_list = [time.span.text for time in times_list]
+def get_schedule(web_page):
+    soup = BeautifulSoup(web_page)
 
-# Место проведения занятий
-locations_list = schedule_table.find_all("td", attrs={"class": "room"})
-locations_list = [room.span.text for room in locations_list]
+    # Получаем таблицу с расписанием на понедельник
+    schedule_table = soup.find("table", attrs={"id": "1day"})
 
-# Название дисциплин и имена преподавателей
-lessons_list = schedule_table.find_all("td", attrs={"class": "lesson"})
-lessions_list = [lesson.text.split('\n\n') for lesson in lessons_list]
-lessions_list = [', '.join([info for info in lesson_info if info]) for lesson_info in lessons_list]
+    # Время проведения занятий
+    times_list = schedule_table.find_all("td", attrs={"class": "time"})
+    times_list = [time.span.text for time in times_list]
+
+    # Место проведения занятий
+    locations_list = schedule_table.find_all("td", attrs={"class": "room"})
+    locations_list = [room.span.text for room in locations_list]
+
+    # Название дисциплин и имена преподавателей
+    lessons_list = schedule_table.find_all("td", attrs={"class": "lesson"})
+    lessions_list = [lesson.text.split('\n\n') for lesson in lessons_list]
+    lessions_list = [', '.join([info for info in lesson_info if info]) for lesson_info in lessons_list]
+    
+    return times_list, locations_list, lessions_list
+```
+
+Таким образом, мы получили время, место и название дисциплины.
+
+```python
+@bot.message_handler(commands=['monday'])
+def get_monday(message):
+    _, group = message.text.split()
+    web_page = get_page(group)
+    times_lst, locations_lst, lessions_lst = get_schedule(web_page)
+    
+    resp = ''
+    for time, location, lession in zip(times_lst, locations_lst, lessons_lst):
+        resp += '<b>{}</b>, {}, {}\n'.format(time, location, lession)
+    
+    bot.send_message(message.chat.id, resp, parse_mode='HTML')
 ```

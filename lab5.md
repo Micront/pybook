@@ -118,5 +118,4 @@ locations_list = [room.span.text for room in locations_list]
 lessons_list = schedule_table.find_all("td", attrs={"class": "lesson"})
 lessions_list = [lesson.text.split('\n\n') for lesson in lessons_list]
 lessions_list = [', '.join([info for info in lesson_info if info]) for lesson_info in lessons_list]
-
 ```

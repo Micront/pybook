@@ -126,7 +126,7 @@ def get_schedule(web_page):
     return times_list, locations_list, lessions_list
 ```
 
-Таким образом, мы получили время, место и название дисциплины.
+Таким образом, мы получили время, место и название дисциплины. Наконец добавим нашему боту возможность вывода расписания на понедельник:
 
 ```python
 @bot.message_handler(commands=['monday'])
@@ -141,3 +141,5 @@ def get_monday(message):
     
     bot.send_message(message.chat.id, resp, parse_mode='HTML')
 ```
+
+![](monday.png)

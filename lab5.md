@@ -66,26 +66,57 @@ $ python3 bot_api.py
 * `tommorow GROUP_NUMBER` - расписание на следующий день (если это воскресенье, то выводится расписание на понедельник, учитывая, что неделя может быть четной или нечетной);
 * `all WEEK_NUMBER GROUP_NUMBER` - расписание на всю неделю.
 
-Разберем пример с получением расписания на понедельник. Чтобы получить расписание на понедельник нам нужно получить код html-страницы для соответствующей группы, а затем из этой страницы выделить интересующую нас информацию.
+Разберем пример с выводом расписания на понедельник. Для этого нам нужно получить код html-страницы для соответствующей группы, а затем из этой страницы выделить интересующую нас информацию.
 
 <div class="alert alert-info">
 <strong>Замечание:</strong> Чтобы вам было проще ориентироваться в работе -  рекомендуется скачать пример любой страницы с расписанием:<br/><br/>
 <img src="html_schedule.png">
 </div>
 
+Чтобы получить исходный код страницы достаточно выполнить `GET` запрос. `URL`, к которому мы будем обращаться, имеет следующий формат:
+
+```
+http://www.ifmo.ru/ru/schedule/WEEK/GROUP/raspisanie_zanyatiy_GROUP.htm
+```
+
+Где `WEEK` это неделя (четная-нечетная), а `GROUP` - номер группы.
+
 ```python
 import requests
 
 
-domain = 'http://www.ifmo.ru/ru/schedule'
-group = 'K3240'
-week = 0
-url = '{domain}/{week}/{group}/raspisanie_zanyatiy_{group}.htm'.format(
-    domain=domain, 
-    week=week, 
-    group=group)
-response = requests.get(url)
-web_page = response.text
+def get_page(domain, week, group):
+    domain = 'http://www.ifmo.ru/ru/schedule'
+    group = 'K3240'
+    week = 0
+    url = '{domain}/{week}/{group}/raspisanie_zanyatiy_{group}.htm'.format(
+        domain=domain, 
+        week=week, 
+        group=group)
+    response = requests.get(url)
+    web_page = response.text
+    return web_page
 ```
 
+Теперь из этой страницы нам нужно извлечь время занятий, место проведения, аудиторию и название дисциплины. Для этого нам понадобится HTML-парсер. В этой работе предлогается использовать модуль BeautifulSoup.
 
+```python
+soup = BeautifulSoup(web_page)
+
+# Получаем таблицу с расписанием на понедельник
+schedule_table = soup.find("table", attrs={"id": "1day"})
+
+# Время проведения занятий
+times_list = schedule_table.find_all("td", attrs={"class": "time"})
+times_list = [time.span.text for time in times_list]
+
+# Место проведения занятий
+locations_list = schedule_table.find_all("td", attrs={"class": "room"})
+locations_list = [room.span.text for room in locations_list]
+
+# Название дисциплин и имена преподавателей
+lessons_list = schedule_table.find_all("td", attrs={"class": "lesson"})
+lessions_list = [lesson.text.split('\n\n') for lesson in lessons_list]
+lessions_list = [', '.join([info for info in lesson_info if info]) for lesson_info in lessons_list]
+
+```

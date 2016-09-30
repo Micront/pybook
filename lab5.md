@@ -111,7 +111,7 @@ from bs4 import BeautifulSoup
 
 def get_schedule(web_page):
     soup = BeautifulSoup(web_page)
-
+    
     # Получаем таблицу с расписанием на понедельник
     schedule_table = soup.find("table", attrs={"id": "1day"})
 
@@ -125,10 +125,10 @@ def get_schedule(web_page):
 
     # Название дисциплин и имена преподавателей
     lessons_list = schedule_table.find_all("td", attrs={"class": "lesson"})
-    lessions_list = [lesson.text.split('\n\n') for lesson in lessons_list]
-    lessions_list = [', '.join([info for info in lesson_info if info]) for lesson_info in lessons_list]
-    
-    return times_list, locations_list, lessions_list
+    lessons_list = [lesson.text.split('\n\n') for lesson in lessons_list]
+    lessons_list = [', '.join([info for info in lesson_info if info]) for lesson_info in lessons_list]
+
+    return times_list, locations_list, lessons_list
 ```
 
 Методы `find` и `find_all` позволяют найти теги с указанными атрибутами.
@@ -140,12 +140,12 @@ def get_schedule(web_page):
 def get_monday(message):
     _, group = message.text.split()
     web_page = get_page(group)
-    times_lst, locations_lst, lessions_lst = get_schedule(web_page)
-    
+    times_lst, locations_lst, lessons_lst = get_schedule(web_page)
+
     resp = ''
     for time, location, lession in zip(times_lst, locations_lst, lessons_lst):
         resp += '<b>{}</b>, {}, {}\n'.format(time, location, lession)
-    
+
     bot.send_message(message.chat.id, resp, parse_mode='HTML')
 ```
 

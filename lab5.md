@@ -154,3 +154,31 @@ def get_monday(message):
 <div class="alert alert-info">
 <strong>Замечание:</strong> Вы можете легко обобщить функции <code>get_monday</code> и <code>get_schedule</code> на любой день недели.
 </div>
+
+Последняя часть лабораторной работы посвящена размещению бота на облачной платформе [Heroku](https://www.heroku.com).
+
+От вас требуется зарегистрироваться на Heroku и создать там новое приложение:
+
+![](heroku_step1.png)
+
+
+![](heroku_step2.png)
+
+```
+### runtime.txt ###
+python-3.5.2
+
+
+### requirements.txt ###
+beautifulsoup4==4.5.1
+bs4==0.0.1
+pyTelegramBotAPI==2.1.7
+requests==2.11.1
+
+
+### Procfile ###
+web: python3 bot.api
+```
+
+
+![](heroku_step3.png)

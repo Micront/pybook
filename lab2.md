@@ -35,7 +35,7 @@ from pygame.locals import *
 
 
 class GameOfLife:
-    def __init__(self, width = 640, height = 480, cell_size = 10):
+    def __init__(self, width = 640, height = 480, cell_size = 10, speed = 10):
         self.width = width
         self.height = height
         self.cell_size = cell_size
@@ -48,6 +48,9 @@ class GameOfLife:
         # Вычисляем количество ячеек по вертикали и горизонтали
         self.cell_width = self.width // self.cell_size
         self.cell_height = self.height // self.cell_size
+        
+        # Скорость протекания игры
+        self.speed = speed
    
    
    def draw_grid(self):
@@ -62,6 +65,7 @@ class GameOfLife:
    
    def run(self):
         pygame.init()
+        clock = pygame.time.Clock()
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
         running = True
@@ -71,6 +75,7 @@ class GameOfLife:
                     running = False
             self.draw_grid()
             pygame.display.flip()
+            clock.tick(self.speed)
         pygame.quit()
 
 
@@ -163,6 +168,7 @@ def update_cell_list(self, cell_list):
 Важно помнить, что обновление всего поля должно происходить за один раз, если состояние клеток менять последовательно, то это повлияет на результат игры.
 </div>
 
+Теперь у вас должна быть полностью рабочая игра.
 
 ---
 [1] https://life.written.ru - программа для моделирования игры «Жизнь»

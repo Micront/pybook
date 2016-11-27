@@ -182,22 +182,17 @@ class CellList:
     def draw(self):
         pass
     
-    
     def update(self):
         pass
-    
     
     def __iter__(self):
         pass
     
-    
     def __next__(self):
         pass
-        
     
     def __str__(self):
         pass
-    
     
     def __repr__(self):
         pass

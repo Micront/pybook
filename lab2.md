@@ -120,8 +120,6 @@ def cell_list(self, randomize=False):
 * `color` - цвет, которым следует закрасить прямоугольник (`pygame.Color('white')` или `pygame.Color('green')`);
 * `Rect` - координаты прямоугольника в формате `(x, y, длина стороны a, длина стороны b)`.
 
-
-
 ```python
 def draw_cell_list(self, rects):
     """
@@ -131,7 +129,11 @@ def draw_cell_list(self, rects):
     pass
 ```
 
+<div class="alert alert-info">
+Добавьте вызовы метода <code>draw_cell_list()</code> в метод <code>run()</code> перед обновлением поля <code>pygame.display.flip()</code>. 
+</div>
 
+![](life_grid_colored.png)
 
 ---
 [1] https://life.written.ru - программа для моделирования игры «Жизнь»

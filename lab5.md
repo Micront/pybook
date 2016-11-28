@@ -110,7 +110,7 @@ from bs4 import BeautifulSoup
 
 
 def get_schedule(web_page):
-    soup = BeautifulSoup(web_page)
+    soup = BeautifulSoup(web_page, "html5lib")
     
     # Получаем таблицу с расписанием на понедельник
     schedule_table = soup.find("table", attrs={"id": "1day"})

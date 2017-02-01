@@ -177,6 +177,30 @@ s = session()
 
 Функция `sqlalchemy.create_engine()` создает новый экземпляр класса `sqlalchemy.engine.Engine`, который отвечает за подключение к базе данных.
 
+Что касается создаваемой сессии, то вот небольшая выдержка о назначении сессиий из официальной документации:
+> In the most general sense, the Session establishes all conversations with the database and represents a “holding zone” for all the objects which you’ve loaded or associated with it during its lifespan. It provides the entrypoint to acquire a Query object, which sends queries to the database using the Session object’s current database connection, populating result rows into objects that are then stored in the Session, inside a structure called the Identity Map - a data structure that maintains unique copies of each object, where “unique” means “only one object with a particular primary key”.
+
+> The Session begins in an essentially stateless form. Once queries are issued or other objects are persisted with it, it requests a connection resource from an Engine that is associated either with the Session itself or with the mapped Table objects being operated upon. This connection represents an ongoing transaction, which remains in effect until the Session is instructed to commit or roll back its pending state.
+
+> All changes to objects maintained by a Session are tracked - before the database is queried again or before the current transaction is committed, it flushes all pending changes to the database. This is known as the Unit of Work pattern.
+
+> When using a Session, it’s important to note that the objects which are associated with it are proxy objects to the transaction being held by the Session - there are a variety of events that will cause objects to re-access the database in order to keep synchronized. It is possible to “detach” objects from a Session, and to continue using them, though this practice has its caveats. It’s intended that usually, you’d re-associate detached objects with another Session when you want to work with them again, so that they can resume their normal task of representing database state.
+
+Более подробно о сессиях можно прочитать [тут](http://docs.sqlalchemy.org/en/latest/orm/session_basics.html).
+
+```python
+>>> news = News(title='Lab 7', 
+                author='dementiy',
+                url='https://dementiy.gitbooks.io/-python/content/lab7.html',
+                comments=0,
+                points=0)
+            
+>>> news.id, news.title
+(1, Lab 7)
+>>> s.add(news)
+>>> s.commit()
+```
+
 ### Разметка данных
 
 

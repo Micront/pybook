@@ -125,25 +125,57 @@ ext-align:right;padding-right:4px;"><span class="pagetop">
 >>> news_list = get_news(r.text)
 >>> pp(news_list[:3])
 [{'author': 'evo_9',
-  'comments': '0',
-  'points': '1',
+  'comments': 0,
+  'points': 1,
   'title': 'Daily Action – Sign Up to Join the Resistance',
   'url': 'https://dailyaction.org/'},
  {'author': 'azuajef',
-  'comments': '0',
-  'points': '1',
+  'comments': 0,
+  'points': 1,
   'title': 'Immigration Ban Blocks Travelers at Airports Around Globe',
   'url': 'https://www.nytimes.com/2017/01/28/us/refugees-detained-at-us-airports-prompting-legal-challenges-to
 -trumps-immigration-order.html?_r=0'},
  {'author': 'ColinCochrane',
-  'comments': '0',
-  'points': '7',
+  'comments': 0,
+  'points': 7,
   'title': 'Green card holders included in Trump ban: Homeland Security',
   'url': 'http://mobile.reuters.com/article/idUSKBN15C0KX'}]
 ```
 
 ### Сохранение данных в sqlite
 
+В процессе сбора данных их нужно где-то хранить. Мы будем использовать для хранения [SQLite](https://ru.wikipedia.org/wiki/SQLite) - компактная встраиваемая реляционная база данных. В стандартной библиотеке языка Python есть модуль [sqlite3](https://docs.python.org/3/library/sqlite3.html), который предоставляет интерфейс для работы с SQLite. Этот модуль требует знания языка SQL, поэтому мы воспользуемся другой технологией, которая называется ORM.
+
+ORM (англ. object-relational mapping, рус. объектно-реляционное отображение) — технология программирования, которая связывает базы данных с концепциями объектно-ориентированных языков программирования, создавая "виртуальную объектную базу данных". Существуют как проприетарные, так и свободные реализации этой технологии.
+
+SQLAlchemy — это библиотека на языке Python для работы с реляционными СУБД с применением технологии ORM. Служит для синхронизации объектов Python и записей реляционной базы данных. SQLAlchemy позволяет описывать структуры баз данных и способы взаимодействия с ними на языке Python без использования SQL.
+
+Каждая таблица описывается классом, который должен наследоваться от базового класса, создаваемого при помощи функции `sqlalchemy.ext.declarative.declarative_base()`. В рассматриваемом нами примере будет только один класс - `News`, с атрибутами: заголовок, автор, ссылка, количество комментариев и число "лайков".
+
+```python
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+
+from sqlalchemy import Column, String, Integer
+class News(Base):
+    __tablename__ = "news"
+    id = Column(Integer, primary_key = True)
+    title = Column(String)
+    author = Column(String)
+    url = Column(String)
+    comments = Column(Integer)
+    points = Column(Integer)
+
+from sqlalchemy import create_engine
+engine = create_engine("sqlite:///news.db")
+Base.metadata.create_all(bind=engine)
+
+from sqlalchemy.orm import sessionmaker
+session = sessionmaker(bind=engine)
+s = session()
+```
+
+Функция `sqlalchemy.create_engine()` создает новый экземпляр класса `sqlalchemy.engine.Engine`, который создате подключение к базе данных.
 
 ### Разметка данных
 

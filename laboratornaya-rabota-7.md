@@ -175,7 +175,7 @@ session = sessionmaker(bind=engine)
 s = session()
 ```
 
-Функция `sqlalchemy.create_engine()` создает новый экземпляр класса `sqlalchemy.engine.Engine`, который создате подключение к базе данных.
+Функция `sqlalchemy.create_engine()` создает новый экземпляр класса `sqlalchemy.engine.Engine`, который отвечает за подключение к базе данных.
 
 ### Разметка данных
 

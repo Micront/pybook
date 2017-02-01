@@ -188,6 +188,7 @@ s = session()
 
 Более подробно о сессиях можно прочитать [тут](http://docs.sqlalchemy.org/en/latest/orm/session_basics.html).
 
+Далее приведен пример создания объекта и сохранения его в БД:
 ```python
 >>> news = News(title='Lab 7', 
                 author='dementiy',
@@ -196,10 +197,18 @@ s = session()
                 points=0)
             
 >>> news.id, news.title
-(1, Lab 7)
+(None, Lab 7)
 >>> s.add(news)
 >>> s.commit()
+>>> news.id, news.title
+(1, Lab 7)
 ```
+
+Обратите внимание, что идентификатор объекта (`id`) содержит значение `None` до тех пор, пока мы не сделаем коммит в БД с помощью метода `commit()`.
+
+На текущий момент вашей задачей является сохранить все записи с новостного сайта в БД. Просмотреть содержимое файла `news.db` можно с помощью программы [DB Browser for SQLite](http://sqlitebrowser.org).
+
+![](/assets/Screen Shot 2017-02-01 at 19.34.44.png)
 
 ### Разметка данных
 

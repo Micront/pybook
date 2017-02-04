@@ -253,5 +253,40 @@ run(host='localhost', port=8080)
 
 В `bottle` реализован механимз шаблонов, предназначенный для генерации веб-страниц. Чтобы начать работу с шаблонизатором достаточно воспользоваться функцией `template`, которая в качестве первого аргумента принимает имя файла, в котором содержится текст шаблона (в нашем случае это `hello_template.tpl`). Затем следует список необязательных именованных аргументов, которые нужно передать шаблонизатору (в нашем примере это `name`).
 
+Вернемся к нашему примеру. Напишем функцию, которая будет отвечать за маршрут `news` и выводить список неразмеченных новостей.
+
+
+```python
+@route('/news')
+def news_list():
+    s = session()
+    rows = s.query(News).filter(News.label == None).all()
+    return template('news_template', rows=rows)
+```
+
+```hmtl
+<!-- news_template.tpl -->
+<table border=1>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>#likes</th>
+        <th>#comments</th>
+        <th colspan="3">Label</th>
+    </tr>
+    %for row in rows:
+        <tr>
+            <td><a href="{{row.url}}">{{row.title}}</a></td>
+            <td>{{row.author}}</td>
+            <td>{{row.points}}</td>
+            <td>{{row.comments}}</td>
+            <td><a href="/add_label/?label=good&id={{row.id}}">Интересно</a></td>
+            <td><a href="/add_label/?label=maybe&id={{row.id}}">Возможно</a></td>
+            <td><a href="/add_label/?label=never&id={{row.id}}">Не интересно</a></td>
+        </tr>
+    %end
+</table>
+```
+
 ### Классификация данных
 

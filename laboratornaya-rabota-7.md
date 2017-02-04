@@ -264,7 +264,7 @@ def news_list():
     return template('news_template', rows=rows)
 ```
 
-```hmtl
+```html
 <!-- news_template.tpl -->
 <table border=1>
     <tr>

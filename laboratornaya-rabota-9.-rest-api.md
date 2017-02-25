@@ -66,7 +66,7 @@ class ModelTestCase(TestCase):
     def setUp(self):
         self.todolist_name = "Выполнить лабораторную работу №9"
         self.todolist = Todolist(name=self.todolist_name)
-    
+
     def test_model_can_create_todolist(self):
         old_count = Todolist.objects.count()
         self.todolist.save()
@@ -152,16 +152,16 @@ class Todolist(models.Model):
     date_created = models.DateField(auto_now_add=True)
     due_date = models.DateField(null=True, blank=True)
     date_modified = models.DateField(auto_now=True)
-    
+
     PRIORITY = (
         ('h', 'High'),
         ('m', 'Medium'),
         ('l', 'Low'),
         ('n', 'None')
     )
-    
+
     priority = models.CharField(max_length=1, choices=PRIORITY, default='n')
-    
+
     def __str__(self):
         return "{}".format(self.name)
 ```
@@ -281,6 +281,10 @@ Django version 1.10.5, using settings 'djangorest.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
+
+Пройдите по адресу `http://127.0.0.1:8000/todolists`, вы должны увидеть следующее окно:![](/assets/Screen Shot 2017-02-25 at 15.51.30.png)В нашей БД еще нет ни одной записи, давайте добавим новую запись, для этого достаточно заполнить поля и нажать на `POST`:![](/assets/Screen Shot 2017-02-25 at 15.53.36.png)![](/assets/Screen Shot 2017-02-25 at 15.54.04.png)Также мы можем обратиться по адресу `http://127.0.0.1:8000/todolists/1/`, чтобы получить заметку с идентификатором 1:![](/assets/Screen Shot 2017-02-25 at 17.24.22.png)
+
+
 
 
 

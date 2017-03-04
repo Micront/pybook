@@ -1,5 +1,7 @@
 ### REST API для ведения заметок на Django
 
+В этой работе мы напишем простой REST API сервис для ведения заметок. Если вы не знаете, что такое REST API, то советую обратиться к этой ссылке: [http://www.restapitutorial.ru/lessons/whatisrest.html](http://www.restapitutorial.ru/lessons/whatisrest.html).
+
 ```py
 python3 -m pip install django
 ```
@@ -282,9 +284,5 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-Пройдите по адресу `http://127.0.0.1:8000/todolists`, вы должны увидеть следующее окно:![](/assets/Screen Shot 2017-02-25 at 15.51.30.png)В нашей БД еще нет ни одной записи, давайте добавим новую запись, для этого достаточно заполнить поля и нажать на `POST`:![](/assets/Screen Shot 2017-02-25 at 15.53.36.png)![](/assets/Screen Shot 2017-02-25 at 15.54.04.png)Также мы можем обратиться по адресу `http://127.0.0.1:8000/todolists/1/`, чтобы получить заметку с идентификатором 1:![](/assets/Screen Shot 2017-02-25 at 17.24.22.png)
-
-
-
-
+Пройдите по адресу `http://127.0.0.1:8000/todolists`, вы должны увидеть следующее окно:![](/assets/Screen Shot 2017-02-25 at 15.51.30.png\)В нашей БД еще нет ни одной записи, давайте добавим новую запись, для этого достаточно заполнить поля и нажать на `POST`:![]\(/assets/Screen Shot 2017-02-25 at 15.53.36.png\)![]\(/assets/Screen Shot 2017-02-25 at 15.54.04.png\)Также мы можем обратиться по адресу `http://127.0.0.1:8000/todolists/1/`, чтобы получить заметку с идентификатором 1:![]\(/assets/Screen Shot 2017-02-25 at 17.24.22.png)
 

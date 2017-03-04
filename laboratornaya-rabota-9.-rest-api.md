@@ -58,7 +58,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-В этой работе для проверки нашего кода мы будем писать тесты согласно принципу \(философии\) [TDD](https://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5), простыми словами: сначала пишем тест - потом код. В Django для создания тестов используется [unittest-фреймворк](https://docs.python.org/3/library/unittest.html#module-unittest).
+В этой работе для проверки нашего кода мы будем писать тесты согласно принципу \(философии\) [TDD](https://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5\), простыми словами: сначала пишем тест - потом код. В Django для создания тестов используется [unittest-фреймворк]\(https://docs.python.org/3/library/unittest.html#module-unittest).
 
 Создадим наш первый тест, который проверяет можем ли мы создавать модели и сохранять их в БД. Для этого в файле `todolist/tests.py` добавим следующий класс:
 
@@ -205,7 +205,7 @@ Destroying test database for alias 'default'...
 
 В этот раз уже никаких ошибок не было, а это означает, что мы можем создавать модели и сохранять их в БД.
 
-Теперь нам нужно создать [сериализатор](http://www.django-rest-framework.org/api-guide/serializers/) \(serializer\). Сериализаторы позволяют представить множество сложных объектов, которые возможно мы получили из БД, в простой и человеко-читаемой форме, например, в формате JSON или XML.
+Теперь нам нужно создать [сериализатор](http://www.django-rest-framework.org/api-guide/serializers/\) \(serializer\). Сериализаторы позволяют представить множество сложных объектов, которые возможно мы получили из БД, в простой и человеко-читаемой форме, например, в формате JSON или XML.
 
 Создадим файл `todolist/serializers.py` со следующим содержимым:
 
@@ -227,6 +227,29 @@ class TodolistSerializer(serializers.ModelSerializer):
 * Удалить заметку - DELETE-запрос
 * Обновить заметку - PUT-запрос
 * Просмотреть одну или несколько заметок - GET-запрос
+
+Снова создадим тест в файле `todolist/tests.py`:
+
+```py
+from rest_framework.test import APIClient
+from rest_framework import status
+from django.core.urlresolvers import reverse
+
+class ViewTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.todolist_data = {
+            'name': 'Выполнить 9 лабораторную работу',
+            'description': 'Прочитать руководство по django rest framework',
+            'priority': 'h'
+        }
+        self.response = self.client.post(reverse('create'), self.todolist_data, format='json')
+
+    def test_api_can_create_a_todolist(self):
+        self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
+```
+
+Запустите тест также как мы делали это ранее.
 
 Теперь в файле `todolist/views.py` создадим два вьювера для создания и просмотра заметок:
 

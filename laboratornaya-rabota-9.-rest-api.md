@@ -323,7 +323,7 @@ class Tasklist(models.Model):
         return "{}".format(self.name)
 ```
 
-Теперь необходимо отразить, что задача входит в конкретный список задач \(то есть отношение один ко многим - один список задач включает множество задач\), сделаем это с помощью внешнего ключа \(про работу с внешними ключами можно почитать [тут](https://docs.djangoproject.com/en/1.10/topics/db/examples/many_to_one/)\):
+Теперь необходимо отразить, что задача входит в конкретный список задач \(то есть отношение один ко многим - один список задач включает множество задач\), сделаем это с помощью внешнего ключа \(про работу с внешними ключами можно почитать [тут](https://docs.djangoproject.com/en/1.10/topics/db/examples/many_to_one/\)\):
 
 ```py
 class Task(models.Model):
@@ -331,6 +331,34 @@ class Task(models.Model):
     tasklist = models.ForeignKey(Tasklist, related_name='tasks', on_delete=models.CASCADE)
     # ...
 ```
+
+Также нам надо добавить сериализатор для списка задач:
+
+```py
+from .models import Tasklist
+
+
+class TasklistSerializer(serializers.ModelSerializer):
+    tasks = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Tasklist
+        fields = ('name', 'owner', 'tasks')
+```
+
+Все изменения надо зафиксировать в БД:
+
+```
+python3 manage.py makemigrations
+python3 manage.py migrate
+```
+
+Прежде чем мы продолжим давайте определимся со списком методов, которые будем предоставлять пользователю:
+
+* `/todolists` - получение всех списков задач или создание нового списка \(GET и POST методы\)
+* `/todolists/list_id`_ - _редактирование или удаление списка задач с идентификатором `list_id` \(GET, PUT, DELETE\)
+* `/todolists/list_id/tasks`_ _-  просмотр задач или создание новой задачи в списке задач с идентификатором `list_id` \(GET и POST\)
+* `/todolists/list_id/tasks/task_id` - редактирование или удаление задачи `task_id` в списке задач с идентификатором `list_id` \(GET, PUT, DELETE\)
 
 
 

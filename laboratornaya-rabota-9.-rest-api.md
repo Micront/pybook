@@ -399,6 +399,14 @@ class TaskCreateView(generics.ListCreateAPIView):
         if list_id is not None:
             queryset = queryset.filter(tasklist_id = list_id)
         return queryset
+    
+    def perform_create(self, serializer):
+        list_id = self.kwargs.get('list_id', None)
+        try:
+            tasklist = Tasklist.objects.get(pk=list_id)
+        except Tasklist.DoesNotExist:
+            raise NotFound()
+        serializer.save(tasklist=tasklist)
 
 
 class TaskDetailsView(generics.RetrieveUpdateDestroyAPIView):
@@ -412,8 +420,6 @@ class TaskDetailsView(generics.RetrieveUpdateDestroyAPIView):
 ```
 
 Обратите внимание, что мы теперь получаем задачи предварительно фильтруя их по идентификатору списка задач.
-
-
 
 **Задание**:
 

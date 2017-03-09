@@ -64,26 +64,26 @@ INSTALLED_APPS = [
 
 ```py
 from django.test import TestCase
-from .models import Todolist
+from .models import Task
 
 class ModelTestCase(TestCase):
     def setUp(self):
-        self.todolist_name = "Выполнить лабораторную работу №9"
-        self.todolist = Todolist(name=self.todolist_name)
+        self.task_name = "Выполнить лабораторную работу №9"
+        self.task = Task(name=self.task_name)
 
-    def test_model_can_create_todolist(self):
-        old_count = Todolist.objects.count()
-        self.todolist.save()
-        new_count = Todolist.objects.count()
+    def test_model_can_create_task(self):
+        old_count = Task.objects.count()
+        self.task.save()
+        new_count = Task.objects.count()
         self.assertNotEqual(old_count, new_count)
 ```
 
-Теперь создадим модель `Todolist` в файле `todolist/models.py`:
+Теперь создадим модель `Task` в файле `todolist/models.py`:
 
 ```py
 from django.db import models
 
-class Todolist(models.Model):
+class Task(models.Model):
     pass
 ```
 
@@ -93,13 +93,13 @@ class Todolist(models.Model):
 python3 manage.py test
 ```
 
-Вы увидите множество ошибок, которые связаны с тем, что мы еще не создали БД и не добавили туда модель `Todolist`. Давайте сделаем это:
+Вы увидите множество ошибок, которые связаны с тем, что мы еще не создали БД и не добавили туда модель `Task`. Давайте сделаем это:
 
 ```py
 $ python3 manage.py makemigrations
 Migrations for 'todolist':
   todolist/migrations/0001_initial.py:
-    - Create model Todolist
+    - Create model Task
 
 $ python3 manage.py migrate
 Operations to perform:
@@ -130,11 +130,11 @@ python3 manage.py test
 Creating test database for alias 'default'...
 E
 ======================================================================
-ERROR: test_model_can_create_todolist (todolist.tests.ModelTestCase)
+ERROR: test_model_can_create_task (todolist.tests.ModelTestCase)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
   File "/Users/dementiy/Projects/python-projects/django-tutorials/djangorest/todolist/tests.py", line 9, in setUp
-    self.todolist = Todolist(name=self.todolist_name)
+    self.task = Task(name=self.task_name)
   File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/django/db/models/base.py", line 555, in __init__
     raise TypeError("'%s' is an invalid keyword argument for this function" % list(kwargs)[0])
 TypeError: 'name' is an invalid keyword argument for this function
@@ -146,10 +146,10 @@ FAILED (errors=1)
 Destroying test database for alias 'default'...
 ```
 
-В этот раз сообщений об ошибках не так много и они стали более информативными. В нашем примере не найден атрибут `name` у модели `Todolist`. Давайте изменим нашу модель:
+В этот раз сообщений об ошибках не так много и они стали более информативными. В нашем примере не найден атрибут `name` у модели `Task`. Давайте изменим нашу модель:
 
 ```py
-class Todolist(models.Model):
+class Task(models.Model):
     name = models.CharField(max_length=200, blank=True)
     description = models.TextField(max_length=1000, blank=True)
     completed = models.BooleanField(default=False)
@@ -176,13 +176,13 @@ class Todolist(models.Model):
 $ python3 manage.py makemigrations
 Migrations for 'todolist':
   todolist/migrations/0002_auto_20170225_1224.py:
-    - Add field completed to todolist
-    - Add field date_created to todolist
-    - Add field date_modified to todolist
-    - Add field description to todolist
-    - Add field due_date to todolist
-    - Add field name to todolist
-    - Add field priority to todolist
+    - Add field completed to task
+    - Add field date_created to task
+    - Add field date_modified to task
+    - Add field description to task
+    - Add field due_date to task
+    - Add field name to task
+    - Add field priority to task
 MacBook-Air:djangorest dementiy$ python3 manage.py migrate
 Operations to perform:
   Apply all migrations: admin, auth, contenttypes, sessions, todolist
@@ -211,12 +211,12 @@ Destroying test database for alias 'default'...
 
 ```py
 from rest_framework import serializers
-from .models import Todolist
+from .models import Task
 
 
-class TodolistSerializer(serializers.ModelSerializer):
+class TaskSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Todolist
+        model = Task
         fields = ('id', 'name', 'description', 'completed', 'date_created', 'date_modified', 'due_date', 'priority')
         read_only_fields = ('date_created', 'date_modified')
 ```
@@ -238,14 +238,14 @@ from django.core.urlresolvers import reverse
 class ViewTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.todolist_data = {
+        self.task_data = {
             'name': 'Выполнить 9 лабораторную работу',
             'description': 'Прочитать руководство по django rest framework',
             'priority': 'h'
         }
-        self.response = self.client.post(reverse('create'), self.todolist_data, format='json')
+        self.response = self.client.post(reverse('create'), self.task_data, format='json')
 
-    def test_api_can_create_a_todolist(self):
+    def test_api_can_create_a_task(self):
         self.assertEqual(self.response.status_code, status.HTTP_201_CREATED)
 ```
 
@@ -255,18 +255,18 @@ class ViewTestCase(TestCase):
 
 ```py
 from rest_framework import generics
-from .serializers import TodolistSerializer
-from .models import Todolist
+from .serializers import TaskSerializer
+from .models import Task
 
 
-class TodolistCreateView(generics.ListCreateAPIView):
-    queryset = Todolist.objects.all()
-    serializer_class = TodolistSerializer
+class TaskCreateView(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
 
-class TodolistDetailView(generics.RetrieveAPIView):
-    queryset = Todolist.objects.all()
-    serializer_class = TodolistSerializer
+class TaskDetailsView(generics.RetrieveAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 ```
 
 Теперь нам нужно связать вьюеры с соответствующими URL, для этого создайте файл `todolist/urls.py`:
@@ -274,11 +274,11 @@ class TodolistDetailView(generics.RetrieveAPIView):
 ```py
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import TodolistCreateView, TodolistDetail
+from .views import TaskCreateView, TaskDetailsView
 
 urlpatterns = {
-    url(r'^todolists/$', TodolistCreateView.as_view(), name="create"),
-    url(r'^todolists/(?P<pk>[0-9]+)/$', TodolistDetailView.as_view(), name="detail"),
+    url(r'^todolists/$', TaskCreateView.as_view(), name="create"),
+    url(r'^todolists/(?P<pk>[0-9]+)/$', TaskDetailView.as_view(), name="detail"),
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)
@@ -313,5 +313,7 @@ Quit the server with CONTROL-C.
 
 `POST`:![](/assets/Screen Shot 2017-02-25 at 15.53.36.png\)![]\(/assets/Screen Shot 2017-02-25 at 15.54.04.png\)Также мы можем обратиться по адресу `http://127.0.0.1:8000/todolists/1/`, чтобы получить заметку с идентификатором 1:![]\(/assets/Screen Shot 2017-02-25 at 17.24.22.png)
 
-Теперь давайте добавим возможность объединения заметок в группы, назовем их "Списком задач".
+Теперь давайте добавим возможность объединения заметок в группы, назовем их "Списком задач". Для этого нам нужно добавить модель для списка задач:
+
+ 
 

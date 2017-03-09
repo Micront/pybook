@@ -313,7 +313,26 @@ Quit the server with CONTROL-C.
 
 `POST`:![](/assets/Screen Shot 2017-02-25 at 15.53.36.png\)![]\(/assets/Screen Shot 2017-02-25 at 15.54.04.png\)Также мы можем обратиться по адресу `http://127.0.0.1:8000/todolists/1/`, чтобы получить заметку с идентификатором 1:![]\(/assets/Screen Shot 2017-02-25 at 17.24.22.png)
 
-Теперь давайте добавим возможность объединения заметок в группы, назовем их "Списком задач". Для этого нам нужно добавить модель для списка задач:
+Теперь давайте добавим возможность объединения заметок в группы, назовем их "Списком задач". Для этого нам нужно добавить модель для списка задач `todolist/models.py`:
 
- 
+```py
+class Tasklist(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return "{}".format(self.name)
+```
+
+Теперь необходимо отразить, что задача входит в конкретный список задач \(то есть отношение один ко многим - один список задач включает множество задач\), сделаем это с помощью внешнего ключа \(про работу с внешними ключами можно почитать [тут](https://docs.djangoproject.com/en/1.10/topics/db/examples/many_to_one/)\):
+
+```py
+class Task(models.Model):
+    # ...
+    tasklist = models.ForeignKey(Tasklist, related_name='tasks', on_delete=models.CASCADE)
+    # ...
+```
+
+
+
+
 

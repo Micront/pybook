@@ -360,7 +360,56 @@ python3 manage.py migrate
 * `/todolists/list_id/tasks`_ _-  просмотр задач или создание новой задачи в списке задач с идентификатором `list_id` \(GET и POST\)
 * `/todolists/list_id/tasks/task_id` - редактирование или удаление задачи `task_id` в списке задач с идентификатором `list_id` \(GET, PUT, DELETE\)
 
+Давайте отразим этот список методов в наших маршрутах `todolists/urls.py`:
+
+```py
+from django.conf.urls import url, include
+from rest_framework.urlpatterns import format_suffix_patterns
+from .views import TasklistCreateView, TasklistDetailsView, TaskCreateView, TaskDetailsView
+from rest_framework.authtoken.views import obtain_auth_token
+
+urlpatterns = {
+    url(r'^todolists/$', TasklistCreateView.as_view(), name="lists"),
+    url(r'^todolists/(?P<pk>[0-9]+)/$', TasklistDetailsView.as_view(), name="list-detail"),
+    url(r'^todolists/(?P<list_id>[0-9]+)/tasks', TaskCreateView.as_view(), name="tasks"),
+    url(r'^todolists/(?P<list_id>[0-9]+)/tasks/(?P<pk>[0-9]+)', TaskDetailsView.as_view(), name="task-detail"),
+}
+
+urlpatterns = format_suffix_patterns(urlpatterns)
+```
+
+Нам нужно добавить вьюверы для списков задач и изменить вьюверы для самих задач:
+
+```py
+class TasklistCreateView(generics.ListCreateAPIView):
+    queryset = Tasklist.objects.all()
+    serializer_class = TasklistSerializer
 
 
+class TasklistDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Tasklist.objects.all()
+    serializer_class = TasklistSerializer
 
+
+class TaskCreateView(generics.ListCreateAPIView):
+    serializer_class = TaskSerializer
+
+    def get_queryset(self):
+        list_id = self.kwargs.get('list_id', None)
+        if list_id is not None:
+            queryset = queryset.filter(tasklist_id = list_id)
+        return queryset
+
+
+class TaskDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TaskSerializer
+
+    def get_queryset(self):
+        list_id = self.kwargs.get('list_id', None)
+        if list_id is not None:
+            queryset = queryset.filter(tasklist_id = list_id)
+        return queryset
+```
+
+Обратите внимание, что мы теперь получаем задачи предварительно фильтруя их по идентификатору списка задач.
 

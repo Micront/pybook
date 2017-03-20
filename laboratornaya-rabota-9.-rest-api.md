@@ -58,7 +58,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-В этой работе для проверки нашего кода мы будем писать тесты согласно принципу \(философии\) [TDD](https://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5\), простыми словами: сначала пишем тест - потом код. В Django для создания тестов используется [unittest-фреймворк]\(https://docs.python.org/3/library/unittest.html#module-unittest).
+В этой работе для проверки нашего кода мы будем писать тесты согласно принципу \(философии\) [TDD](https://ru.wikipedia.org/wiki/Разработка_через_тестирование%29, простыми словами: сначала пишем тест - потом код. В Django для создания тестов используется [unittest-фреймворк]%28https://docs.python.org/3/library/unittest.html#module-unittest).
 
 Создадим наш первый тест, который проверяет можем ли мы создавать модели и сохранять их в БД. Для этого в файле `todolist/tests.py` добавим следующий класс:
 
@@ -190,6 +190,8 @@ Running migrations:
   Applying todolist.0002_auto_20170225_1224... OK
 ```
 
+**Замечание**: ....
+
 Снова запустим тест:
 
 ```py
@@ -205,7 +207,7 @@ Destroying test database for alias 'default'...
 
 В этот раз уже никаких ошибок не было, а это означает, что мы можем создавать модели и сохранять их в БД.
 
-Теперь нам нужно создать [сериализатор](http://www.django-rest-framework.org/api-guide/serializers/\) \(serializer\). Сериализаторы позволяют представить множество сложных объектов, которые возможно мы получили из БД, в простой и человеко-читаемой форме, например, в формате JSON или XML.
+Теперь нам нужно создать [сериализатор](http://www.django-rest-framework.org/api-guide/serializers/%29 %28serializer\). Сериализаторы позволяют представить множество сложных объектов, которые возможно мы получили из БД, в простой и человеко-читаемой форме, например, в формате JSON или XML.
 
 Создадим файл `todolist/serializers.py` со следующим содержимым:
 
@@ -311,7 +313,7 @@ Quit the server with CONTROL-C.
 
 Пройдите по адресу `http://127.0.0.1:8000/todolists`, вы должны увидеть следующее окно:![](/assets/Screen Shot 2017-02-25 at 15.51.30.png)В нашей БД еще нет ни одной записи, давайте добавим новую запись, для этого достаточно заполнить поля и нажать на
 
-`POST`:![](/assets/Screen Shot 2017-02-25 at 15.53.36.png\)![]\(/assets/Screen Shot 2017-02-25 at 15.54.04.png\)Также мы можем обратиться по адресу `http://127.0.0.1:8000/todolists/1/`, чтобы получить заметку с идентификатором 1:![]\(/assets/Screen Shot 2017-02-25 at 17.24.22.png)
+`POST`:![](/assets/Screen Shot 2017-02-25 at 15.53.36.png%29![]%28/assets/Screen Shot 2017-02-25 at 15.54.04.png%29Также мы можем обратиться по адресу `http://127.0.0.1:8000/todolists/1/`, чтобы получить заметку с идентификатором 1:![]%28/assets/Screen Shot 2017-02-25 at 17.24.22.png)
 
 Теперь давайте добавим возможность объединения заметок в группы, назовем их "Списком задач". Для этого нам нужно добавить модель для списка задач `todolist/models.py`:
 
@@ -323,7 +325,7 @@ class Tasklist(models.Model):
         return "{}".format(self.name)
 ```
 
-Теперь необходимо отразить, что задача входит в конкретный список задач \(то есть отношение один ко многим - один список задач включает множество задач\), сделаем это с помощью внешнего ключа \(про работу с внешними ключами можно почитать [тут](https://docs.djangoproject.com/en/1.10/topics/db/examples/many_to_one/\)\):
+Теперь необходимо отразить, что задача входит в конкретный список задач \(то есть отношение один ко многим - один список задач включает множество задач\), сделаем это с помощью внешнего ключа \(про работу с внешними ключами можно почитать [тут](https://docs.djangoproject.com/en/1.10/topics/db/examples/many_to_one/%29\):
 
 ```py
 class Task(models.Model):
@@ -343,7 +345,7 @@ class TasklistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tasklist
-        fields = ('name', 'owner', 'tasks')
+        fields = ('name', 'tasks')
 ```
 
 Все изменения надо зафиксировать в БД:
@@ -395,11 +397,12 @@ class TaskCreateView(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
 
     def get_queryset(self):
+        queryset = Task.objects.all()
         list_id = self.kwargs.get('list_id', None)
         if list_id is not None:
             queryset = queryset.filter(tasklist_id = list_id)
         return queryset
-    
+
     def perform_create(self, serializer):
         list_id = self.kwargs.get('list_id', None)
         try:
@@ -413,6 +416,7 @@ class TaskDetailsView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TaskSerializer
 
     def get_queryset(self):
+        queryset = Task.objects.all()
         list_id = self.kwargs.get('list_id', None)
         if list_id is not None:
             queryset = queryset.filter(tasklist_id = list_id)

@@ -188,6 +188,8 @@ def permutations(L, result):
     else:
         for i in range(len(L)):
             permutations(L[0:i] + L[i+1:], result + [L[i]])
+
+permutations([1,2,3], [])
 {% endvisualizer %}
 
 

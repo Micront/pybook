@@ -161,6 +161,80 @@ class User:
 
 ### Наследование
 
+```py
+class TimestampedModel:
+
+    def __init__(self, created_at = None):
+        self.created_at = created_at or datetime.datetime.now()
+        self.updated_at = None
+
+    def update(self):
+        self.updated_at = datetime.datetime.now()
+```
+
+```py
+class User(TimestampedModel):
+
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
+```
+
+```py
+class User(TimestampedModel):
+
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
+        super().__init__()
+
+    @property
+    def username(self):
+        return self._username
+
+    @username.setter
+    def username(self, new_username):
+        self._username = new_username
+        self.update()
+```
+
+```py
+import json
+import attr
+import enum
+import datetime
+
+
+class JSONSerializerMixin:
+
+    @staticmethod
+    def to_serializable(value):
+        if isinstance(value, datetime.datetime):
+            return value.isoformat() + "Z"
+        elif isinstance(value, enum.Enum):
+            return value.value
+        elif attr.has(value.__class__):
+            return attr.asdict(value)
+        elif isinstance(value, Exception):
+            return {
+                "error": value.__class__.__name__,
+                "args": value.args,
+            }
+        return str(value)
+
+    def toJSON(self):
+        return json.dumps(self.__dict__, default=JSONSerializerMixin.to_serializable)
+```
+
+```py
+class User(TimestampedModel, JSONSerializerMixin):
+    ...
+```
+
+
+
 ### Множественное наследование и полиморфизм
 
 ### Метаклассы

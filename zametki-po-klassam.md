@@ -81,21 +81,15 @@ class User:
     pass
 ```
 
-
-
 ```py
 u = User()
 ```
-
-
 
 ```py
 u.username = 'bob'
 u.password = 'bob@example.com'
 u.email = 'foobar'
 ```
-
-
 
 ```py
 >>> hasattr(u, 'created_at')
@@ -117,16 +111,12 @@ datetime.datetime(2017, 4, 11, 16, 45, 36, 757869)
 datetime.datetime(2017, 4, 11, 16, 45, 36, 757869)
 ```
 
-
-
 ```py
 u = User()
-attrs = {'username': bob', 'email': 'bob@example.com', 'password': 'foobar'}
+attrs = {'username': 'bob', 'email': 'bob@example.com', 'password': 'foobar'}
 for k, v in attrs.items():
     setattr(u, k, v)
 ```
-
-
 
 ```py
 def get_username(user):
@@ -136,8 +126,6 @@ def get_username(user):
 >>> u.get_username(u)
 'bob'
 ```
-
-
 
 ```py
 >>> from types import MethodType
@@ -156,8 +144,6 @@ class User:
     def get_username(self):
         return self.username
 ```
-
-
 
 ```py
 >>> u = User('bob', 'bob@example.com', 'foobar')

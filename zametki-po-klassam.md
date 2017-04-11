@@ -146,15 +146,13 @@ def get_username(user):
 'bob'
 ```
 
-
-
 ```py
 class User:
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = password
-    
+
     def get_username(self):
         return self.username
 ```
@@ -169,31 +167,17 @@ class User:
 'bob'
 ```
 
-
-
 ### "Приватные" поля класса
-
-
 
 ### Свойства \(property\)
 
-
-
 ### Методы класса \(@classmethod и @staticmethod\)
-
-
 
 ### Наследование
 
-
-
 ### Множественное наследование и полиморфизм
 
-
-
 ### Метаклассы
-
-
 
 ### Абстрактные классы
 

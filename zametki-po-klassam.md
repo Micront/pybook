@@ -23,7 +23,7 @@ password = 'foobar'
 1. Мы пониманием, что переменные логически должны быть связаны между собой, но мы эту связь никак не показали. Другими словами, переменная `username`  может содержать имя одного пользователя, `email` относиться ко второму пользователю, а `password` к третьему.
 2. Если нам необходимо одновременно взаимодействовать с несколькими пользователями, то для каждого из них нужно создавать по три таких переменных.
 
-Как показать, что существует логическая связь между этими переменными? Мы можем использовать любую подходящую структуру: список, словарь, кортеж, именованный кортеж. Как пример будем использовать кортеж \(именованный кортеж, т.е. `namedtuple`, было бы использовать нечестно\):
+Как показать, что существует логическая связь между этими переменными? Мы можем использовать любую подходящую структуру: список, словарь, кортеж, именованный кортеж. Как пример будем использовать кортеж \(именованный кортеж, т.е. [`namedtuple`](https://www.blog.pythonlibrary.org/2016/03/15/python-201-namedtuple/), было бы использовать нечестно\):
 
 ```py
 # Представление отдельно взятого пользователя
@@ -74,17 +74,128 @@ def get_username_for_users_with_id(user):
 
 ### Создание простого класса
 
+Начнем с создания простого класса:
+
+```py
+class User:
+    pass
+```
+
+
+
+```py
+u = User()
+```
+
+
+
+```py
+u.username = 'bob'
+u.password = 'bob@example.com'
+u.email = 'foobar'
+```
+
+
+
+```py
+>>> hasattr(u, 'created_at')
+False
+>>> hasattr(u, 'username')
+True
+
+>>> getattr(u, 'created_at')
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+    getattr(u, 'created_at')
+AttributeError: 'User' object has no attribute 'created_at'
+
+import datetime
+>>> getattr(u, 'created_at', datetime.datetime.now())
+datetime.datetime(2017, 4, 11, 16, 45, 36, 757869)
+
+>>> setattr(u, 'created_at', datetime.datetime.now())
+datetime.datetime(2017, 4, 11, 16, 45, 36, 757869)
+```
+
+
+
+```py
+u = User()
+attrs = {'username': bob', 'email': 'bob@example.com', 'password': 'foobar'}
+for k, v in attrs.items():
+    setattr(u, k, v)
+```
+
+
+
+```py
+def get_username(user):
+    return user.username
+
+>>> u.get_username = get_username
+>>> u.get_username(u)
+'bob'
+```
+
+
+
+```py
+>>> from types import MethodType
+>>> u.get_username = MethodType(get_username, u)
+>>> u.get_username()
+'bob'
+```
+
+
+
+```py
+class User:
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
+    
+    def get_username(self):
+        return self.username
+```
+
+
+
+```py
+>>> u = User('bob', 'bob@example.com', 'foobar')
+>>> u.email
+'bob@example.com'
+>>> u.get_username()
+'bob'
+```
+
+
+
 ### "Приватные" поля класса
 
-### Методы класса \(@classmethod и @staticmethod\)
+
 
 ### Свойства \(property\)
 
+
+
+### Методы класса \(@classmethod и @staticmethod\)
+
+
+
 ### Наследование
+
+
 
 ### Множественное наследование и полиморфизм
 
+
+
 ### Метаклассы
+
+
+
+### Абстрактные классы
 
 
 

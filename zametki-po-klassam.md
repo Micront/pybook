@@ -213,6 +213,37 @@ class User:
 
 ### "Приватные" поля класса
 
+```py
+import hashlib
+import random
+import string
+
+
+class User:
+
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = self.set_password(password)
+    
+    # http://pythoncentral.io/hashing-strings-with-python/
+    # https://docs.python.org/3.5/library/hashlib.html
+    def make_salt(self):
+        salt = ""
+        for i in range(5):
+            salt = salt + random.choice(string.ascii_letters)
+        return salt
+
+    def set_password(self, pw, salt=None):
+        if salt == None:
+            salt = self.make_salt()
+        return hashlib.sha256(pw.encode() + salt.encode()).hexdigest() + "," + salt
+
+    def check_password(self, user_password):
+        password, salt = self.password.split(',')
+        return password == hashlib.sha256(user_password.encode() + salt.encode()).hexdigest()
+```
+
 ### Свойства \(property\)
 
 ### Методы класса \(@classmethod и @staticmethod\)

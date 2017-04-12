@@ -158,6 +158,8 @@ def get_username(user):
 
 Обратите внимание, что мы вызываем функцию `get_username` у объекта `u` и в качестве аргумента передаем сам объект `u`. Выглядит странно и некрасиво.
 
+
+
 ```py
 >>> from types import MethodType
 >>> u.get_username = MethodType(get_username, u)

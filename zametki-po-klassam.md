@@ -213,10 +213,13 @@ class User:
 
 ### "Приватные" поля класса
 
+Допустим у нас имеется следующее определение класса, в котором есть методы для изменения и проверки пароля, а также адреса электронной почты:
+
 ```py
 import hashlib
 import random
 import string
+import re
 
 
 class User:
@@ -230,7 +233,7 @@ class User:
     def set_email(self, email):
         match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
         if not match:
-            raise ValueError("Invalid email address")
+            raise ValueError("Invalid email")
         self.email = email
     
     # http://pythoncentral.io/hashing-strings-with-python/
@@ -250,6 +253,45 @@ class User:
         password, salt = self.password.split(',')
         return password == hashlib.sha256(user_password.encode() + salt.encode()).hexdigest()
 ```
+
+Давайте посмотрим на работу с этими методами:
+
+```py
+>>> u = User('bob', 'bob@example.com', 'foobar')
+>>> u.username
+'bob'
+>>> u.email
+'bob@example.com'
+>>> u.password
+'fd6c85ddaccb0d13e8b4d45b6e3bcbcc18d3b737a10aef21d297c861d770da6d,PDrGK'
+
+>>> u.set_email('bob-new-email')
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+    u.set_email('bob-new-eamil')
+  File "<input>", line 12, in set_email
+    raise ValueError("Invalid email")
+ValueError: Invalid email
+>>> u.set_email('bob-new-eamil@example.com')
+>>> u.email
+'bob-new-eamil@example.com'
+
+>>> u.check_password('barfoo')
+False
+>>> u.check_password('foobar')
+True
+```
+
+Допустим, что мы хотим изменить пароль (или адрес электронной почты) и делаем это напрямую обращаясь к атрибуту:
+```py
+>>> u.password = 'barfoo'
+>>> u.check_password('barfoo')
+False
+```
+
+Почему пароль не прошел проверку? Мы изменили значение атрибута напрямую, не используя функцию `set_password()`, таким образом, мы сохранили пароль в открытом виде. В свою очередь функция `check_password()` хеширует переданный ей пароль в качестве аргумента и затем сравнивает его с паролем, который хранился в атрибуте `password`.
+
+Очевидно, что нужно менять значение пароля или адреса электронной почты с помощью методов `set_password()` и `set_email()`, чтобы избежать подобного рода ошибок. А прямое обращение к полям `password` и `email` - ограничить.
 
 ### Свойства \(property\)
 

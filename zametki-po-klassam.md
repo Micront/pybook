@@ -223,8 +223,15 @@ class User:
 
     def __init__(self, username, email, password):
         self.username = username
+        
+        self.set_email(email)
+        self.set_password(password)
+    
+    def set_email(self, email):
+        match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
+        if not match:
+            raise ValueError("Invalid email address")
         self.email = email
-        self.password = self.set_password(password)
     
     # http://pythoncentral.io/hashing-strings-with-python/
     # https://docs.python.org/3.5/library/hashlib.html
@@ -237,7 +244,7 @@ class User:
     def set_password(self, pw, salt=None):
         if salt == None:
             salt = self.make_salt()
-        return hashlib.sha256(pw.encode() + salt.encode()).hexdigest() + "," + salt
+        self.password = hashlib.sha256(pw.encode() + salt.encode()).hexdigest() + "," + salt
 
     def check_password(self, user_password):
         password, salt = self.password.split(',')

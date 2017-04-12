@@ -295,6 +295,75 @@ False
 
 ### Свойства \(property\)
 
+```py
+class UserProfile:
+
+    def __init__(self, user, first_name='', sur_name='', bdate=None):
+        assert isinstance(user, User), '`user` field must be a User class instance'
+        self._user = user
+        self.first_name = first_name
+        self.sur_name = sur_name
+        self.bdate = bdate
+    
+        self._age = None
+        self._age_last_recalculated = None
+        self._recalculate_age()
+
+    def _recalculate_age(self):
+        today = datetime.date.today()
+        age = today.year - self.bdate.year
+
+        if today < datetime.date(today.year, self.bdate.month, self.bdate.day):
+            age -= 1
+
+        self._age = age
+        self._age_last_recalculated = today
+
+    def age(self):
+        if (datetime.date.today() > self._age_last_recalculated):
+            self._recalculate_age()
+
+        return self._age
+
+
+class User:
+
+    def __init__(self, username, email, password):
+        ...
+        self.profile = UserProfile(self)
+        ...    
+```
+
+```py
+class UserProfile:
+    ...
+    @property
+    def age(self):
+        if (datetime.date.today() > self._age_last_recalculated):
+            self._recalculate_age()
+
+        return self._age
+```
+
+```py
+class UserProfile:
+    ...
+    @property
+    def fullname(self):
+        return '{} {}'.format(self.first_name, self.sur_name).title()
+
+    @fullname.setter
+    def fullname(self, value):
+        name, surname = value.split(" ", maxsplit=1)
+        self.first_name = name
+        self.sur_name = surname
+
+    @fullname.deleter
+    def fullname(self):
+        self.first_name = ''
+        self.sur_name = ''
+```
+
 ### Методы класса \(@classmethod и @staticmethod\)
 
 ### Наследование

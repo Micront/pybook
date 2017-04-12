@@ -143,11 +143,15 @@ for k, v in attrs.items():
     setattr(u, k, v)
 ```
 
+Добавим теперь функцию получения имени пользователя в ранее созданный объект:
+
 ```py
 def get_username(user):
     return user.username
 
 >>> u.get_username = get_username
+>>> u.__dict__
+{'username': 'bob', 'password': 'bob@example.com', 'email': 'foobar', 'get_username': <function get_username at 0x1038256a8>}
 >>> u.get_username(u)
 'bob'
 ```

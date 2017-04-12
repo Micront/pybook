@@ -158,6 +158,9 @@ def get_username(user):
 
 Обратите внимание, что мы вызываем функцию `get_username` у объекта `u` и в качестве аргумента передаем сам объект `u`. Выглядит странно и некрасиво.
 
+<div class="alert alert-info">
+<b>Замечание:</b> Ради справедливости нужно сказать, что мы можем динамически привязать метод к объекту.
+</div>
 
 
 ```py
@@ -165,6 +168,10 @@ def get_username(user):
 >>> u.get_username = MethodType(get_username, u)
 >>> u.get_username()
 'bob'
+
+>>> u.__dict__
+{'username': 'bob', 'password': 'bob@example.com', 'email': 'foobar', 'get_username': <bound method get_username of <__console__.U
+ser object at 0x103839d30>>}
 ```
 
 ```py

@@ -68,14 +68,28 @@ class User:
     pass
 ```
 
-```py
-u = User()
-```
+Теперь создадим новый объект класса пользователь:
 
 ```py
-u.username = 'bob'
-u.password = 'bob@example.com'
-u.email = 'foobar'
+>>> u = User()
+```
+
+Атрибуты хранятся в специальном словаре:
+
+```py
+>>> u.__dict__
+{}
+```
+
+Так как мы не создали еще ни одного атрибута, то и словарь будет пустым. Давайте добавим несколько атрибутов  \(python позволяет динамически привязывать новые атрибуты к объекту, в конце концов это просто словарь\):
+
+```py
+>>> u.username = 'bob'
+>>> u.password = 'bob@example.com'
+>>> u.email = 'foobar'
+
+>>> u.__dict__
+{'username': 'bob', 'password': 'bob@example.com', 'email': 'foobar'}
 ```
 
 ```py

@@ -108,7 +108,11 @@ Traceback (most recent call last):
 AttributeError: 'User' object has no attribute 'created_at'
 ```
 
+Работать с атрибутами можно с помощью функций:
 
+* `hasattr(obj, attr_name)` - проверить наличие атрибута `attr_name` в объекте `obj`. Если атрибут присутствует, то функция возвращает `True`, иначе `False`.
+* `getattr(obj, attr_name[, default_value])` - получить значение атрибута. Можно указать значение по умолчанию `default_value`, которое будет возвращено, если атрибута не существует. 
+* `setattr(obj, attr_name, value)` - создать/изменить атрибут и установить его значение в `value`. 
 
 ```py
 >>> hasattr(u, 'created_at')

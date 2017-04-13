@@ -12,4 +12,5 @@
 * [Лабораторная работа №8. Шаблонизатор](laboratornaya-rabota-8.-shablonizator.md)
 * [Лабораторная работа №9. REST API](laboratornaya-rabota-9.-rest-api.md)
 * [Заметки по классам](zametki-po-klassam.md)
+* [Собственный проект](sobstvennii-proekt.md)
 

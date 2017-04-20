@@ -317,7 +317,14 @@ class Row:
         attrs =  ', '.join([f"{attr}={value}" for attr, value in self.__dict__.items()])
         return f"{self.__class__.__name__}({attrs})"
 ```
+Класс `DataBase` отвечает за создание соединения, класс `Query` за формирование запроса к БД, класс `Row` представляет одну запись в таблице.
 
+<div class="alert alert-info">
+<b>Замечание:</b> Все строки в формате <a href="https://cito.github.io/blog/f-strings/">f-strings</a>, который был введен в Python 3.6.<br/>
+Метод `__repr__` переопределен, чтобы выводить чуть больше полезной информации об объекте, чем просто его адрес в памяти. Про магические методы в питоне можно почитать на [хабре](https://habrahabr.ru/post/186608/).
+</div>
+
+Ниже приведен пример использования:
 
 ```py
 >>> db = DataBase('users_db')

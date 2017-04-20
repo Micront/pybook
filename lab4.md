@@ -34,7 +34,7 @@ $ python access_token.py YOUR_CLIENT_ID -s friends,messages
 
 После выполнения команды откроется новая вкладка браузера, из адресной строки которого вам необходимо скопировать токен доступа.
 
-![](access_token.png)
+![](assets/access_token.png)
 
 <div class="alert alert-info">
 <strong>Внимание:</strong> На этом этапе вы можете повторить ранее представленный пример запроса, чтобы убедится, что вы делаете все верно.
@@ -268,4 +268,4 @@ py.iplot(data)
 
 Созданный график вы можете найти в своем [профиле](https://plot.ly/organize/home):
 
-![](plotly.png)
+![](assets/plotly.png)

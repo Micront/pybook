@@ -302,6 +302,26 @@ class Row:
 
         for name, value in fields:
             setattr(self, name, value)
+    
+    def __repr__(self):
+        attrs =  ', '.join([f"{attr}={value}" for attr, value in self.__dict__.items()])
+        return f"{self.__class__.__name__}({attrs})"
+```
+
+```py
+>>> db = DataBase('users_db')
+>>> db.get_columns('users')
+['id', 'username', 'email', 'password']
+>>> db.Table('users').rows:
+SELECT * FROM users
+[users_Row(id=1, username=john, email=john@thebeatles.com, password=foobar),
+ users_Row(id=2, username=paul, email=paul@thebeatles.com, password=barfoo),
+ users_Row(id=3, username=ringo, email=ringo@thebeatles.com, password=foobaz),
+ users_Row(id=4, username=george, email=george@thebeatles.com, password=bazfoo)]
+>>> db.Table('users').filter('id > 2').rows
+SELECT * FROM users WHERE id > 2
+[users_Row(id=3, username=ringo, email=ringo@thebeatles.com, password=foobaz),
+ users_Row(id=4, username=george, email=george@thebeatles.com, password=bazfoo)]
 ```
 
 ### "Приватные" поля класса

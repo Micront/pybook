@@ -215,6 +215,95 @@ class User:
 
 В Python классы также являются объектами (_в Python все является объектом_) и методы, в отличие от атрибутов, принадлежат классу, а не объекту. Поэтому метод `get_username()` вызывается не у объекта, а у класса, а объект передается в качестве аргумента (отсюда следует, что объект должен передаваться в качестве первого аргумента во все методы класса и по соглашению его называют `self`). Таким образом, выражение `u.get_username()` является просто синтаксическим сахаром (упрощенной формой записи) по отношению к `User.get_username(u)`.
 
+### Пример
+
+```py
+import sqlite3
+
+# Создание нового соединения с БД
+conn = sqlite3.connect('users_db.sqlite3')
+cursor = conn.cursor()
+
+# Создание таблицы пользователей
+cursor.execute('CREATE TABLE users (id, username, email, password)')
+
+# Добавление новых записей
+users = [
+   (1, 'john', 'john@thebeatles.com', 'foobar'),
+   (2, 'paul', 'paul@thebeatles.com', 'barfoo'),
+   (3, 'ringo', 'ringo@thebeatles.com', 'foobaz'),
+   (4, 'george', 'george@thebeatles.com', 'bazfoo')
+]
+cursor.executemany('INSERT INTO users VALUES (?,?,?,?)', users)
+conn.commit()
+
+# Вывод всех записей
+for row in cursor.execute('SELECT * FROM users'):
+   print(row)
+```
+
+В результате вы должны увидеть следующие записи:
+```py
+(1, 'john', 'john@thebeatles.com', 'foobar')
+(2, 'paul', 'paul@thebeatles.com', 'barfoo')
+(3, 'ringo', 'ringo@thebeatles.com', 'foobaz')
+(4, 'george', 'george@thebeatles.com', 'bazfoo')
+```
+
+
+```py
+import sqlite3
+
+
+class DataBase:
+    def __init__(self, db='db'):
+        self.conn = sqlite3.connect(f"{db}.sqlite3")
+        self.cursor = self.conn.cursor()
+
+    def get_columns(self, tbl_name):
+        self.sql_rows = f"SELECT * FROM {tbl_name}"
+        columns = f"PRAGMA table_info({tbl_name})"
+        self.cursor.execute(columns)
+        return [row[1] for row in self.cursor.fetchall()]
+
+    def Table(self, tbl_name):
+        columns = self.get_columns(tbl_name)
+        return Query(self.cursor, self.sql_rows, columns, tbl_name)
+
+
+class Query:
+    def __init__(self, cursor, rows, columns, tbl_name):
+        self.cursor = cursor
+        self.sql_rows = rows
+        self.columns = columns
+        self.tbl_name = tbl_name
+
+    def filter(self, criteria):
+        key_word = "AND" if "WHERE" in self.sql_rows else "WHERE"
+        sql = f"{self.sql_rows} {key_word} {criteria}"
+        return Query(self.cursor, sql, self.columns, self.tbl_name)
+
+    def order_by(self, criteria):
+        return Query(self.cursor, f"{self.sql_rows} ORDER BY {criteria}", self.columns, self.tbl_name)
+
+    def group_by(self, criteria):
+        return Query(self.cursor, f"{self.sql_rows} GROUP BY {criteria}", self.columns, self.tbl_name)
+
+    @property
+    def rows(self):
+        print(self.sql_rows)
+        self.cursor.execute(self.sql_rows)
+        return [Row(zip(self.columns, fields), self.tbl_name) for fields in self.cursor.fetchall()]
+
+
+class Row:
+    def __init__(self, fields, table_name):
+        self.__class__.__name__ = table_name + "_Row"
+
+        for name, value in fields:
+            setattr(self, name, value)
+```
+
 ### "Приватные" поля класса
 
 Допустим у нас имеется следующее определение класса, в котором есть методы для изменения и проверки пароля, а также адреса электронной почты:

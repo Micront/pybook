@@ -448,5 +448,56 @@ class User(TimestampedModel, JSONSerializerMixin):
 
 ### Абстрактные классы
 
+Продолжим рассматривать пример с классом _Пользователь_. Мы можем разделить пользователей на два типа: **анонимные пользователи**, то есть те пользователи, которые не зарегистрированы или не вошли в систему под своим логином и паролем, и **авторизованные пользователи**.
+
+```py
+class AbstractUser:
+
+    def set_password(self, raw_password):
+        raise NotImplementedError()
+
+    def check_password(self, raw_password):
+        raise NotImplementedError()
+    
+    def is_anonymous(self):
+        raise NotImplementedError()
+```
+
+<div class="alert alert-info">
+<b>Замечание:</b> Если проводить параллель с другими языками программирования, например, Java, то такой класс более справедливо было бы назвать <a href="http://stackoverflow.com/questions/761194/interface-vs-abstract-class-general-oo">интерфейсом</a>.
+</div>
+
+```py
+class AnonymousUser(AbstractUser):
+    
+    def is_anonymous(self):
+        return True
+
+class User(AbstractUser):
+    def set_password(self, raw_password):
+        ...
+
+    def check_password(self, raw_password):
+        ...
+
+    def is_anonymous(self):
+        return False
+```
+
+```py
+from abc import ABCMeta, abstractmethod
+
+
+class AbstractUser(metaclass=ABCMeta):
+    def set_password(self, raw_password):
+        raise NotImplementedError()
+
+    def check_password(self, raw_password):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def is_anonymous(self):
+        pass
+```
 
 

@@ -217,6 +217,12 @@ class User:
 
 ### Пример: создание простой ORM
 
+Что такое ORM? Вот пояснение с сайта [Full Stack Python](https://www.fullstackpython.com/object-relational-mappers-orms.html):
+
+> An object-relational mapper (ORM) is a code library that automates the transfer of data stored in relational databases tables into objects that are more commonly used in application code.
+
+В этом примере (полностью основанном на [этом коде](https://codescience.wordpress.com/2011/02/06/python-mini-orm/)) мы рассмотрим пример создания примитивной ORM для SQLite базы данных, которая имеет [встроенную поддержку](https://docs.python.org/3.6/library/sqlite3.html) в Python.
+
 ```py
 import sqlite3
 

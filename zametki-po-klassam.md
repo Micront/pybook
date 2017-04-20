@@ -223,11 +223,15 @@ class User:
 
 В этом примере (полностью основанном на [этом коде](https://codescience.wordpress.com/2011/02/06/python-mini-orm/)) мы рассмотрим пример создания примитивной ORM для SQLite базы данных, которая имеет [встроенную поддержку](https://docs.python.org/3.6/library/sqlite3.html) в Python.
 
+Создадим БД с таблицей _Пользователи_ и добавим туда несколько записей:
+
 ```py
 import sqlite3
 
 # Создание нового соединения с БД
 conn = sqlite3.connect('users_db.sqlite3')
+
+# Курсор это объект, который позволяет выполнять запросы к БД
 cursor = conn.cursor()
 
 # Создание таблицы пользователей
@@ -256,7 +260,7 @@ for row in cursor.execute('SELECT * FROM users'):
 (4, 'george', 'george@thebeatles.com', 'bazfoo')
 ```
 
-
+Теперь перейдем к ORM:
 ```py
 import sqlite3
 
@@ -313,6 +317,7 @@ class Row:
         attrs =  ', '.join([f"{attr}={value}" for attr, value in self.__dict__.items()])
         return f"{self.__class__.__name__}({attrs})"
 ```
+
 
 ```py
 >>> db = DataBase('users_db')

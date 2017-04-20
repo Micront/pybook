@@ -332,6 +332,13 @@ SELECT * FROM users ORDER BY username DESC
  users_Row(id=2, username=paul, email=paul@thebeatles.com, password=barfoo),
  users_Row(id=1, username=john, email=john@thebeatles.com, password=foobar),
  users_Row(id=4, username=george, email=george@thebeatles.com, password=bazfoo)]
+
+>>> user = db.Table('users').rows[0]
+SELECT * FROM users
+>>> user.id
+1
+>>> user.username
+'john'
 ```
 
 ### "Приватные" поля класса

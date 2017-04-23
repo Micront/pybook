@@ -533,9 +533,9 @@ class UserProfile:
 ```py
 class TimestampedModel:
 
-    def __init__(self, created_at = None):
+    def __init__(self, created_at=None, updated_at=None):
         self.created_at = created_at or datetime.datetime.now()
-        self.updated_at = None
+        self.updated_at = updated_at or created_at
 
     def update(self):
         self.updated_at = datetime.datetime.now()
@@ -595,6 +595,17 @@ class JSONSerializerMixin:
 
     def toJSON(self):
         return json.dumps(self.__dict__, default=JSONSerializerMixin.to_serializable)
+    
+    @classmethod
+    def fromJSON(cls, data):
+        def datetime_parser(json_dict):
+            for k,v in json_dict.items():
+                try:
+                    json_dict[k] = datetime.datetime.strptime(v, "%Y-%m-%d").date()
+                except:
+                    pass
+            return json_dict
+        return cls(**json.loads(data, object_hook=datetime_parser))
 ```
 
 ```py

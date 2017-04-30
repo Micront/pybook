@@ -215,6 +215,16 @@ class User:
 
 В Python классы также являются объектами (_в Python все является объектом_) и методы, в отличие от атрибутов, принадлежат классу, а не объекту. Поэтому метод `get_username()` вызывается не у объекта, а у класса, а объект передается в качестве аргумента (отсюда следует, что объект должен передаваться в качестве первого аргумента во все методы класса и по соглашению его называют `self`). Таким образом, выражение `u.get_username()` является просто синтаксическим сахаром (упрощенной формой записи) по отношению к `User.get_username(u)`.
 
+<div class="alert alert-info">
+<b>Замечание:</b> Конечно все несколько сложнее, рассмотрим следующий пример:<br/>
+<code>
+>>> User.get_username
+<function User.get_username at 0x103a06268>
+>>> u.get_username
+<bound method User.get_username of <__console__.User object at 0x1039a8eb8>>
+</code><br/>
+</div>
+
 ### Пример: создание простой ORM
 
 Что такое ORM? Вот пояснение с сайта [Full Stack Python](https://www.fullstackpython.com/object-relational-mappers-orms.html):

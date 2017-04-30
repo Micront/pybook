@@ -217,12 +217,10 @@ class User:
 
 <div class="alert alert-info">
 <b>Замечание:</b> Конечно все несколько сложнее, рассмотрим следующий пример:<br/>
-<code>
->>> User.get_username
-<function User.get_username at 0x103a06268>
->>> u.get_username
-<bound method User.get_username of <__console__.User object at 0x1039a8eb8>>
-</code><br/>
+<code>>>> User.get_username</code><br/>
+<code><function User.get_username at 0x103a06268></code><br/>
+<code>>>> u.get_username</code><br/>
+<code><bound method User.get_username of <__console__.User object at 0x1039a8eb8>></code><br/>
 </div>
 
 ### Пример: создание простой ORM

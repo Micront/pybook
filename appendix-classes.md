@@ -221,7 +221,7 @@ class User:
 <code>&lt function User.get_username at 0x103a06268 ></code><br/>
 <code>>>> u.get_username</code><br/>
 <code>&lt bound method User.get_username of &lt __console__.User object at 0x1039a8eb8>></code><br/>
-В первом случае мы имеем функцию, а во втором - связный метод, другими словами есть разница в поведении в зависимости от того вызываем мы <code>get_username</code> у класса или у объекта. Такое поведение реализовано с помощью дескрипторов, о которых мы будем говорить ниже, но пока можно почитать вот <a href="http://emmanuel-klinger.net/pythons-attribute-descriptors.html">эту интересную статью</a>.
+В первом случае мы имеем функцию, а во втором - связный метод, другими словами есть разница в поведении в зависимости от того вызываем мы <code>get_username</code> у класса или у объекта. Такое поведение реализовано с помощью дескрипторов, о которых мы будем говорить ниже, а пока можно почитать вот <a href="http://emmanuel-klinger.net/pythons-attribute-descriptors.html">эту интересную статью</a>.
 </div>
 
 ### Пример: создание простой ORM

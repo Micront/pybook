@@ -80,7 +80,7 @@ $ source ~/.bashrc
 ```
 
 <div class="alert alert-info">
-<b>Замечание</b>: Для пользователей Windows следует установить модуль <tt>virtualenvwrapper-win</tt> вместо <tt>virtualenvwrapper</tt>. Также рекомендуется установить [Git SCM](https://git-for-windows.github.io/).
+<b>Замечание</b>: Для пользователей Windows следует установить модуль <tt>virtualenvwrapper-win</tt> вместо <tt>virtualenvwrapper</tt>. Также рекомендуется установить <a href="https://git-for-windows.github.io/">Git SCM</a>.
 </div>
 
 Создать новое виртуальное окружение можно с помощью команды `mkvirtualenv` (обратите внимание на то, как меняется путь к интерпретатору python):
@@ -95,7 +95,7 @@ $ workon cs102
 $  
 ```
 
-Полный список команд по работе с `virtualenvwrapper` можно найти [тут](https://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html).
+Теперь каждый раз приступая к работе над новой работой активируйте созданное виртуальное окружение с помощью команды `workon cs102`. Полный список команд по работе с `virtualenvwrapper` можно найти [тут](https://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html).
 
 ### Система контроля версий
 

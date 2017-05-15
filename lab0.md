@@ -95,7 +95,7 @@ $ workon cs102
 $  
 ```
 
-Теперь каждый раз приступая к работе над новой работой активируйте созданное виртуальное окружение с помощью команды `workon cs102`. Полный список команд по работе с `virtualenvwrapper` можно найти [тут](https://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html).
+Теперь каждый раз приступая к работе активируйте созданное виртуальное окружение с помощью команды `workon cs102`. Полный список команд по работе с `virtualenvwrapper` можно найти [тут](https://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html).
 
 ### Система контроля версий
 

@@ -20,12 +20,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 Обратите внимание на версию, в моем случае это 2.7.10. Нам она не подходит ("*Почему?*" - можно почитать [тут](https://wiki.python.org/moin/Python2orPython3) и [тут](http://sebastianraschka.com/Articles/2014_python_2_3_key_diff.html)). Нам нужен интерпретатор третьей версии. Если вы видите что версия вторая, то попробуйте набрать команду `python3`:
 ```sh
 $ python3
-Python 3.5.2 (v3.5.2:4def2a2901a5, Jun 26 2016, 10:47:25) 
+Python 3.6.1 (v3.6.1:69c0db5050, Mar 21 2017, 01:21:04) 
 [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
-Если же появляется сообщение об ошибке, то интерпретор нужно установить. Скачать интерпретор под нужную операционную систему вы можете с официального сайта https://www.python.org/downloads/release/python-352/ (если вы пользователь Linux-системы, то установить интерпретатор можете из репозитория).
+Если же появляется сообщение об ошибке, то интерпретор нужно установить. Скачать интерпретор под нужную операционную систему вы можете с официального сайта https://www.python.org/downloads/ (если вы пользователь Linux-системы, то установить интерпретатор можете из репозитория).
 После установки обязательно проверьте, что интерпретатор запускается:
 ```sh
 $ python3
@@ -64,6 +64,38 @@ $ python3 -m bpython
 Таким образом, мы написали и запустили простейшую программу (скрипт). Запомните эти шаги.
 
 ### Работа с виртуальными окружениями
+
+Для выполнения работ рекомендуется использовать модуль `virtualenv`, предназначенный для создания и управления изолированными (виртуальными) окружениями. `virtualenv` позволяет заключить в отдельный каталог необходимые версии python-пакетов и использовать только их. Используя `virtualenv`, вы можете устанавливать свежие версии пакетов из [Python Package Index](https://pypi.python.org/pypi), при этом не получить проблем с несовместимостью версий пакетов с установленными в системе.
+
+```bash
+$ pip install virtualenv
+```
+
+Для более комфортной работы с `virtualenv` мы будем использовать расширение `virtualenvwrapper` (ниже приведены команды для Unix-like систем, см. замечание):
+
+```bash
+$ pip install virtualenvwrapper
+$ echo "source virtualenvwrapper.sh" >> ~/.bashrc
+$ source ~/.bashrc
+```
+
+<div class="alert alert-info">
+<b>Замечание</b>: Для пользователей Windows следует установить модуль <tt>virtualenvwrapper-win</tt> вместо <tt>virtualenvwrapper</tt>. Также рекомендуется установить [Git SCM](https://git-for-windows.github.io/).
+</div>
+
+Создать новое виртуальное окружение можно с помощью команды `mkvirtualenv` (обратите внимание на то, как меняется путь к интерпретатору python):
+```bash
+$ which python3
+/Library/Frameworks/Python.framework/Versions/3.6/bin/python3
+$ mkvirtualenv cs102
+$ workon cs102
+(cs102) $ which python
+/Users/dementiy/.virtualenvs/cs102/bin/python
+(cs102) $ deactivate
+$  
+```
+
+Полный список команд по работе с `virtualenvwrapper` можно найти [тут](https://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html).
 
 ### Система контроля версий
 

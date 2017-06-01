@@ -372,6 +372,7 @@ if __name__ == '__main__':
     loop.run_until_complete(asyncio.gather(
         *[run_solve(f'{fname}') for fname in ('puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt')]
     ))
+    loop.close()
 ```
 
 Теперь пазлы решаются асинхронно:

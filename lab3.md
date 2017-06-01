@@ -360,7 +360,7 @@ async def solve(grid):
     result = await asyncio.ensure_future(solve(grid))
     ...
 
-async def start_solve(fname):
+async def run_solve(fname):
     grid = read_sudoku(fname)
     start = time.time()
     await solve(grid)
@@ -370,7 +370,7 @@ async def start_solve(fname):
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(asyncio.gather(
-        *[start_solve(f'{fname}') for fname in ('puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt')]
+        *[run_solve(f'{fname}') for fname in ('puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt')]
     ))
 ```
 

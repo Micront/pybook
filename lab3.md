@@ -365,7 +365,7 @@ async def start_solve(fname):
     start = time.time()
     await solve(grid)
     end = time.time()
-    print(f{fname}: {end-start}')
+    print(f'{fname}: {end-start}')
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()

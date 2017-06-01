@@ -327,5 +327,57 @@ def generate_sudoku(N):
 3 4 5 |. 8 6 |1 7 .
 ```
 
+### Приложение
 
+Вы заметили, что второй пазл решается дольше остальных?
+
+```python
+import time
+
+if __name__ == '__main__':
+    for fname in ('puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt'):
+        grid = read_sudoku(fname)
+        start = time.time()
+        solve(grid)
+        end = time.time()
+        print(f'{fname}: {end-start}')
+```
+
+На моей машине результат получился таким:
+```
+puzzle1.txt: 0.05907106399536133
+puzzle2.txt: 7.427937984466553
+puzzle3.txt: 0.43831491470336914
+```
+
+Очевидно, что пазлы решаются в синхронной манере, т.е. пока не будет **полностью** решен первый пазл мы не сможем приступить к решению второго и т.д.
+
+```python
+import asyncio
+
+async def solve(grid):
+    ...
+    result = await asyncio.ensure_future(solve(grid))
+    ...
+
+async def start_solve(fname):
+    grid = read_sudoku(fname)
+    start = time.time()
+    await solve(grid)
+    end = time.time()
+    print(f{fname}: {end-start}')
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(asyncio.gather(
+        *[start_solve(f'{fname}') for fname in ('puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt')]
+    ))
+```
+
+Теперь пазлы решаются асинхронно:
+```
+puzzle1.txt: 0.08073115348815918
+puzzle3.txt: 0.3908212184906006
+puzzle2.txt: 5.103452205657959
+```
 

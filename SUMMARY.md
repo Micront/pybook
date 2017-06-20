@@ -14,6 +14,7 @@
 * [Лабораторная работа №10. Django](lab10.md)
 * Лабораторная работа №11. WSGI-сервер
 * Лабораторная работа №12. Работа с модулем asyncio
+* [Лабораторная работа №13. MicroSlack. Чат на aiohttp и websocket'ах](microslack-chat-na-aiohttp-i-websocketah.md)
 * [Заметки по классам](appendix-classes.md)
 * [Собственный проект](project.md)
 

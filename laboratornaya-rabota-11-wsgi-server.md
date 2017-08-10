@@ -471,29 +471,27 @@ if __name__ == "__main__":
 
 ### Асинхронный WSGI-Server
 
-
-
 ```py
 class AsyncWSGIServer(httpd.AsyncServer):
-    
+
     def set_app(self, application):
         self.application = application
-    
+
     def get_app(self):
         return self.application
 
 
 class AsyncWSGIRequestHandler(httpd.AsyncHTTPRequestHandler):
-    
+
     def get_environ(self):
         pass
-    
+
     def start_response(self, status, response_headers, exc_info=None):
         pass
-    
+
     def handle_request(self):
         pass
-    
+
     def finish_response(self, result):
         pass
 ```
@@ -520,8 +518,6 @@ class QuoteResource:
 api = falcon.API()
 api.add_route('/quote', QuoteResource())
 ```
-
-
 
 ### uWSGI
 

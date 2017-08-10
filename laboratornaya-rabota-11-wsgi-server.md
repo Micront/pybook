@@ -324,8 +324,6 @@ if __name__ == "__main__":
 
 ### Асинхронный HTTP-сервер
 
-
-
 ```py
 import asyncore
 import asynchat
@@ -372,64 +370,64 @@ class FileProducer(object):
 
 
 class AsyncServer(asyncore.dispatcher):
-    
+
     def __init__(self, host="127.0.0.1", port=9000):
         pass
-    
+
     def handle_accept(self):
         pass
-    
+
     def serve_forever(self):
         pass
 
 
 class AsyncHTTPRequestHandler(asynchat.async_chat):
-    
+
     def __init__(self, sock):
         pass
-    
+
     def collect_incoming_data(self, data):
         pass
-    
+
     def found_terminator(self):
         pass
-    
+
     def parse_request(self):
         pass
-    
+
     def parse_headers(self):
         pass
-    
+
     def handle_request(self):
         pass
-    
+
     def send_header(self, keyword, value):
         pass
-    
+
     def send_error(self, code, message=None):
         pass
-    
+
     def send_response(self, code, message=None):
         pass
-    
+
     def end_headers(self):
         pass
-    
+
     def date_time_string(self):
         pass
-    
+
     def send_head(self):
         pass
-    
+
     def translate_path(self, path):
         pass
-    
+
     def do_GET(self):
         pass
-    
+
     def do_HEAD(self):
         pass
-    
+
     responses = {
         200: ('OK', 'Request fulfilled, document follows'),
         400: ('Bad Request',
@@ -471,15 +469,61 @@ if __name__ == "__main__":
         p.start()
 ```
 
-
-
 ### Асинхронный WSGI-Server
 
 
 
+```py
+class AsyncWSGIServer(httpd.AsyncServer):
+    
+    def set_app(self, application):
+        self.application = application
+    
+    def get_app(self):
+        return self.application
+
+
+class AsyncWSGIRequestHandler(httpd.AsyncHTTPRequestHandler):
+    
+    def get_environ(self):
+        pass
+    
+    def start_response(self, status, response_headers, exc_info=None):
+        pass
+    
+    def handle_request(self):
+        pass
+    
+    def finish_response(self, result):
+        pass
+```
+
+
+
+```py
+import falcon
+import json
+
+
+class QuoteResource:
+
+    def on_get(self, req, resp):
+        quote = {
+            'quote': 'I\'ve always been more interested in the future than i    n the past.',
+            'author': 'Grace Hopper'
+        }
+        resp.body = json.dumps(quote)
+
+    def on_post(self, req, resp):
+        print req.stream
+
+api = falcon.API()
+api.add_route('/quote', QuoteResource())
+```
+
+
+
 ### uWSGI
-
-
 
 
 

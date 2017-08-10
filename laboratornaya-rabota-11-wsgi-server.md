@@ -86,6 +86,23 @@ if __name__ == "__main__":
     main()
 ```
 
+Как много тредов мы можем создать?
+
+```py
+import threading
+import time
+
+def loop():
+    while True:
+        time.sleep(1)
+
+def main():
+    for _ in range(10000):
+        t = threading.Thread(target=loop)
+        t.start()
+        print(threading.active_count())
+```
+
 ```py
 import socket
 import threading
@@ -495,6 +512,22 @@ class AsyncWSGIRequestHandler(httpd.AsyncHTTPRequestHandler):
     def finish_response(self, result):
         pass
 ```
+
+
+
+```py
+def application(env, start_response):
+    start_response('200 OK', [('Content-Type', 'text/plain')])
+    return [b'Hello World']
+```
+
+
+
+```
+$ async_wsgi.py my_app:application
+```
+
+
 
 ```py
 import falcon

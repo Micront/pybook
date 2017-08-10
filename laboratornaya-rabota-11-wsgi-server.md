@@ -496,8 +496,6 @@ class AsyncWSGIRequestHandler(httpd.AsyncHTTPRequestHandler):
         pass
 ```
 
-
-
 ```py
 import falcon
 import json
@@ -513,7 +511,7 @@ class QuoteResource:
         resp.body = json.dumps(quote)
 
     def on_post(self, req, resp):
-        print req.stream
+        pass
 
 api = falcon.API()
 api.add_route('/quote', QuoteResource())

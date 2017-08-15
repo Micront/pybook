@@ -513,21 +513,15 @@ class AsyncWSGIRequestHandler(httpd.AsyncHTTPRequestHandler):
         pass
 ```
 
-
-
 ```py
 def application(env, start_response):
     start_response('200 OK', [('Content-Type', 'text/plain')])
     return [b'Hello World']
 ```
 
-
-
+```bash
+$ python async_wsgi.py my_app:application
 ```
-$ async_wsgi.py my_app:application
-```
-
-
 
 ```py
 import falcon

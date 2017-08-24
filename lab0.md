@@ -124,11 +124,11 @@ $ workon cs102
 
 Достаточно повторить указанные шаги, но вместо файла с разработчиками, мы сделаем коммит (загрузим изменения на сервер) нашей программы `hello.py`:
 ```sh
-$ git init
+(cs102) $ git init
 Initialized empty Git repository in /Users/user/cs102/.git/
-$ git remote add origin https://Dementiy@bitbucket.org/Dementiy/cs102.git
-$ git add hello.py 
-$ git commit -m 'Initial commit with my first program on Python'
+(cs102) $ git remote add origin https://Dementiy@bitbucket.org/Dementiy/cs102.git
+(cs102) $ git add hello.py 
+(cs102) $ git commit -m 'Initial commit with my first program on Python'
 
 *** Please tell me who you are.
 
@@ -141,13 +141,13 @@ to set your account`s default identity.
 Omit --global to set the identity only in this repository.
 
 fatal: unable to auto-detect email address (got 'user@Air-user.(none)')
-$ git config --global user.email "Dementiy@yandex.ru"
-$ git config --global user.name "Dmitriy"
-$ git commit -m 'Initial commit with my first program on Python'
+(cs102) $ git config --global user.email "Dementiy@yandex.ru"
+(cs102) $ git config --global user.name "Dmitriy"
+(cs102) $ git commit -m 'Initial commit with my first program on Python'
 [master (root-commit) b9c8e00] Initial commit with my first program on Python
  1 file changed, 1 insertion(+)
  create mode 100644 hello.py
-$ git push -u origin master
+(cs102) $ git push -u origin master
 Password for 'https://Dementiy@bitbucket.org': 
 Counting objects: 3, done.
 Writing objects: 100% (3/3), 258 bytes | 0 bytes/s, done.
@@ -177,11 +177,11 @@ if __name__ == "__main__":
 
 ```sh
 # Запуск программы как скрипта
-$ python3 hello.py
+(cs102) $ python3 hello.py
 Hello, World!
 
 # Использование программы как модуля
-$ python3
+(cs102) $ python3
 >>> import hello
 >>> hello.message()
 Hello, World!
@@ -190,7 +190,7 @@ Hello, World!
 Итак, мы внесли нужные изменения в программу, `git` эти изменения также заметил, проверить это можно с помощью команды `git status`:
 
 ```sh
-$ git status
+(cs102) $ git status
 On branch master
 Your branch is up-to-date with 'origin/master'.
 Changes not staged for commit:
@@ -203,9 +203,9 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ```
 Теперь нам нужно сделать коммит, чтобы зафиксировать изменения в истории проекта:
 ```sh
-$ git add hello.py 
-$ git commit -m "Add function message()"
-$ git push
+(cs102) $ git add hello.py 
+(cs102) $ git commit -m "Add function message()"
+(cs102) $ git push
 ```
 
 На первое время нам этого будет достаточно.

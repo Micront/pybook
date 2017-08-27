@@ -4,7 +4,8 @@
 
 ### Установка интерпреатора Python
 
-Вам будет нужен [интерпретатор](http://stackoverflow.com/questions/2377273/how-does-an-interpreter-compiler-work) языка Python (что такое интерпретатор мы разберем на занятии). Где его взять? На [юникс-подобных](https://ru.wikipedia.org/wiki/UNIX-подобная_операционная_система) операционных системах (Linux, MacOS и др) интерпретатор Python, скорее всего, уже установлен, проверить это вы можете набрав в терминале (командной строке) команду `python`, например:
+Во-первых, вам будет нужен [интерпретатор](http://stackoverflow.com/questions/2377273/how-does-an-interpreter-compiler-work) языка Python (что такое "интерпретатор" можно почитать [тут](http://interactivepython.org/runestone/static/thinkcspy/GeneralIntro/ThePythonProgrammingLanguage.html)). Где его взять? На [юникс-подобных](https://ru.wikipedia.org/wiki/UNIX-подобная_операционная_система) операционных системах (Linux, MacOS и др) интерпретатор Python, скорее всего, уже установлен, проверить это вы можете набрав в терминале (командной строке) команду `python`, например:
+
 ```sh
 $ python
 Python 2.7.10 (default, Oct 23 2015, 19:19:21) 
@@ -37,27 +38,18 @@ Hello, World!
 Это интерактивный режим работы с интерпретатором языка Python ([REPL](https://ru.wikipedia.org/wiki/REPL)). Три символа "больше" `>>>` являются приглашением к вводу команд, чтобы завершить работу с интерпретатором нужно набрать команду `quit()`.
 
 <div class="alert alert-info">
-<strong>Важно</strong>: Если вы устанавливаете Python на Windows, то есть вероятность, что, набрав команду <tt>python</tt> или <tt>python3</tt> после установки, вы получите сообщение об ошибке (скорее всего путь к интерпретатору не указан в переменной окружения <tt>PATH</tt>). Пожалуйста, прежде чем задавать вопросы "Почему ничего не работает?", прочитайте как правильно все настроить <a href='https://docs.python.org/3/using/windows.html#configuring-python'>https://docs.python.org/3/using/windows.html#configuring-python</a>.
-</div>
-
-Я рекомендую установить модуль [bpython](http://www.bpython-interpreter.org). Это тоже интерпретатор Python, но с дополнительными функциями (подсветка синтаксиса, подсказки и др):
-```sh
-$ pip3 install bpython
-$ python3 -m bpython
-```
-<div class="alert alert-info">
-В этом примере мы использовали <a href="https://docs.python.org/3.5/installing/index.html"><tt>pip</tt></a> для установки нового модуля. Иногда устанавливаемый модуль требует других модулей для своей работы, тогда дополнительные модули устанавливаются автоматически (говорят "по зависимостям"). Но может возникнуть ситуация, когда вам придется вручную установить нужную библиотеку. Если вы не знаете как это сделать, то поищите ответ на <a href="http://stackoverflow.com">stackoverflow.com</a>, скорее всего кто-то уже столкнулся с той же проблемой, что и вы.
+<strong>Важно</strong>: Если вы устанавливаете Python на Windows, то есть вероятность, что, набрав команду <tt>python</tt> или <tt>python3</tt> после установки, вы получите сообщение об ошибке. Если так, то попробуйте набрать <tt>py</tt> или <tt>py3</tt>, вместо <tt>python</tt> и <tt>python3</tt>, соответственно. Если вы по-прежнему получаете сообщение об ошибке, то возможно, что путь к интерпретатору не указан в переменной окружения <tt>PATH</tt>. Прежде чем задавать вопросы "Почему ничего не работает?", прочитайте как правильно все настроить <a href='https://docs.python.org/3/using/windows.html#configuring-python'>https://docs.python.org/3/using/windows.html#configuring-python</a>.
 </div>
 
 ### Выбор редактора кода
 
-Вам будет нужен редактор кода. Это может быть простой текстовый редактор с подсветкой синтаксиса (http://sublimetext.com/3) или же полноценная среда разработки (https://www.jetbrains.com/pycharm/download/). Я вам рекомендую использовать оба варианта (средой разработки пользоваться только после того, как научитесь работать с интерпретатором и системой контроля версий, что будет обязательным для нашего курса).
+Вам будет нужен редактор кода. Это может быть "простой" текстовый редактор с подсветкой синтаксиса [SublimeText](http://sublimetext.com/3) или же полноценная среда разработки [PyCharm](https://www.jetbrains.com/pycharm/download/) (подходящим для меня решением оказалась связка из редактора [Vim](http://www.vim.org/) и интересного на мой взгляд проекта [Kite](https://kite.com/)). Я вам рекомендую попробовать оба варианта, но средой разработки пользоваться только после того, как научитесь работать с интерпретатором и системой контроля версий, что будет обязательным для нашего курса.
 
-Для ваших работ заведите себе отдельную папку, назовите ее `cs102` (можете назвать иначе). В этой папке создайте новый файл, откройте его с помощью редактора `SublimeText` (или любого [другого](https://wiki.python.org/moin/PythonEditors), который вам больше понравился) с именем `hello.py`:
+Для ваших работ заведите себе отдельную папку, назовите ее `cs102` (можете назвать иначе). В этой папке создайте новый файл с именем `hello.py`, откройте его с помощью редактора `SublimeText` (или любого [другого](https://wiki.python.org/moin/PythonEditors), который вам больше понравился):
 
 ![alt text](assets/hello_world.png "")
 
-Откройте терминал (командную строку), перейдите в папку с созданным файлом (рекомендую вам создать `alias`, т.е. короткое имя для пути, чтобы в будущем вы всегда могли быстро перейти в эту папку):
+Откройте терминал (командную строку), перейдите в папку с созданным файлом с помощью команды `cd путь_к_cs102` (рекомендую вам создать `alias`, т.е. короткое имя для пути, чтобы в будущем вы всегда могли быстро перейти в эту папку) и запустите скрипт с помощью команды `python hello.py`:
 
 ![alt text](assets/hello_cmd.png "")
 
@@ -95,6 +87,27 @@ $ workon cs102
 $  
 ```
 
+Давайте в созданном виртуальном окружении установим два новых пакета: [bpython](http://www.bpython-interpreter.org) и [ipython](https://ipython.org/). Это тоже интерпретаторы языка Python, но с дополнительными функциями (подсветка синтаксиса, подсказки и др):
+
+```sh
+# Не забудем перейти в наше виртуальное окружение
+$ workon cs102
+# Установим необходимые пакеты
+(cs102) $ pip install bpython jupyter
+# Запуск bpython
+(cs102) $ python -m bpython
+# Запуск ipython
+(cs102) $ ipython
+```
+
+<div class="alert alert-danger">
+<tt>bpython</tt> на Windows может <a href="https://docs.bpython-interpreter.org/windows.html">не работать</a>.
+</div>
+
+<div class="alert alert-info">
+В этом примере мы использовали <a href="https://docs.python.org/3.5/installing/index.html"><tt>pip</tt></a> для установки новых пакетов. Иногда устанавливаемый пакет требует других пакетов для своей работы, тогда дополнительные пакеты устанавливаются автоматически (говорят "по зависимостям"). Но может возникнуть ситуация, когда вам придется вручную установить нужную библиотеку. Если вы не знаете как это сделать, то поищите ответ на <a href="http://stackoverflow.com">stackoverflow.com</a>, скорее всего кто-то уже столкнулся с той же проблемой, что и вы.
+</div>
+
 Теперь каждый раз приступая к работе активируйте созданное виртуальное окружение с помощью команды `workon cs102`. Полный список команд по работе с `virtualenvwrapper` можно найти [тут](https://virtualenvwrapper.readthedocs.io/en/latest/command_ref.html).
 
 ### Система контроля версий
@@ -111,11 +124,11 @@ $
 
 Достаточно повторить указанные шаги, но вместо файла с разработчиками, мы сделаем коммит (загрузим изменения на сервер) нашей программы `hello.py`:
 ```sh
-$ git init
+(cs102) $ git init
 Initialized empty Git repository in /Users/user/cs102/.git/
-$ git remote add origin https://Dementiy@bitbucket.org/Dementiy/cs102.git
-$ git add hello.py 
-$ git commit -m 'Initial commit with my first program on Python'
+(cs102) $ git remote add origin https://Dementiy@bitbucket.org/Dementiy/cs102.git
+(cs102) $ git add hello.py 
+(cs102) $ git commit -m 'Initial commit with my first program on Python'
 
 *** Please tell me who you are.
 
@@ -128,13 +141,13 @@ to set your account`s default identity.
 Omit --global to set the identity only in this repository.
 
 fatal: unable to auto-detect email address (got 'user@Air-user.(none)')
-$ git config --global user.email "Dementiy@yandex.ru"
-$ git config --global user.name "Dmitriy"
-$ git commit -m 'Initial commit with my first program on Python'
+(cs102) $ git config --global user.email "Dementiy@yandex.ru"
+(cs102) $ git config --global user.name "Dmitriy"
+(cs102) $ git commit -m 'Initial commit with my first program on Python'
 [master (root-commit) b9c8e00] Initial commit with my first program on Python
  1 file changed, 1 insertion(+)
  create mode 100644 hello.py
-$ git push -u origin master
+(cs102) $ git push -u origin master
 Password for 'https://Dementiy@bitbucket.org': 
 Counting objects: 3, done.
 Writing objects: 100% (3/3), 258 bytes | 0 bytes/s, done.
@@ -164,11 +177,11 @@ if __name__ == "__main__":
 
 ```sh
 # Запуск программы как скрипта
-$ python3 hello.py
+(cs102) $ python3 hello.py
 Hello, World!
 
 # Использование программы как модуля
-$ python3
+(cs102) $ python3
 >>> import hello
 >>> hello.message()
 Hello, World!
@@ -177,7 +190,7 @@ Hello, World!
 Итак, мы внесли нужные изменения в программу, `git` эти изменения также заметил, проверить это можно с помощью команды `git status`:
 
 ```sh
-$ git status
+(cs102) $ git status
 On branch master
 Your branch is up-to-date with 'origin/master'.
 Changes not staged for commit:
@@ -190,13 +203,15 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ```
 Теперь нам нужно сделать коммит, чтобы зафиксировать изменения в истории проекта:
 ```sh
-$ git add hello.py 
-$ git commit -m "Add function message()"
-$ git push
+(cs102) $ git add hello.py 
+(cs102) $ git commit -m "Add function message()"
+(cs102) $ git push
 ```
 
 На первое время нам этого будет достаточно.
 
+**Задание**: Добавьте в репозиторий файл с именем `README.md`, который бы содержал информацию о вас (Имя, фамилия, электронная почта для связи и номер группы) и небольшое описание вашего репозитория (например, "Решения лабораторных работ к курсу..."). `README.md` должен быть в формате Markdown , про который можно почитать [тут](https://github.com/OlgaVlasova/markdown-doc/blob/master/README.md). Также можете воспользоваться онлайн редактором [Dillinger](http://dillinger.io/).
+
 <div class="alert alert-info">
-Если вы не будете задавать вопросы, то, к сожалению, вам никто не сможет помочь. Piazza является основным средством общения (после лекций и практик), где вы можете задать вопрос, попросить помощи, высказать свои пожелания или недовольства касательно курса. Постарайтесь получить удовольствие от наших занятий. Успехов!
+Если вы не будете задавать вопросы, то, к сожалению, вам никто не сможет помочь. <a href="https://get.slack.help/hc/en-us/articles/115004071768-What-is-Slack-">Slack</a> является основным средством общения, где вы можете задать вопрос, попросить помощи, высказать свои пожелания или недовольства касательно курса. Постарайтесь получить удовольствие от наших занятий. Успехов!
 </div>

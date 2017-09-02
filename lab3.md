@@ -350,9 +350,70 @@ puzzle2.txt: 7.427937984466553
 puzzle3.txt: 0.43831491470336914
 ```
 
-Очевидно, что пазлы решаются в синхронной манере, т.е. пока не будет **полностью** решен первый пазл мы не сможем приступить к решению второго и т.д.
+Очевидно, что пазлы решаются в линейной манере, т.е. пока не будет **полностью** решен первый пазл мы не сможем приступить к решению второго и т.д.
 
-Мы можем воспользоваться модулем [asyncio](https://docs.python.org/3/library/asyncio.html) для решения пазлов в асинхронной манере:
+Давайте попробуем воспользоватся модулем [threading](https://docs.python.org/3.6/library/threading.html), чтобы каждый пазл решался в отдельном потоке:
+
+```python
+import threading
+
+def run_solve(fname):
+    grid = read_sudoku(fname)
+    start = time.time()
+    solve(grid)
+    end = time.time()
+    print(f'{fname}: {end-start}')
+
+
+if __name__ == "__main__":
+    for fname in ('puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt'):
+        t = threading.Thread(target=run_solve, args=(fname,))
+        t.start()
+```
+
+```bash
+puzzle1.txt required 0.013156652450561523
+puzzle3.txt required 0.7069487571716309
+puzzle2.txt required 7.912024021148682
+```
+
+Из результатов видно, что решение для `puzzle3` мы получили раньше чем для `puzzle2`, но тем не менее они не были решены параллельно, как можно было бы подумать, и связано это с таким понятием как [GIL](http://asvetlov.blogspot.ru/2011/07/gil.html).
+
+Чтобы решать пазлы параллельно (за исключением разных *если*) мы можем воспользоваться модулем [multiprocessing](https://docs.python.org/3.6/library/multiprocessing.html):
+
+```python
+import multiprocessing
+
+if __name__ == "__main__":
+    for fname in ('puzzle1.txt', 'puzzle2.txt', 'puzzle3.txt'):
+        p = multiprocessing.Process(target=run_solve, args=(fname,))
+        p.start()
+```
+
+```bash
+puzzle1.txt: 0.043260812759399414
+puzzle3.txt: 0.10617399215698242
+puzzle2.txt: 6.155700922012329
+```
+
+Мы получили примерно тот же результат. В чем тогда преимущество `multiprocessing` перед `threading`? Чтобы лучше ощутить разницу в работе этих двух модулей попробуйте поэкспериментировать с числом решаемых пазлов и их сложностью, например:
+
+```python
+if __name__ == "__main__":
+    N = 5
+    
+    for _ in range(N):
+        t = threading.Thread(target=run_solve, args=('puzzle2.txt',))
+        t.start()
+    
+    for _ in range(N):
+        p = multiprocessing.Process(target=run_solve, args=('puzzle2.txt',))
+        p.start()
+```
+
+Еще один пример сравнения модулей можно найти по [этой](https://nathangrigg.com/2015/04/python-threading-vs-processes) ссылке.
+
+Для полноты картины приведу пример решения с использованием модуля [asyncio](https://docs.python.org/3/library/asyncio.html):
 
 ```python
 import asyncio
@@ -377,10 +438,8 @@ if __name__ == '__main__':
     loop.close()
 ```
 
-Теперь мы получим следующий результат:
 ```
 puzzle1.txt: 0.08073115348815918
 puzzle3.txt: 0.3908212184906006
 puzzle2.txt: 5.103452205657959
 ```
-

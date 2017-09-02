@@ -252,7 +252,16 @@ def find_empty_positions(grid):
 
 ```python
 def find_possible_values(grid, pos):
-    """ Вернуть все возможные значения для указанной позиции """
+    """ Вернуть все возможные значения для указанной позиции 
+    
+    >>> grid = read_sudoku('puzzles/puzzle1.txt')
+    >>> values = find_possible_values(grid, (0,2))
+    >>> set(values) == {'1', '2', '4'}
+    True
+    >>> values = find_possible_values(grid, (4,7))
+    >>> set(values) == {'2', '5', '9'}
+    True
+    """
     pass
 ```
 

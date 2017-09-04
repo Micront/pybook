@@ -87,12 +87,18 @@ Bye-bye: 127.0.0.1:61401
 ```py
 import socket
 import threading
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(levelname)s] (%(threadName)-10s) %(message)s'
+)
 
 def client_handler(sock, address, port):
     while True:
         try:
             data = sock.recv(1024)
-            print(f"Recv: {data} from {address}:{port}")
+            logging.debug(f"Recv: {data} from {address}:{port}")
         except OSError:
             break
 
@@ -105,10 +111,10 @@ def client_handler(sock, address, port):
             if sent_len == len(data):
                 break
             sent_data = sent_data[sent_len:]
-        print(f"Send: {data} to {address}:{port}")
+        logging.debug(f"Send: {data} to {address}:{port}")
 
     sock.close()
-    print(f"Bye-bye: {address}:{port}")
+    logging.debug(f"Bye-bye: {address}:{port}")
 
 def main(host='localhost', port=9090):
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -119,7 +125,7 @@ def main(host='localhost', port=9090):
     while True:
         try:
             client_sock, (client_address, client_port) = serversocket.accept()
-            print(f"New client {client_address}:{client_port}")
+            logging.debug(f"New client {client_address}:{client_port}")
             client_thread = threading.Thread(target=client_handler,
                 args=(client_sock, client_address, client_port))
             client_thread.daemon = True
@@ -131,6 +137,15 @@ if __name__ == "__main__":
 
 ```
 $ python multithread.py
+```
+
+```
+[DEBUG] (MainThread) New client: 127.0.0.1:53713
+[DEBUG] (Thread-1  ) Recv: b'Hey server\n' from 127.0.0.1:53713
+[DEBUG] (Thread-1  ) Send: b'Hey server\n' to 127.0.0.1:53713
+[DEBUG] (MainThread) New client: 127.0.0.1:53966
+[DEBUG] (Thread-2  ) Recv: b'Hey server?\n' from 127.0.0.1:53966
+[DEBUG] (Thread-2  ) Send: b'Hey server?\n' to 127.0.0.1:53966
 ```
 
 Как много тредов мы можем создать?
@@ -150,20 +165,40 @@ def main():
         print(threading.active_count())
 ```
 
+```
+...
+2047
+2048
+Traceback (most recent call last):
+  File "toomanythreads.py", line 18, in <module>
+    main()
+  File "toomanythreads.py", line 13, in main
+    t.start()
+  File "/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/threading.py", line 846, in start
+    _start_new_thread(self._bootstrap, ())
+RuntimeError: can't start new thread
+```
+
 ```py
 import socket
 import threading
 import time
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(levelname)s] (%(threadName)-10s) %(message)s'
+)
 
 def worker_thread(serversocket):
     while True:
         clientsocket, (client_address, client_port) = serversocket.accept()
-        print(f"New client {client_address}:{client_port}")
+        logging.debug(f"New client {client_address}:{client_port}")
 
         while True:
             try:
                 data = clientsocket.recv(1024)
-                print(f"Recv: {data} from {client_address}:{client_port}")
+                logging.debug(f"Recv: {data} from {client_address}:{client_port}")
             except OSError:
                 break
 
@@ -176,10 +211,10 @@ def worker_thread(serversocket):
                 if sent_len == len(data):
                     break
                 sent_data = sent_data[sent_len:]
-            print(f"Send: {data} to {client_address}:{client_port}")
+            logging.debug(f"Send: {data} to {client_address}:{client_port}")
 
         clientsocket.close()
-        print(f"Bye-bye: {client_address}:{client_port}")
+        logging.debug(f"Bye-bye: {client_address}:{client_port}")
 
 def main(host='localhost', port=9090):
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

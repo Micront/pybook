@@ -401,6 +401,12 @@ if __name__ == "__main__":
 ```py
 import socket
 import select
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(levelname)s] (%(processName)-10s) (%(threadName)-10s) %(message)s'
+)
 
 read_waiters = {}
 write_waiters = {}
@@ -409,7 +415,7 @@ connections = {}
 def accept_handler(serversocket):
     clientsocket, (client_address, client_port) = serversocket.accept()
     clientsocket.setblocking(False)
-    print(f"New client: {client_address}:{client_port}")
+    logging.debug(f"New client: {client_address}:{client_port}")
     connections[clientsocket.fileno()] = (clientsocket, client_address, client_port)
     read_waiters[clientsocket.fileno()] = (recv_handler, (clientsocket.fileno(),))
     read_waiters[serversocket.fileno()] = (accept_handler, (serversocket,))
@@ -418,7 +424,7 @@ def recv_handler(fileno):
     def terminate():
         del connections[clientsocket.fileno()]
         clientsocket.close()
-        print(f"Bye-Bye: {client_address}:{client_port}")
+        logging.debug(f"Bye-Bye: {client_address}:{client_port}")
 
     clientsocket, client_address, client_port = connections[fileno]
 
@@ -432,13 +438,13 @@ def recv_handler(fileno):
         terminate()
         return
 
-    print(f"Recv: {message} from {client_address}:{client_port}")
+    logging.debug(f"Recv: {message} from {client_address}:{client_port}")
     write_waiters[fileno] = (send_handler, (fileno, message))
 
 def send_handler(fileno, message):
     clientsocket, client_address, client_port = connections[fileno]
     sent_len = clientsocket.send(message)
-    print("Send: {} to {}:{}".format(message[:sent_len], client_address, client_port))
+    logging.debug("Send: {} to {}:{}".format(message[:sent_len], client_address, client_port))
     if sent_len == len(message):
         read_waiters[clientsocket.fileno()] = (recv_handler, (clientsocket.fileno(),))
     else:
@@ -465,6 +471,16 @@ def main(host='localhost', port=9090):
 
 if __name__ == "__main__":
     main()
+```
+
+```
+[DEBUG] (MainProcess) (MainThread) New client: 127.0.0.1:56147
+[DEBUG] (MainProcess) (MainThread) New client: 127.0.0.1:56187
+[DEBUG] (MainProcess) (MainThread) Recv: b'Hey server\n' from 127.0.0.1:56147
+[DEBUG] (MainProcess) (MainThread) Send: b'Hey server\n' to 127.0.0.1:56147
+[DEBUG] (MainProcess) (MainThread) Recv: b'Hey server\n' from 127.0.0.1:56187
+[DEBUG] (MainProcess) (MainThread) Send: b'Hey server\n' to 127.0.0.1:56187
+...
 ```
 
 ### Асинхронный HTTP-сервер

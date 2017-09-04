@@ -38,14 +38,14 @@ web.run_app(app, host='127.0.0.1', port=8080)
 
 ```html
 <!DOCTYPE html>                                                             
-  <html>
-      <head>
-          <title>{{ title }}</title>
-      </head>
-      <body>
-          <h1>Welcome to {{ title }}</h1>
-      </body>
-  </html>
+<html>
+    <head>
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        <h1>Welcome to {{ title }}</h1>
+    </body>
+</html>
 ```
 
 ```python

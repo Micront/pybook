@@ -146,6 +146,7 @@ $ python multithread.py
 [DEBUG] (MainThread) New client: 127.0.0.1:53966
 [DEBUG] (Thread-2  ) Recv: b'Hey server?\n' from 127.0.0.1:53966
 [DEBUG] (Thread-2  ) Send: b'Hey server?\n' to 127.0.0.1:53966
+...
 ```
 
 Как много тредов мы можем создать?
@@ -240,16 +241,22 @@ if __name__ == "__main__":
 import socket
 import multiprocessing
 import time
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(levelname)s] (%(processName)-10s) %(message)s'
+)
 
 def worker_process(serversocket):
     while True:
         clientsocket, (client_address, client_port) = serversocket.accept()
-        print(f"New client {client_address}:{client_port}")
+        logging.debug(f"New client {client_address}:{client_port}")
 
         while True:
             try:
                 data = clientsocket.recv(1024)
-                print(f"Recv: {data} from {client_address}:{client_port}")
+                logging.debug(f"Recv: {data} from {client_address}:{client_port}")
             except OSError:
                 break
 
@@ -262,10 +269,10 @@ def worker_process(serversocket):
                 if sent_len == len(data):
                     break
                 sent_data = sent_data[sent_len:]
-            print(f"Send: {data} to {client_address}:{client_port}")
+            logging.debug(f"Send: {data} to {client_address}:{client_port}")
 
         clientsocket.close()
-        print(f"Bye-bye: {client_address}:{client_port}")
+        logging.debug(f"Bye-bye: {client_address}:{client_port}")
 
 def main(host='localhost', port=9090):
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -274,7 +281,7 @@ def main(host='localhost', port=9090):
     serversocket.listen(5)
 
     NUMBER_OF_PROCESS = multiprocessing.cpu_count()
-    print(f"Number of processes {NUMBER_OF_PROCESS}")
+    logging.debug(f"Number of processes {NUMBER_OF_PROCESS}")
     for _ in range(NUMBER_OF_PROCESS):
         process = multiprocessing.Process(target=worker_process,
             args=(serversocket,))
@@ -288,21 +295,40 @@ if __name__ == "__main__":
     main()
 ```
 
+```
+[DEBUG] (MainProcess) Number of processes: 4
+[DEBUG] (Process-1 ) Recv: b'Message 1\n' from 127.0.0.1:62720
+[DEBUG] (Process-1 ) Send: b'Message 1\n' to 127.0.0.1:62720
+[DEBUG] (Process-2 ) Recv: b'Message 2\n' from 127.0.0.1:62758
+[DEBUG] (Process-2 ) Send: b'Message 2\n' to 127.0.0.1:62758
+[DEBUG] (Process-3 ) Recv: b'Message 3\n' from 127.0.0.1:62913
+[DEBUG] (Process-3 ) Send: b'Message 3\n' to 127.0.0.1:62913
+[DEBUG] (Process-4 ) Recv: b'Message 4\n' from 127.0.0.1:62978
+[DEBUG] (Process-4 ) Send: b'Message 4\n' to 127.0.0.1:62978
+...
+```
+
 ```py
 import socket
 import threading
 import multiprocessing
 import time
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(levelname)s] (%(processName)-10s) (%(threadName)-10s) %(message)s'
+)
 
 def worker_thread(serversocket):
     while True:
         clientsocket, (client_address, client_port) = serversocket.accept()
-        print(f"New client {client_address}:{client_port}")
+        logging.debug(f"New client {client_address}:{client_port}")
 
         while True:
             try:
                 data = clientsocket.recv(1024)
-                print(f"Recv: {data} from {client_address}:{client_port}")
+                logging.debug(f"Recv: {data} from {client_address}:{client_port}")
             except OSError:
                 break
 
@@ -315,10 +341,10 @@ def worker_thread(serversocket):
                 if sent_len == len(data):
                     break
                 sent_data = sent_data[sent_len:]
-            print(f"Send: {data} to {client_address}:{client_port}")
+            logging.debug(f"Send: {data} to {client_address}:{client_port}")
 
         clientsocket.close()
-        print(f"Bye-bye: {client_address}:{client_port}")
+        logging.debug(f"Bye-bye: {client_address}:{client_port}")
 
 def worker_process(serversocket):
     NUMBER_OF_THREADS = 10
@@ -338,7 +364,7 @@ def main(host='localhost', port=9090):
     serversocket.listen(5)
 
     NUMBER_OF_PROCESS = multiprocessing.cpu_count()
-    print(f"Number of processes {NUMBER_OF_PROCESS}")
+    logging.debug(f"Number of processes {NUMBER_OF_PROCESS}")
     for _ in range(NUMBER_OF_PROCESS):
         process = multiprocessing.Process(target=worker_process,
             args=(serversocket,))
@@ -350,6 +376,26 @@ def main(host='localhost', port=9090):
 
 if __name__ == "__main__":
     main()
+```
+
+```
+[DEBUG] (MainProcess) (MainThread) Number of processes: 4
+[DEBUG] (Process-1 ) (Thread-1  ) New client: 127.0.0.1:51802
+[DEBUG] (Process-2 ) (Thread-1  ) New client: 127.0.0.1:51840
+[DEBUG] (Process-3 ) (Thread-1  ) New client: 127.0.0.1:51866
+[DEBUG] (Process-1 ) (Thread-2  ) New client: 127.0.0.1:51892
+[DEBUG] (Process-2 ) (Thread-2  ) New client: 127.0.0.1:51918
+[DEBUG] (Process-1 ) (Thread-1  ) Recv: b'Message 1\n' from 127.0.0.1:51802
+[DEBUG] (Process-1 ) (Thread-1  ) Send: b'Message 1\n' to 127.0.0.1:51802
+[DEBUG] (Process-2 ) (Thread-1  ) Recv: b'Message 2\n' from 127.0.0.1:51840
+[DEBUG] (Process-2 ) (Thread-1  ) Send: b'Message 2\n' to 127.0.0.1:51840
+[DEBUG] (Process-3 ) (Thread-1  ) Recv: b'Message 3\n' from 127.0.0.1:51866
+[DEBUG] (Process-3 ) (Thread-1  ) Send: b'Message 3\n' to 127.0.0.1:51866
+[DEBUG] (Process-1 ) (Thread-2  ) Recv: b'Message 4\n' from 127.0.0.1:51892
+[DEBUG] (Process-1 ) (Thread-2  ) Send: b'Message 4\n' to 127.0.0.1:51892
+[DEBUG] (Process-2 ) (Thread-2  ) Recv: b'Message 5\n' from 127.0.0.1:51918
+[DEBUG] (Process-2 ) (Thread-2  ) Send: b'Message 5\n' to 127.0.0.1:51918
+...
 ```
 
 ```py

@@ -144,8 +144,8 @@ $ python multithread.py
 [DEBUG] (Thread-1  ) Recv: b'Hey server\n' from 127.0.0.1:53713
 [DEBUG] (Thread-1  ) Send: b'Hey server\n' to 127.0.0.1:53713
 [DEBUG] (MainThread) New client: 127.0.0.1:53966
-[DEBUG] (Thread-2  ) Recv: b'Hey server?\n' from 127.0.0.1:53966
-[DEBUG] (Thread-2  ) Send: b'Hey server?\n' to 127.0.0.1:53966
+[DEBUG] (Thread-2  ) Recv: b'Hey server\n' from 127.0.0.1:53966
+[DEBUG] (Thread-2  ) Send: b'Hey server\n' to 127.0.0.1:53966
 ...
 ```
 
@@ -235,6 +235,21 @@ def main(host='localhost', port=9090):
 
 if __name__ == "__main__":
     main()
+```
+
+```
+[DEBUG] (Thread-1  ) New client: 127.0.0.1:59951
+[DEBUG] (Thread-2  ) New client: 127.0.0.1:59991
+[DEBUG] (Thread-1  ) Recv: b'Message 1\n' from 127.0.0.1:59951
+[DEBUG] (Thread-1  ) Send: b'Message 1\n' to 127.0.0.1:59951
+[DEBUG] (Thread-2  ) Recv: b'Message 2\n' from 127.0.0.1:59991
+[DEBUG] (Thread-2  ) Send: b'Message 2\n' to 127.0.0.1:59991
+[DEBUG] (Thread-1  ) Recv: b'' from 127.0.0.1:59951
+[DEBUG] (Thread-1  ) Bye-bye: 127.0.0.1:59951
+[DEBUG] (Thread-1  ) New client: 127.0.0.1:60167
+[DEBUG] (Thread-1  ) Recv: b'Message 3\n' from 127.0.0.1:60167
+[DEBUG] (Thread-1  ) Send: b'Message 3\n' to 127.0.0.1:60167
+...
 ```
 
 ```py

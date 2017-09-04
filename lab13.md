@@ -358,3 +358,43 @@ var app = new Vue({
     el: '#app'
 })
 ```
+
+#### Подгрузка временных сообщений
+
+```python
+...
+
+class Channel(web.View):
+
+    async def get(self):
+        return web.json_response({
+            'messages': [
+                {'username': 'CIA Agent', 'text': "At least you can talk. Who are you?"},
+                {'username': 'Bane', 'text': "It doesn't matter who we are... what matters is our plan."},
+                {'username': 'Bane', 'text': "No one cared who I was until I put on the mask."},
+            ]
+        })
+```
+
+
+```js
+var app = new Vue({
+    el: '#app',
+
+    data: {
+        messages: [],
+    },
+
+    methods: {
+        getChannelHistory: function() {
+            axios.get('/general/history').then(function(response) {
+                app.messages.unshift.apply(app.messages, response.data.messages);
+            });
+        }
+    },
+
+    created: function() {
+        this.getChannelHistory();
+    }
+})
+```

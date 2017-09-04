@@ -172,3 +172,76 @@ async def create_app():
     ...
 ```
 
+#### Замена кук на сессии:
+
+```python
+from aiohttp import web
+import jinja2
+import aiohttp_jinja2
+import aioredis
+from aiohttp_session import session_middleware
+from aiohttp_session.redis_storage import RedisStorage
+
+from chat.views import Index
+from accounts.views import Login
+from middlewares import auth_session_factory, request_session_factory
+
+async def create_app():
+    async def close_redis(app):
+        app.redis_pool.close()
+        await app.redis_pool.wait_closed()
+    
+    redis_pool = await aioredis.create_pool(('127.0.0.1', 6379), loop=loop)
+    app = web.Application(middlewares=[
+        session_middleware(RedisStorage(redis_pool)),
+        request_session_factory,
+        auth_session_factory
+    ])
+    app.redis_pool = redis_pool
+    aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('templates'))
+    app.router.add_static('/static', 'static', name='static')
+    app.router.add_get('/', Index)
+    app.router.add_route('*', '/login', Login)
+    app.on_shutdown.append(close_redis)
+    return app
+
+loop = asyncio.get_event_loop()
+app = loop.run_until_complete(create_app())
+web.run_app(app, host='127.0.0.1', port=8080)
+```
+
+
+```python
+from aiohttp import web
+from aiohttp_session import get_session
+
+async def request_session_factory(app, handler):
+    async def middleware(request):
+        request.session = await get_session(request)
+        return await handler(request)
+    return middleware
+
+async def auth_session_factory(app, handler):
+    async def middleware(request):
+        if request.path != '/login' and request.session.get('user') is None:
+            return web.HTTPFound('/login')
+        return await handler(request)
+    return middleware
+```
+
+```python
+...
+from aiohttp_session import get_session
+
+class Login(web.View):
+
+    @aiohttp_jinja2.template('login.html')
+    async def get(self):
+        if self.request.session.get('user'):
+        ...
+    
+    async def post(self):
+        ...
+        self.request.session['user'] = data['name']
+        ...
+```

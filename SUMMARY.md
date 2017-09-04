@@ -13,7 +13,7 @@
 * [Лабораторная работа №9. REST API](lab9.md)
 * [Лабораторная работа №10. Django](lab10.md)
 * [Лабораторная работа №11. WSGI-сервер](lab11.md)
-* Лабораторная работа №12. Работа с модулем asyncio
+* [Лабораторная работа №12. Работа с модулем asyncio](laboratornaya-rabota-12-rabota-s-modulem-asyncio.md)
 * [Лабораторная работа №13. MicroSlack. Чат на aiohttp и websocket'ах](lab13.md)
 * [Заметки по классам](appendix-classes.md)
 * [Собственный проект](project.md)

@@ -155,6 +155,29 @@ class LoginView(web.View):
 ```
 
 
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="//oss.maxcdn.com/semantic-ui/2.1.8/semantic.min.css" type="text/css">
+    </head>
+    <body>
+        <div class="ui three column stackable centered grid">                       
+            <div class="column">
+                <form action="/login" method="post">
+                    <div class="ui fluid action input">
+                        <input type="text" name="name" placeholder="Username" required>
+                        <button type="submit" class="ui primary button">Log in</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
+```
+
+
 ```python
 from aiohttp import web
 
@@ -168,4 +191,16 @@ async def auth_cookie_factory(app, handler):
             return web.HTTPFound('/login')
         return await handler(request)
     return middleware
+```
+
+```python
+...
+from accounts.views import LoginView
+from middlewares import auth_cookie_factory
+...
+
+app = web.Application(middlewares=[auth_cookie_factory,])
+...
+app.router.add_route('*', '/login', LoginView)
+...
 ```

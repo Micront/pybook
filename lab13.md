@@ -131,3 +131,41 @@ socket.onerror = function(error) {
     console.log("Ошибка " + error);
 };
 ```
+
+```python
+from aiohttp import web
+import aiohttp_jinja2
+
+
+class LoginView(web.View):
+    # http://aiohttp.readthedocs.io/en/stable/web.html#class-based-views
+    
+    @aiohttp_jinja2.template('login.html')
+    async def get(self):
+        if self.request.cookies.get('user'):
+            return web.HTTPFound('/')
+        return {'title': 'Authentication'}
+    
+    async def post(self):
+        response = web.HTTPFound('/')
+        # http://aiohttp.readthedocs.io/en/stable/web.html#http-forms
+        data = await self.request.post()
+        response.set_cookie('user', data['name'])
+        return response
+```
+
+
+```python
+from aiohttp import web
+
+async def auth_cookie_factory(app, handler):
+    # http://aiohttp.readthedocs.io/en/stable/web.html#middlewares
+    async def middleware(request):
+        # http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp    .web.BaseRequest.path
+        # http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp    .web.BaseRequest.cookies
+        if request.path != '/login' and request.cookies.get('user') is None:
+            # http://aiohttp.readthedocs.io/en/stable/web.html#exceptions
+            return web.HTTPFound('/login')
+        return await handler(request)
+    return middleware
+```

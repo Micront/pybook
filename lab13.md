@@ -161,8 +161,8 @@ from aiohttp import web
 async def auth_cookie_factory(app, handler):
     # http://aiohttp.readthedocs.io/en/stable/web.html#middlewares
     async def middleware(request):
-        # http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp    .web.BaseRequest.path
-        # http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp    .web.BaseRequest.cookies
+        # http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.BaseRequest.path
+        # http://aiohttp.readthedocs.io/en/stable/web_reference.html#aiohttp.web.BaseRequest.cookies
         if request.path != '/login' and request.cookies.get('user') is None:
             # http://aiohttp.readthedocs.io/en/stable/web.html#exceptions
             return web.HTTPFound('/login')

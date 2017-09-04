@@ -147,7 +147,6 @@ async def create_app():
 ```
 
 
-
 ```python
 from aiohttp import web
 
@@ -162,3 +161,14 @@ async def auth_cookie_factory(app, handler):
         return await handler(request)
     return middleware
 ```
+
+```python
+...
+from middlewares import auth_cookie_factory
+...
+
+async def create_app():
+    app = web.Application(middlewares=[auth_cookie_factory,])
+    ...
+```
+

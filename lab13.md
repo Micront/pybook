@@ -53,16 +53,32 @@ from aiohttp import web
 import jinja2
 import aiohttp_jinja2
 
-@aiohttp_jinja2.template('index.html')
-async def index(request):
-    return {'title': 'Index page'}
+from chat.views import Index
 
-app = web.Application()
-aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('templates'))
-app.router.add_static('/static', 'static', name='static') # аргумент name используется для того, чтобы мы могли обратиться к app.router.static
-app.router.add_get('/', index)
+async def create_app():
+    app = web.Application()
+    aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader('templates'))
+    app.router.add_static('/static', 'static', name='static') # аргумент name используется для того, чтобы мы могли обратиться к app.router.static
+    app.router.add_get('/', Index)
+    return app
+
+loop = asyncio.get_event_loop()
+app = loop.run_until_complete(create_app())
 web.run_app(app, host='127.0.0.1', port=8080)
 ```
+
+```python
+from aiohttp import web
+import aiohttp_jinja2
+
+
+class Index(web.View):
+    
+    @aiohttp_jinja2.template('index.html')
+    async def get(self):
+        return {'title': 'Index page'}
+```
+
 
 ```html
 ...

@@ -45,6 +45,10 @@ if __name__ == "__main__":
     main()
 ```
 
+<div class="alert alert-info">
+Узнать больше о сетевом программировании можно в материалах к курсу <a href="http://lecturesnet.readthedocs.io/net/low-level/ipc/socket/intro.html">Сетевое программирование</a> ИнФО УРфУ и в книжке Джона Гоерзена <a href="http://www.apress.com/us/book/9781430230038">Foundations of Python Network Programming</a>. Также можно прочитать <a href="http://micromind.me/posts/writing-python-web-server-part-1">эту</a> небольшую статью с примерами на python.
+</div>
+
 Запустите сервер:
 
 ```bash

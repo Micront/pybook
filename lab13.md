@@ -613,5 +613,40 @@ created: function() {
 
 #### Хранение сообщений в mongodb и подгрузка сообщений
 
+```python
+import asyncio
+import motor.motor_asyncio
+import faker
+import random
+from datetime import datetime as dt
+
+
+client = motor.motor_asyncio.AsyncIOMotorClient('localhost', 27017)
+db = client.test_database
+collection = db.test_collection
+
+
+def generate_collection_data(N):
+    f = faker.Faker()
+    channels = ('general', 'random')
+    messages = ({
+        'text': f.text(),
+        'username': f.user_name(),
+        'ts': dt.timestamp(f.date_time()),
+        'channel': channels[random.choice([0,1])]
+    } for _ in range(N))
+    return messages
+
+
+async def do_insert():
+    messages = generate_collection_data(30)
+    await collection.insert_many(messages)
+    count = await collection.count()
+    print(f"count: {count}")
+
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(do_insert())
+```
 
 #### Добавление регистрации и модели пользователя

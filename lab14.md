@@ -471,7 +471,7 @@ LOGIN_REDIRECT_URL = '/'
 ```
 
 `notes/models.py`
-```
+```python
 # ...
 from django.contrib.auth.models import User
 

@@ -297,7 +297,7 @@ TEMPLATES = [
 {% if latest_note_list %}
    <ul>
    {% for note in latest_note_list %}
-     <li><a href="{% url 'note:detail' note.id %}">{{ note.title }}</a></li>
+     <li><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></li>
    {% endfor %}
    </ul>
 {% else %}
@@ -459,6 +459,96 @@ urlpatterns = [
 # ...
 LOGIN_REDIRECT_URL = '/'
 ```
+
+
+`notes/models.py`
+```
+# ...
+from django.contrib.auth.models import User
+
+
+class Note(models.Model):
+    # ...
+    owner = models.ForeignKey(User, related_name='notes', on_delete=models.CASCADE)
+```
+
+```bash
+$ python manage.py makemigrations
+$ python manage.py migrate
+```
+
+`notes/views.py`
+```python
+latest_note_list = Note.objects.filter(owner=request.user).order_by('-pub_date')[:5]
+```
+
+`notes/admin.py`
+```python
+list_display = ('title', 'owner', 'pub_date', 'was_published_recently')
+```
+
+
+```notes/views.py```
+```python
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, DetailView
+
+from .models import Note
+
+
+class NoteList(ListView):
+    paginate_by = 5
+    template_name = 'notes/index.html'
+    context_object_name = 'latest_note_list'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(NoteList, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        return Note.objects.filter(owner=self.request.user)
+
+
+class NoteDetail(DetailView):
+    model = Note
+    template_name = 'notes/detail.html'
+    context_object_name = 'note'
+
+    @method_decorator(login_required)
+        def dispatch(self, *args, **kwargs):
+            return super(NoteDetail, self).dispatch(*args, **kwargs)
+```
+
+`notes/urls.py`
+```python
+from django.conf.urls import url
+
+from .views import NoteList, NoteDetail
+
+urlpatterns = [
+    url(r'^$', NoteList.as_view(), name='index'),
+    url(r'^(?P<note_id>[0-9]+)/$', NoteDetail.as_view(), name='detail'),
+]
+```
+
+`notes/views.py`
+```python
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+class NoteList(LoginRequiredMixin, ListView):
+    # ...
+
+class NoteDetail(LoginRequiredMixin, DetailView):
+    # ...
+```
+
+<div class="alert alert-info">
+В <a href="https://github.com/sixfeetup/ElevenNote/wiki/09-Intro-to-Mixins">руководстве</a> от Six Feet Up объясняется как создать собственный миксин, который бы решал аналогичную задачу.
+</div>
+
+
 
 ### Добавляем API с помощью DRF
 

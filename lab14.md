@@ -497,7 +497,7 @@ list_display = ('title', 'owner', 'pub_date', 'was_published_recently')
 ```
 
 
-```notes/views.py```
+`notes/views.py`
 ```python
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required

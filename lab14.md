@@ -385,6 +385,11 @@ def detail(request):
     # ...
 ```
 
+`notes/tests/test_views.py`
+```python
+
+```
+
 
 ```bash
 $ mkdir static
@@ -460,6 +465,10 @@ urlpatterns = [
 LOGIN_REDIRECT_URL = '/'
 ```
 
+`accounts/tests/test_views.py`
+```python
+
+```
 
 `notes/models.py`
 ```
@@ -548,6 +557,8 @@ class NoteDetail(LoginRequiredMixin, DetailView):
 В <a href="https://github.com/sixfeetup/ElevenNote/wiki/09-Intro-to-Mixins">руководстве</a> от Six Feet Up объясняется как создать собственный миксин, который бы решал аналогичную задачу.
 </div>
 
+
+### Continuous Integration с CircleCI
 
 
 ### Добавляем API с помощью DRF

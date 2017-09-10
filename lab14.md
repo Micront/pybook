@@ -29,6 +29,7 @@ $ touch config/settings/production.py
 $ touch config/settings/settings.ini
 ```
 
+`config/settings/base.py`
 ```python
 import os
 from decouple import config
@@ -70,7 +71,7 @@ USE_L10N = True
 USE_TZ = True
 ```
 
-
+`configs/settings/local.py`
 ```python
 from .base import *
 
@@ -92,7 +93,7 @@ DATABASES = {
 }
 ```
 
-
+`config/settings/settings.ini`
 ```python
 [settings]
 SECRET_KEY=
@@ -101,6 +102,7 @@ DB_USER=
 DB_PASSWORD=
 ```
 
+`manage.py`
 ```python
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 ```
@@ -142,6 +144,15 @@ $ python manage.py migrate
 
 ```bash
 $ pip install django-admin-honeypot==1.0.0
+```
+
+`config/settings/base.py`
+```python
+INSTALLED_APPS = [
+    # ...
+    'admin_honeypot',
+    # ...
+]
 ```
 
 `config/urls.py`
@@ -303,4 +314,165 @@ TEMPLATES = [
 `notes/tests/tests_views.py`
 ```python
 
+```
+
+```bash
+$ python manage.py startapp accounts
+$ touch accounts/urls.py
+```
+
+`config/urls.py`
+```python
+urlpatterns = [
+    # Handle the root url.
+    url(r'^$', lambda r: HttpResponseRedirect('notes/')),
+
+    # Admin
+    url(r'^admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    url(r'^secret/', admin.site.urls),
+
+    # Accounts app
+    url(r'^accounts/', include('accounts.urls', namespace="accounts")),
+ 
+    # Notes app
+    url(r'^notes/', include('note.urls', namespace="note")),
+]
+```
+
+```bash
+$ touch accounts/urls.py
+```
+
+`accounts/urls.py`
+```python
+from django.conf.urls import url
+from django.contrib.auth import views
+
+urlpatterns = [
+    url(r'^login/$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout'),
+]
+```
+
+`templates/registration/login.html`
+```html
+<form action="{% url 'accounts:login' %}" method="post" accept-charset="utf-8">
+  {% csrf_token %}
+  {% for field in form %}
+    <label>{{ field.label }}</label>
+    {% if field.errors %}
+      {{ field.errors }}
+    {% endif %}
+    {{ field }}
+  {% endfor %}
+  <input type="hidden" name="next" value="{{ next }}" />
+  <input class="button small" type="submit" value="Submit"/>
+</form>
+```
+
+`notes/views.py`
+```python
+# ...
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def index(request):
+    # ...
+
+
+@login_required
+def detail(request):
+    # ...
+```
+
+
+```bash
+$ mkdir static
+$ cd static
+$ wget https://github.com/twbs/bootstrap/releases/download/v4.0.0-alpha.6/bootstrap-4.0.0-alpha.6-dist.zip
+$ unzip bootstrap-4.0.0-alpha.6-dist.zip
+$ mv bootstrap-4.0.0-alpha.6-dist bootstrap
+$ cd ..
+```
+
+`config/settings/base.py`
+```python
+# ...
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    root('static'),
+]
+```
+
+```bash
+# Fix me
+wget https://github.com/sixfeetup/ElevenNote/raw/master/templates-ch06.zip
+unzip templates-ch6.zip   # If prompted to replace, say (Y)es
+cd ..
+```
+
+
+`accounts/views.py`
+```python
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic import FormView
+
+
+class RegisterView(FormView):
+    template_name = 'registration/register.html'
+    form_class = UserCreationForm
+    success_url='/'
+    
+    def form_valid(self, form):
+        #save the new user first
+        form.save()
+        
+        #get the username and password
+        username = self.request.POST['username']
+        password = self.request.POST['password1']
+        
+        #authenticate user then login
+        user = authenticate(username=username, password=password)
+        login(self.request, user)
+        return super(RegisterView, self).form_valid(form)
+```
+
+`accounts/urls.py`
+```python
+from django.conf.urls import url
+from django.contrib.auth import views as auth_views
+from django.core.urlresolvers import reverse_lazy
+
+from .views import RegisterView
+
+urlpatterns = [
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, {"next_page" : reverse_lazy('login')}, name='logout'),
+    url('^register/', RegisterView.as_view(), name='register'),
+]
+```
+
+
+`config/settings/base.py`
+```python
+# ...
+LOGIN_REDIRECT_URL = '/'
+```
+
+### Добавляем API с помощью DRF
+
+```bash
+$ pip install djangorestframework
+$ python manage.py api
+```
+
+`config/settings/base.py`
+```python
+INSTALLED_APPS = [
+    # ...
+    'rest_framework',
+    # ...
+    'api',
+]
 ```

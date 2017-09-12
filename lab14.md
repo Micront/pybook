@@ -238,7 +238,7 @@ def was_published_recently(self):
 
 `config/urls.py`
 ```python
-url(r'^notes/', include('note.urls', namespace="note")),
+url(r'^notes/', include('notes.urls', namespace="notes")),
 ```
 
 ```bash
@@ -270,11 +270,11 @@ def index(request):
     context = {
         'latest_note_list': latest_note_list,
     }
-    return render(request, 'note/index.html', context)
+    return render(request, 'notes/index.html', context)
 
 def detail(request, note_id):
      note = get_object_or_404(Note, pk=note_id)
-     return render(request, 'note/detail.html', {'note': note})
+     return render(request, 'notes/detail.html', {'note': note})
 ```
 
 ```bash

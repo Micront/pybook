@@ -560,6 +560,83 @@ class NoteDetail(LoginRequiredMixin, DetailView):
 В <a href="https://github.com/sixfeetup/ElevenNote/wiki/09-Intro-to-Mixins">руководстве</a> от Six Feet Up объясняется как создать собственный миксин, который бы решал аналогичную задачу.
 </div>
 
+`notes/forms.py`
+
+```python
+from django import forms
+
+from .models import Note
+
+class NoteForm(forms.ModelForm):
+
+    class Meta:
+        model = Note
+        exclude = ['owner', 'pub_date']
+```
+
+`notes/views.py`
+```python
+from django.views.generic import ListView, DetailView, CreateView
+from django.utils import timezone
+from django.core.urlresolvers import reverse_lazy
+
+from .forms import NoteForm
+...
+
+class NoteCreate(LoginRequiredMixin, CreateView):
+    form_class = NoteForm
+    template_name = 'notes/form.html'
+    success_url = reverse_lazy('notes:index')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        form.instance.pub_date = timezone.now()
+        return super(NoteCreate, self).form_valid(form)
+```
+
+`notes/urls.py`
+```python
+url(r'^new/$', NoteCreate.as_view(), name='create'),
+```
+
+`templates/notes/form.html`
+```python
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form action="{% url 'notes:create' %}" method="post" accept-charset="utf-8">
+    {% csrf_token %}
+    {% for field in form %}
+    <p>
+        <label>{{ field.label }}</label>
+        {% if field.errors %}
+	<div class="alert alert-danger" role="alert">
+            {{ field.errors }}
+	</div>
+        {% endif %}
+        {{ field }}
+    </p>
+    {% endfor %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <input class="button small" type="submit" value="Submit"/>
+</form>
+
+{% endblock %}
+```
+
+`templates/notes/index.html`
+```html
+<a href="{% url 'notes:create' %}">Create a new note</a>
+```
 
 ### Continuous Integration с CircleCI
 

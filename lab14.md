@@ -600,7 +600,7 @@ url(r'^new/$', NoteCreate.as_view(), name='create'),
 ```
 
 `templates/notes/form.html`
-```python
+```html
 {% extends "base.html" %}
 
 {% block content %}

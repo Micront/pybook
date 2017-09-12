@@ -638,6 +638,177 @@ url(r'^new/$', NoteCreate.as_view(), name='create'),
 <a href="{% url 'notes:create' %}">Create a new note</a>
 ```
 
+`template/notes/index.html`
+```html
+{% if is_paginated %}
+<div class="pagination">
+   <span class="step-links">
+       {% if page_obj.has_previous %}
+           <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+       {% endif %}
+
+       <span class="current">
+           Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+       </span>
+
+       {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">next</a>
+       {% endif %}
+  </span>
+</div>
+{% endif %}
+```
+
+`notes/views.py`
+```python
+return Note.objects.filter(owner=self.request.user)
+```
+
+```python
+return Note.objects.filter(owner=self.request.user).order_by('-pub_date')
+```
+
+```bash
+$ python -m pip install django-wysiwyg
+```
+
+```python
+INSTALLED_APPS = [
+    # ...
+    'django_wysiwyg',
+    # ...
+]
+
+#...
+DJANGO_WYSIWYG_FLAVOR = 'ckeditor'
+```
+
+```bash
+$ cd static
+$ wget https://download.cksource.com/CKEditor/CKEditor/CKEditor%204.7.2/ckeditor_4.7.2_full.zip
+$ unzip ckeditor_4.7.2_full.zip
+$ cd ..
+```
+
+`notes/views.py`
+```python
+from django.core.exceptions import PermissionDenied
+
+...
+
+# In NoteDetail class, override the get() method to raise an
+# error if the user tries to view another user's note.
+
+def get(self, request, *args, **kwargs):
+    self.object = self.get_object()
+
+    if self.object.owner != self.request.user:
+        raise PermissionDenied
+
+    context = self.get_context_data(object=self.object)
+    return self.render_to_response(context)
+```
+
+`notes/views.py`
+```python
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+
+...
+
+class NoteUpdate(LoginRequiredMixin, UpdateView):
+    model = Note
+    form_class = NoteForm
+    template_name = 'notes/form.html'
+    success_url = reverse_lazy('notes:index')
+
+    def form_valid(self, form):
+       form.instance.pub_date = timezone.now()
+       return super(NoteUpdate, self).form_valid(form)
+```
+
+`notes/urls.py`
+```python
+url(r'^(?P<pk>[0-9]+)/edit/$', NoteUpdate.as_view(), name='update'),
+```
+
+`templates/notes/form.html`
+```html
+{% if object %}
+<form action="{% url 'notes:update' object.pk %}" method="post" accept-charset="utf-8">
+{% else %}
+<form action="{% url 'notes:create' %}" method="post" accept-charset="utf-8">
+{% endif %}
+```
+
+`templates/notes/index.html`
+```html
+<a href="{% url 'notes:update' note.id %}">Edit</a>
+```
+
+`templates/notes/index.html`
+```html
+<p>
+   <a href="{% url 'notes:update' note.id %}">{{ note.title }}</a><br />
+   {{ note.body | safe }}
+</p>
+<hr />
+```
+
+`notes/mixins.py`
+```python
+from .models import Note
+
+
+class NoteMixin(object):
+   def get_context_data(self, **kwargs):
+       context = super(NoteMixin, self).get_context_data(**kwargs)
+
+       context.update({
+          'notes': Note.objects.filter(owner=self.request.user).order_by('-pub_date'),
+       })
+       
+       return context
+```
+
+`notes/views.py`
+```python
+class NoteCreate(LoginRequiredMixin, NoteMixin, CreateView):
+```
+
+```python
+class NoteUpdate(LoginRequiredMixin, NoteMixin, UpdateView):
+
+    ...
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        
+        if self.object.owner != self.request.user:
+            raise PermissionDenied
+
+        return super(NoteUpdate, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        
+        if self.object.owner != self.request.user:
+            raise PermissionDenied
+
+        return super(NoteUpdate, self).post(request, *args, **kwargs)
+```
+
+```bash
+$ wget https://github.com/sixfeetup/ElevenNote/raw/master/templates-ch16.zip
+$ unzip templates-ch16.zip
+```
+
+```bash
+cd static
+wget https://github.com/sixfeetup/ElevenNote/raw/master/static-elevennote-ch16.zip
+unzip static-elevennote-ch16.zip
+cd ..
+```
+
+
 ### Continuous Integration с CircleCI
 
 

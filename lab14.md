@@ -323,6 +323,9 @@ $ touch accounts/urls.py
 
 `config/urls.py`
 ```python
+#...
+from django.http import HttpResponseRedirect
+
 urlpatterns = [
     # Handle the root url.
     url(r'^$', lambda r: HttpResponseRedirect('notes/')),
@@ -335,7 +338,7 @@ urlpatterns = [
     url(r'^accounts/', include('accounts.urls', namespace="accounts")),
  
     # Notes app
-    url(r'^notes/', include('note.urls', namespace="note")),
+    url(r'^notes/', include('note.urls', namespace="notes")),
 ]
 ```
 
@@ -453,7 +456,7 @@ from .views import RegisterView
 
 urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
-    url(r'^logout/$', auth_views.logout, {"next_page" : reverse_lazy('login')}, name='logout'),
+    url(r'^logout/$', auth_views.logout, {"next_page" : reverse_lazy('accounts:login')}, name='logout'),
     url('^register/', RegisterView.as_view(), name='register'),
 ]
 ```

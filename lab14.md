@@ -808,6 +808,42 @@ unzip static-elevennote-ch16.zip
 cd ..
 ```
 
+`notes/mixins.py`
+```python
+def check_user_or_403(self, user):
+    """ Issue a 403 if the current user is no the same as the `user` param. """
+    if self.request.user != user:
+        raise PermissionDenied
+```
+
+`notes/views.py`
+```python
+class NoteDelete(LoginRequiredMixin, NoteMixin, DeleteView):
+    model = Note
+    success_url = reverse_lazy('notes:index')
+ 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.check_user_or_403(self.object.owner)
+        return super(NoteDelete, self).post(request, *args, **kwargs)
+```
+
+`notes/urls.py`
+```python
+url(r'^(?P<pk>[0-9]+)/delete/$', NoteDelete.as_view(), name='delete'),
+```
+
+`templates/notes/form.html`
+```html
+{% if object %}
+  <form action="{% url 'notes:delete' object.pk %}" method="post" id="delete-note-form">
+    {% csrf_token %}
+    <a class="btn btn-default" id="delete-note">
+      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+    </a>
+  </form>
+{% endif %}
+```
 
 ### Continuous Integration с CircleCI
 
@@ -827,4 +863,17 @@ INSTALLED_APPS = [
     # ...
     'api',
 ]
+```
+
+`api/base/serializers.py`
+```python
+from rest_framework import serializers
+
+from notes.models import Note
+
+class NoteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Note
+        fields = ('id', 'title', 'body', 'pub_date')
 ```

@@ -4,17 +4,33 @@
 Лабораторная работа основана на <a href="https://github.com/sixfeetup/ElevenNote">замечательном руководстве</a> по Django от компании Six Feet Up.
 </div>
 
+Как обычно создайте новую ветку разработки и виртуальное окружение с именем `elevennote-env`, в котором установите следующие пакеты:
+
 ```bash
 $ pip install Django==1.11.4
 $ pip install psycopg2==2.7.3
 $ pip install python-decouple==3.1
 ```
 
+Теперь создадим новый проект с помощью команды `django-admin`. Обратите внимание, что имя проекта `config`, а все файлы проекта будут созданы в текущей рабочей директории (на что указывает `.`):
+
 ```bash
 $ mkdir elevennote && cd $_
 $ django-admin startproject config .
 $ ls
 config manage.py
+```
+
+В результате вы должны получить следующую структуру проекта:
+```bash
+.
+└── elevennote
+    ├── config
+    │   ├── __init__.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    └── manage.py
 ```
 
 ```bash
@@ -27,6 +43,17 @@ $ touch config/settings/__init__.py
 $ touch config/settings/local.py
 $ touch config/settings/production.py
 $ touch config/settings/settings.ini
+$ tree config
+config/
+├── __init__.py
+├── settings
+│   ├── __init__.py
+│   ├── base.py
+│   ├── local.py
+│   ├── production.py
+│   └── settings.ini
+├── urls.py
+└── wsgi.py
 ```
 
 `config/settings/base.py`
@@ -93,7 +120,7 @@ DATABASES = {
 }
 ```
 
-`config/settings/settings.ini`
+В `config/settings/settings.ini` укажите секретный ключ для Django, имя БД, пользователя БД и его пароль:
 ```python
 [settings]
 SECRET_KEY=
@@ -101,6 +128,10 @@ DB_NAME=
 DB_USER=
 DB_PASSWORD=
 ```
+
+<div class="alert alert-warning">
+<b>Замечание</b>: Не добавляйте <tt>settings.ini</tt> в ваш репозиторий, так как он содержит пароли и ключи. Чтобы случайно его не закоммитить добавьте соответствующую запись в <tt>.gitignore</tt>.
+</div>
 
 `manage.py`
 ```python

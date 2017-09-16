@@ -147,10 +147,16 @@ $ python manage.py runserver
 $ python manage.py createsuperuser
 ```
 
+Создадим новое приложение `notes` (заметки) и нашу первую модель `Note`:
 
 ```bash
 $ python manage.py startapp notes
 ```
+
+Каждая заметка будет представлена следующими полями:
+- заголовком (`title`) с ограничением 200 символов;
+- текстом заметки (`body`);
+- и датой создания (`pub_date`).
 
 `notes/models.py`
 ```python
@@ -160,6 +166,7 @@ class Note(models.Model):
     pub_date = models.DateTimeField('date published')
 ```
 
+Зарегистрируем созданную модель в панели администратора:
 `notes/admin.py`
 ```python
 from django.contrib import admin
@@ -168,10 +175,15 @@ from .models import Note
 admin.site.register(Note)
 ```
 
+И применим внесенные изменения к БД:
 ```bash
-$ python manage.py makemigrations note
+$ python manage.py makemigrations notes
 $ python manage.py migrate
 ```
+
+Запустите проект `python manage.py runserver` и откройте панель администратора [http://localhost:8000/admin](http://localhost:8000/admin). Вы должны увидеть, что появился новый раздел `Notes`, в котором вы можете создавать, редактировать и удалять заметки.
+
+![](/assets/Screen Shot 2017-09-16 at 18.10.05.png)
 
 ```bash
 $ pip install django-admin-honeypot==1.0.0

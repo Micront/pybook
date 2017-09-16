@@ -185,6 +185,8 @@ def was_published_recently(self):
     return self.pub_date >= timezone.now() - timedelta(days=1)
 ```
 
+![](/assets/Screen Shot 2017-09-16 at 16.31.29.png)
+
 ```bash
 $ mkdir notes/tests
 $ mv notes/tests.py notes/tests/test_models.py

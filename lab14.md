@@ -845,6 +845,8 @@ url(r'^(?P<pk>[0-9]+)/delete/$', NoteDelete.as_view(), name='delete'),
 {% endif %}
 ```
 
+![](/assets/Screen Shot 2017-09-16 at 16.08.00.png)
+
 ### Continuous Integration с CircleCI
 
 

@@ -847,6 +847,15 @@ url(r'^(?P<pk>[0-9]+)/delete/$', NoteDelete.as_view(), name='delete'),
 
 ![](/assets/Screen Shot 2017-09-16 at 16.08.00.png)
 
+
+`notes/views.py`
+```python
+def get_success_url(self):
+    return reverse('notes:update', kwargs={
+        'pk': self.object.pk
+    })
+```
+
 ### Continuous Integration с CircleCI
 
 

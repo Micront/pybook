@@ -550,7 +550,7 @@ class AsyncServer(asyncore.dispatcher):
     def __init__(self, host="127.0.0.1", port=9000):
         pass
 
-    def handle_accept(self):
+    def handle_accepted(self):
         pass
 
     def serve_forever(self):

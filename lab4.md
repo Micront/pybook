@@ -270,7 +270,13 @@ py.iplot(data)
 
 ![](assets/plotly.png)
 
-**Задание №3**: 
+**Задание №3**:
+
+```python
+def get_network(users_ids, as_edgelist=True):
+    """ Building a friend graph for an arbitrary list of users """
+    pass
+```
 
 ```bash
 $ pip install python-igraph

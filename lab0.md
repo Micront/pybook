@@ -87,6 +87,14 @@ $ workon cs102
 $  
 ```
 
+<div class="alert alert-info">
+<b>Замечание</b>: Если у вас не получается настроить <tt>virtualenvwrapper</tt> на ОС Windows, то можете ограничиться <tt>virtualenv</tt>:
+<pre><code>$ virtualenv cs102-env
+$ cs102-env\Scripts\activate.bat
+(cs102-env) $ # Окружение активировано
+$ deactivate</code></pre>
+</div>
+
 Давайте в созданном виртуальном окружении установим два новых пакета: [bpython](http://www.bpython-interpreter.org) и [ipython](https://ipython.org/). Это тоже интерпретаторы языка Python, но с дополнительными функциями (подсветка синтаксиса, подсказки и др):
 
 ```sh

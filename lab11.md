@@ -639,7 +639,9 @@ responses = {
     <summary>Полный шаблон для сервера</summary>
     <p>
 
-```py
+**test**
+
+```python
 import asyncore
 import asynchat
 import socket

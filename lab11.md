@@ -635,9 +635,7 @@ responses = {
 }
 ```
 
-<details>
-    <summary>Полный шаблон для сервера</summary>
-    <p>
+<details><summary>Полный шаблон для сервера</summary><p>
 
 **test**
 

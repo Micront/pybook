@@ -500,6 +500,120 @@ if __name__ == "__main__":
 
 ### Асинхронный HTTP-сервер
 
+
+```python
+import asyncore
+import asynchat
+
+class AsyncHTTPRequestHandler(asynchat.async_chat):
+    
+    def __init__(self, sock):
+        super().__init__(sock)
+
+class AsyncHTTPServer(asyncore.dispatcher):
+    
+    def __init__(self, host="127.0.0.1", port=9000):
+        super().__init__()
+        self.create_socket()
+        self.set_reuse_addr()
+        self.bind((host, port))
+        self.listen(5)
+    
+    def handle_accepted(self, sock, addr):
+        log.debug(f"Incoming connection from {addr}")
+        AsyncHTTPRequestHandler(sock)
+
+
+server = AsyncHTTPServer()
+asyncore.loop()
+```
+
+```bash
+$ python async_server.py &
+$ curl 127.0.0.1:9000
+Incoming connection from ('127.0.0.1', 56365)
+error: ...
+curl: (52) Empty reply from server
+```
+
+```python
+class AsyncHTTPRequestHandler(asynchat.async_chat):
+    
+    def __init__(self, sock):
+        super().__init__(sock)
+        self.set_terminator(b"\r\n\r\n")
+    
+    def collect_incoming_data(self, data):
+        log.debug(f"Incoming data: {data}")
+        self._collect_incoming_data(data)
+    
+    def found_terminator(self):
+        self.parse_request()
+    
+    def parse_request(self):
+        pass
+    
+    def parse_headers(self):
+        pass
+```
+
+```bash
+$ python async_server.py &
+$ curl -m 3 127.0.0.1:9000
+Incoming connection from ('127.0.0.1', 56365)
+Incoming data: b'GET / HTTP/1.1\r\nHost: 127.0.0.1:9000\r\nUser-Agent: curl/7.49.1\r\nAccept: */*'
+curl: (28) Operation timed out after 3000 milliseconds with 0 bytes received
+```
+
+```bash
+{
+    'method': 'GET',
+    'uri': '/',
+    'protocol': 'HTTP/1.1',
+    'Host': '127.0.0.1:9000',
+    'User-Agent': 'curl/7.49.1',
+    'Accept': '*/*'
+}
+```
+
+```python
+def handle_request(self):
+    method_name = 'do_' + self.method
+    if not hasattr(self, method_name):
+        self.send_error(405)
+        self.handle_close()
+        return
+    handler = getattr(self, method_name)
+    handler()
+```
+
+```python
+def send_error(self, code, message=None):
+    try:
+        short_msg, long_msg = self.responses[code]
+    except KeyError:
+        short_msg, long_msg = '???', '???'
+    if message is None:
+        message = short_msg
+
+    self.send_response(code, message)
+    self.send_header("Content-Type", "text/plain")
+    self.send_header("Connection", "close")
+    self.end_headers()
+
+
+responses = {
+    200: ('OK', 'Request fulfilled, document follows'),
+    400: ('Bad Request',
+        'Bad request syntax or unsupported method'),
+    403: ('Forbidden',
+        'Request forbidden -- authorization will not help'),
+    404: ('Not Found', 'Nothing matches the given URI'),
+    405: ('Method Not Allowed',
+        'Specified method is invalid for this resource.'),
+}
+```
+
 ```py
 import asyncore
 import asynchat

@@ -635,8 +635,7 @@ responses = {
 }
 ```
 
-<details>
-<summary>Полный шаблон для сервера</summary>
+<details><summary>Полный шаблон для сервера</summary>
 <p>
 
 ```py

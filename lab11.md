@@ -565,6 +565,27 @@ Incoming data: b'GET / HTTP/1.1\r\nHost: 127.0.0.1:9000\r\nUser-Agent: curl/7.49
 curl: (28) Operation timed out after 3000 milliseconds with 0 bytes received
 ```
 
+Ниже приведен возможный алгоритм метода `parse_request()`:
+
+```
+parse_request():
+    Если заголовки не разобраны:
+        Разобрать заголовки (parse_headers())
+        Если заголовки сформированы неверно:
+            Послать ответ: "400 Bad Request"
+        Если это POST-запрос:
+            Если тело запроса не пустое (Content-Length > 0):
+                Дочитать запрос
+            Иначе:
+                Вызвать обработчик запроса (handle_request())
+        Иначе:
+            Вызвать обработчик запроса (handle_request())
+    Иначе:
+        Получить тело запроса (может быть пустым)
+        Вызвать обработчик запроса (handle_request())
+```
+ 
+
 ```bash
 {
     'method': 'GET',

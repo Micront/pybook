@@ -637,9 +637,7 @@ responses = {
 
 <details><summary>Полный шаблон для сервера</summary><p>
 
-**test**
-
-```python
+<code>
 import asyncore
 import asynchat
 import socket
@@ -782,7 +780,7 @@ if __name__ == "__main__":
     for _ in xrange(args.nworkers):
         p = multiprocessing.Process(target=run)
         p.start()
-```
+</code>
 
 </p></details>
 

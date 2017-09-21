@@ -500,11 +500,15 @@ if __name__ == "__main__":
 
 ### Асинхронный HTTP-сервер
 
-В первой части задания вашей задачей является реализация простого асинхронного [HTTP-сервера](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) с помощью модулей [asyncore](https://docs.python.org/3.6/library/asyncore.html) и [asynchat](https://docs.python.org/3.6/library/asynchat.html).
+В первой части задания вашей задачей является реализация простого асинхронного [HTTP-сервера](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) с помощью модулей [asyncore](https://docs.python.org/3.6/library/asyncore.html) и [asynchat](https://docs.python.org/3.6/library/asynchat.html), которые предоставляют базовую инфраструктуру для создания асинхронных приложений.
+
+Идея лежащая в основе модулей заключается в создании одного или нескольких сетевых каналов (network channels) - экземпляров классов `asyncore.dispatcher` и `asynchat.async_chat`. Каждый созданный канал добавляется в глобальный `map` (словарь вида: `дескриптор сокета: канал`), который используется в функции `loop()`. Вызов функции `loop()` активирует один из механизмов "пулинга" (`select`, `poll`, `epoll`), который продолжает работать до тех пор, пока все каналы не будут закрыты.
 
 <div class="alert alert-info">
 <b>Замечание</b>: Начиная с версии Python 3.6 модули <tt>asyncore</tt> и <tt>asynchat</tt> считаются устаревшими (deprecated) и рекомендуется использовать модуль <a href="https://docs.python.org/3.6/library/asyncio.html#module-asyncio"><tt>asyncio</tt></a>.
 </div>
+
+Рассмотрим простой пример сервера, который на каждое новое соединение создает новый обработчик (экземпляр класс `AsyncHTTPRequestHandler`):
 
 ```python
 import asyncore
@@ -532,6 +536,8 @@ class AsyncHTTPServer(asyncore.dispatcher):
 server = AsyncHTTPServer()
 asyncore.loop()
 ```
+
+
 
 ```bash
 $ python async_server.py &

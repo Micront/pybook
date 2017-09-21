@@ -635,7 +635,7 @@ responses = {
 }
 ```
 
-<details><summary>Полный шаблон для сервера</summary><p>
+<details><summary>Полный шаблон для сервера</summary><pre>
 
 <code>
 import asyncore
@@ -782,7 +782,7 @@ if __name__ == "__main__":
         p.start()
 </code>
 
-</p></details>
+</pre></details>
 
 ### Асинхронный WSGI-Server
 

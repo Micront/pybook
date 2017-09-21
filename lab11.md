@@ -500,6 +500,11 @@ if __name__ == "__main__":
 
 ### Асинхронный HTTP-сервер
 
+В первой части задания вашей задачей является реализация простого асинхронного [HTTP-сервера](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) с помощью модулей [asyncore](https://docs.python.org/3.6/library/asyncore.html) и [asynchat](https://docs.python.org/3.6/library/asynchat.html).
+
+<div class="alert alert-info">
+<b>Замечание</b>: Начиная с версии Python 3.6 модули <tt>asyncore</tt> и <tt>asynchat</tt> считаются устаревшими (deprecated) и рекомендуется использовать модуль <a href="https://docs.python.org/3.6/library/asyncio.html#module-asyncio"><tt>asyncio</tt></a>.
+</div>
 
 ```python
 import asyncore

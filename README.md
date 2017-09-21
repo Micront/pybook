@@ -1,6 +1,6 @@
 # Введение
 
-<p style="text-align:center;"><img src="/assets/bps-config.png" width="50%"></p>
+<p style="text-align:center; margin-right: 20px;"><img src="/assets/bps-config.png" width="50%"></p>
 
 Настоящий ресурс представляет собой **черновой вариант** лабораторного практикума по языку программирования Python.
 

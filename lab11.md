@@ -500,7 +500,7 @@ if __name__ == "__main__":
 
 ### Асинхронный HTTP-сервер
 
-В первой части задания вашей задачей является реализация простого асинхронного [HTTP-сервера](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) с помощью модулей [asyncore](https://docs.python.org/3.6/library/asyncore.html) и [asynchat](https://docs.python.org/3.6/library/asynchat.html), которые предоставляют базовую инфраструктуру для создания асинхронных приложений.
+В первой части задания от вас требуется написать простой асинхронный [HTTP-сервер](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) с помощью модулей [asyncore](https://docs.python.org/3.6/library/asyncore.html) и [asynchat](https://docs.python.org/3.6/library/asynchat.html), которые предоставляют базовую инфраструктуру для создания сетевых асинхронных приложений.
 
 Идея лежащая в основе модулей заключается в создании одного или нескольких сетевых каналов (network channels) - экземпляров классов `asyncore.dispatcher` и `asynchat.async_chat`. Каждый созданный канал добавляется в глобальный `map` (словарь вида: `дескриптор сокета: канал`), который используется в функции `loop()`. Вызов функции `loop()` активирует один из механизмов "пулинга" (`select`, `poll`, `epoll`), который продолжает работать до тех пор, пока все каналы не будут закрыты.
 
@@ -508,13 +508,14 @@ if __name__ == "__main__":
 <b>Замечание</b>: Начиная с версии Python 3.6 модули <tt>asyncore</tt> и <tt>asynchat</tt> считаются устаревшими (deprecated) и рекомендуется использовать модуль <a href="https://docs.python.org/3.6/library/asyncio.html#module-asyncio"><tt>asyncio</tt></a>.
 </div>
 
-Рассмотрим простой пример сервера, который на каждое новое соединение создает новый обработчик (экземпляр класс `AsyncHTTPRequestHandler`):
+Рассмотрим простой пример сервера, который на каждое новое соединение создает свой обработчик (обратите внимание, что экземпляры классов `AsyncHTTPServer` и `AsyncHTTPRequestHandler` являются сетевыми каналами):
 
 ```python
 import asyncore
 import asynchat
 
 class AsyncHTTPRequestHandler(asynchat.async_chat):
+    """ Обработчик клиентских запросов """
     
     def __init__(self, sock):
         super().__init__(sock)

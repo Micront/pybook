@@ -635,9 +635,8 @@ responses = {
 }
 ```
 
-<details><summary>Полный шаблон для сервера</summary><pre>
-
-<code>
+<details><summary>Полный шаблон для сервера</summary>
+<pre><code class="lang-py">
 import asyncore
 import asynchat
 import socket
@@ -780,9 +779,8 @@ if __name__ == "__main__":
     for _ in xrange(args.nworkers):
         p = multiprocessing.Process(target=run)
         p.start()
-</code>
-
-</pre></details>
+</code></pre>
+</details>
 
 ### Асинхронный WSGI-Server
 

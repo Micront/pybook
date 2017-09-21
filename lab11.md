@@ -636,8 +636,7 @@ responses = {
 ```
 
 <details><summary>Полный шаблон для сервера</summary>
-<pre><code class="lang-py">
-import asyncore
+<pre><code class="lang-py">import asyncore
 import asynchat
 import socket
 import multiprocessing

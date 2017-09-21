@@ -163,6 +163,20 @@ def get(url, params={}, timeout=5, backoff_factor=0.3):
     pass
 ```
 
+```python
+>>> get("https://httpbin.org/get")
+>>> <Response [200]>
+
+>>> get("https://httpbin.org/delay/2", timeout=1)
+ReadTimeout: HTTPSConnectionPool(host='httpbin.org', port=443): Read timed out. (read timeout=1)
+
+>>> get("https://httpbin.org/status/500")
+HTTPError: 500 Server Error: INTERNAL SERVER ERROR for url: https://httpbin.org/status/500
+
+>>> get("https://noname.com", timeout=1)
+ConnectionError: HTTPSConnectionPool(host='noname.com', port=443): Max retries exceeded with url: /
+```
+
 На текущий момент вы должны заполнить тело функции `get_friends` так, чтобы она возвращала список друзей для указанного пользователя. Аргумент `fields` представляет из себя строку, в которой через запятую указываются какие поля необходимо получить по каждому пользователю.
 
 Теперь мы можем написать функцию `age_predict` для "наивного" прогнозирования возраста пользователя с идентификатором `user_id`:

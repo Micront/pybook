@@ -113,6 +113,10 @@ def decrypt_caesar(ciphertext):
 'A'</tt>
 </div>
 
+<div class="alert alert-info">
+О кодировках можно почитать <a href="http://kunststube.net/encoding/">тут</a> и <a href="http://farmdev.com/talks/unicode/">тут</a>.
+</div>
+
 В папке `homework01` создайте файл с именем `caesar.py` и шаблоном приведенным выше. Сделайте коммит с первоначальным шаблоном:
 
 ```sh

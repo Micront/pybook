@@ -362,13 +362,27 @@ plot(g, **visual_style)
 
 <p style="text-align:center;"><img src="/assets/Screen Shot 2017-09-23 at 00.08.46.png" width="50%"></p>
 
-```
+```python
 g.simplify(multiple=True, loops=True)
 ```
 
 <p style="text-align:center;"><img src="/assets/Screen Shot 2017-09-23 at 00.04.39.png" width="50%"></p>
 
-```
+```python
 communities = g.community_edge_betweenness(directed=False)
 clusters = communities.as_clustering()
+print(clusters)
 ```
+
+```
+Clustering with 7 elements and 2 clusters
+[0] 0, 1, 2, 3
+[1] 4, 5, 6
+```
+
+```python
+pal = igraph.drawing.colors.ClusterColoringPalette(len(clusters))
+g.vs['color'] = pal.get_many(clusters.membership)
+```
+
+<p style="text-align:center;"><img src="/assets/Screen Shot 2017-09-23 at 00.30.37.png" width="50%"></p>

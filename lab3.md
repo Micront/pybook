@@ -338,19 +338,19 @@ def generate_sudoku(N):
     
     >>> grid = generate_sudoku(40)
     >>> sum(1 for row in grid for e in row if e == '.')
-    40
+    41
     >>> solution = solve(grid)
     >>> check_solution(solution)
     True
     >>> grid = generate_sudoku(1000)
     >>> sum(1 for row in grid for e in row if e == '.')
-    81
+    0
     >>> solution = solve(grid)
     >>> check_solution(solution)
     True
     >>> grid = generate_sudoku(0)
     >>> sum(1 for row in grid for e in row if e == '.')
-    0
+    81
     >>> solution = solve(grid)
     >>> check_solution(solution)
     True

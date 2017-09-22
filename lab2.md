@@ -193,9 +193,6 @@ class CellList:
     
     def __str__(self):
         pass
-    
-    def __repr__(self):
-        pass
 ```
 
 Класс `CellList` должен быть итерируемым (реализовывать iterator protocol), например, так можно пройтись по списку клеток и оживить случайные клетки:

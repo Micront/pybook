@@ -168,6 +168,8 @@ response.headers                response.ok
 Описание алгоритма с примерами можно найти в статье <a href="https://habrahabr.ru/post/227225/">Exponential Backoff или как «не завалить сервер»</a>. Почитать про обработку исключений при работе с библиотекой <tt>requests</tt> можно <a href="https://khashtamov.com/ru/python-requests/">тут</a>.
 </div>
 
+Напишите функцию `get()`, которая будет выполнять GET-запрос к указанному адресу, а при необходимости повторять запрос указанное число раз по алгоритму экспоненциальной задержки:
+
 ```python
 def get(url, params={}, timeout=5, backoff_factor=0.3):
     """ Sends a GET request """

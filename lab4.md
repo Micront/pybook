@@ -171,8 +171,15 @@ response.headers                response.ok
 Напишите функцию `get()`, которая будет выполнять GET-запрос к указанному адресу, а при необходимости повторять запрос указанное число раз по алгоритму экспоненциальной задержки:
 
 ```python
-def get(url, params={}, timeout=5, backoff_factor=0.3):
-    """ Sends a GET request """
+def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
+    """ Выполнить GET-запрос
+    
+    :param url: адрес, на который необходимо выполнить запрос
+    :param params: адрес, на который необходимо выполнить запрос
+    :param timeout: максимальное время ожидания ответа от сервера
+    :param max_retries: максимальное число повторных запросов
+    :param backoff_factor: коэффициент экспоненциального нарастания задержки
+    """
     pass
 ```
 

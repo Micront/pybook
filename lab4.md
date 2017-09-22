@@ -360,13 +360,13 @@ visual_style["layout"] = g.layout_fruchterman_reingold(
 plot(g, **visual_style)
 ```
 
-![](/assets/Screen Shot 2017-09-23 at 00.08.46.png)
+<p style="text-align:center;"><img src="/assets/Screen Shot 2017-09-23 at 00.08.46.png" width="50%"></p>
 
 ```
 g.simplify(multiple=True, loops=True)
 ```
 
-![](/assets/Screen Shot 2017-09-23 at 00.04.39.png)
+<p style="text-align:center;"><img src="/assets/Screen Shot 2017-09-23 at 00.04.39.png" width="50%"></p>
 
 ```
 communities = g.community_edge_betweenness(directed=False)

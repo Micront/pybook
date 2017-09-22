@@ -323,11 +323,13 @@ def get_network(users_ids, as_edgelist=True):
     pass
 ```
 
+Поиск сообществ на графе (community detection) является хорошо изученной задачей, а ряд наиболее известных алгоритмов реализован в библиотеке `igraph`.
+
 ```bash
 $ pip install python-igraph
 $ pip install numpy
 $ pip install cairocffi
-$ brew install cairo
+$ brew install cairo    # Только для MacOS X. Для других ОС см. https://www.cairographics.org/download/
 ```
 
 ```python

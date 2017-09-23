@@ -16,6 +16,7 @@
 * [Лабораторная работа №12. Работа с модулем asyncio](laboratornaya-rabota-12-rabota-s-modulem-asyncio.md)
 * [Лабораторная работа №13. MicroSlack. Чат на aiohttp и websocket'ах](lab13.md)
 * [Лабораторная работа №14. Eleven Note](lab14.md)
+* [Лабораторная работа №15. Простой веб-фреймворк на asyncio](lab15.md)
 * [Заметки по классам](appendix-classes.md)
 * [Собственный проект](project.md)
 

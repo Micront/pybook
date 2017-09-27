@@ -33,12 +33,12 @@ pytz==2017.2
 (elevennote-env) $ echo "-r base.txt" >> requirements/prod.txt
 ```
 
-Теперь создадим новый проект с помощью команды `django-admin` (исодники проекта будем хранить в папке `src`). Обратите внимание, что имя проекта `config`, а все файлы проекта будут созданы в текущей рабочей директории (на что указывает `.`):
+Теперь создадим новый проект с помощью команды `django-admin` (исходники проекта будем хранить в папке `src`). Обратите внимание, что имя проекта `config`, а все файлы проекта будут созданы в текущей рабочей директории (на что указывает `.`):
 
 ```bash
-$ mkdir src && cd $_
-$ django-admin startproject config .
-$ ls
+(elevennote-env) $ mkdir src && cd $_
+(elevennote-env) $ django-admin startproject config .
+(elevennote-env) $ ls
 config manage.py
 ```
 
@@ -60,19 +60,19 @@ elevennote/
 
 Можете проверить, что проект запускается командой `python manage.py runserver` (если после запуска была создана БД `db.sqlite3`, а какие-то файлы закешированы `__pycache__`, то можете смело удалить их).
 
-Конфигурацию нашего проекта разделим на `local` и `production`.
+Конфигурацию нашего проекта разделим на:
+- `base.py` - общая конфигурация для всех развертываний проекта;
+- `local.py` - конфигурация, которая используется при разработке (включенный режим откладки, дополнительные пакеты для разработки, например, `django-debug-toolbar`);
+- `production.py` - настройки, которые используются для production-сервера.
 
 ```bash
-$ mkdir config/settings
-$ mv config/settings.py config/settings/base.py
-```
-
-```bash
-$ touch config/settings/__init__.py
-$ touch config/settings/local.py
-$ touch config/settings/production.py
-$ touch config/settings/settings.ini
-$ tree config
+(elevennote-env) $ mkdir src/config/settings
+(elevennote-env) $ mv src/config/settings.py src/config/settings/base.py
+(elevennote-env) $ touch src/config/settings/__init__.py
+(elevennote-env) $ touch src/config/settings/local.py
+(elevennote-env) $ touch src/config/settings/production.py
+(elevennote-env) $ touch src/config/settings/settings.ini
+(elevennote-env) $ tree src/config
 config/
 ├── __init__.py
 ├── settings

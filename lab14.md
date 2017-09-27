@@ -4,18 +4,39 @@
 Лабораторная работа основана на <a href="https://github.com/sixfeetup/ElevenNote">замечательном руководстве</a> по Django от компании Six Feet Up.
 </div>
 
-Как обычно создайте новую ветку разработки и виртуальное окружение с именем `elevennote-env`, в котором установите следующие пакеты:
+Как обычно создайте новую ветку разработки, папку для вашего проекта `elevennote` и виртуальное окружение с именем `elevennote-env`, в котором установите следующие пакеты:
 
 ```bash
-$ pip install Django==1.11.4
-$ pip install psycopg2==2.7.3
-$ pip install python-decouple==3.1
+(elevennote-env) $ pip install Django==1.11.5
+(elevennote-env) $ pip install psycopg2==2.7.3.1
+(elevennote-env) $ pip install python-decouple==3.1
+(elevennote-env) $ pip install uWSGI==2.0.15
 ```
 
-Теперь создадим новый проект с помощью команды `django-admin`. Обратите внимание, что имя проекта `config`, а все файлы проекта будут созданы в текущей рабочей директории (на что указывает `.`):
+Можете запустить команду `pip freeze` для просмотра установленных пакетов:
+
+```python
+(elevennote-env) $ pip freeze
+Django==1.11.5
+psycopg2==2.7.3.1
+uWSGI==2.0.15
+python-decouple==3.1
+pytz==2017.2
+```
+
+Все зависимости будем хранить в отдельном манифесте:
 
 ```bash
-$ mkdir elevennote && cd $_
+(elevennote-env) $ mkdir requirements
+(elevennote-env) $ pip freeze > requirements/base.txt
+(elevennote-env) $ echo "-r base.txt" >> requirements/dev.txt
+(elevennote-env) $ echo "-r base.txt" >> requirements/prod.txt
+```
+
+Теперь создадим новый проект с помощью команды `django-admin` (исодники проекта будем хранить в папке `src`). Обратите внимание, что имя проекта `config`, а все файлы проекта будут созданы в текущей рабочей директории (на что указывает `.`):
+
+```bash
+$ mkdir src && cd $_
 $ django-admin startproject config .
 $ ls
 config manage.py
@@ -23,8 +44,12 @@ config manage.py
 
 В результате вы должны получить следующую структуру проекта:
 ```bash
-.
-└── elevennote
+elevennote/
+├── requirements
+│   ├── base.txt
+│   ├── dev.txt
+│   └── prod.txt
+└── src
     ├── config
     │   ├── __init__.py
     │   ├── settings.py
@@ -32,6 +57,10 @@ config manage.py
     │   └── wsgi.py
     └── manage.py
 ```
+
+Можете проверить, что проект запускается командой `python manage.py runserver` (если после запуска была создана БД `db.sqlite3`, а какие-то файлы закешированы `__pycache__`, то можете смело удалить их).
+
+Конфигурацию нашего проекта разделим на `local` и `production`.
 
 ```bash
 $ mkdir config/settings
@@ -114,8 +143,8 @@ DATABASES = {
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', cast=int),
     }
 }
 ```
@@ -127,6 +156,8 @@ SECRET_KEY=
 DB_NAME=
 DB_USER=
 DB_PASSWORD=
+DB_HOST=
+DB_PORT
 ```
 
 <div class="alert alert-warning">
@@ -136,6 +167,118 @@ DB_PASSWORD=
 `manage.py`
 ```python
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
+```
+
+Установите докер для вашей системы (инструкции можно получить [тут](https://docs.docker.com/engine/installation/)).
+
+Создайте `Dokerfile` в корне вашего проекта:
+
+```bash
+FROM python:3.6
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /config
+COPY requirements /config/requirements
+RUN pip install -r /config/requirements/dev.txt
+RUN mkdir /src;
+WORKDIR /src
+```
+
+**TODO**: Пояснения к Dockerfile
+
+Теперь в корне проекта создадим файл `docker-compose.yml`:
+
+```
+version: '2'
+services:
+    nginx:
+        image: nginx:latest
+        container_name: ng01
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./src:/src
+            - ./deploy/nginx:/etc/nginx/conf.d
+        depends_on:
+            - web
+    web:
+        build: .
+        container_name: dg01
+        command: bash -c "python manage.py makemigrations && python manage.py migrate && uwsgi --ini /usr/local/etc/elevennote.ini"
+        depends_on:
+            - db
+        volumes:
+            - ./src:/src
+            - ./deploy/uwsgi:/usr/local/etc/
+        expose:
+            - "8000"
+    db:
+        image: postgres:latest
+        container_name: ps01
+```
+
+**TODO**: Пояснения к docker-compose.yml
+
+`deploy/uwsgi/elevennote.ini`
+```ini
+[uwsgi]
+chdir = /src
+module = config.wsgi:application
+master = true
+processes = 5
+socket = 0.0.0.0:8000
+vacuum = true
+die-on-term = true
+env = DJANGO_SETTINGS_MODULE=config.settings.local
+```
+
+`deploy/nginx/elevennote.conf`
+```
+upstream web {
+    ip_hash;
+    server web:8000;
+}
+
+server {
+    location / {
+        include uwsgi_params;
+        uwsgi_pass web;
+    }
+    listen 8000;
+    server_name localhost;
+}
+```
+
+На текущий момент структура вашего проекта должна быть следующей:
+```
+.
+├── Dockerfile
+├── deploy
+│   ├── nginx
+│   │   └── elevennote.conf
+│   └── uwsgi
+│       └── elevennote.ini
+├── docker-compose.yml
+├── requirements
+│   ├── base.txt
+│   ├── dev.txt
+│   └── prod.txt
+└── src
+    ├── config
+    │   ├── __init__.py
+    │   ├── settings
+    │   │   ├── __init__.py
+    │   │   ├── base.py
+    │   │   ├── local.py
+    │   │   ├── production.py
+    │   │   └── settings.ini
+    │   ├── urls.py
+    │   └── wsgi.py
+    └── manage.py
+```
+
+```bash
+$ docker-compose build
+$ docker-compose up
 ```
 
 ```bash
@@ -204,12 +347,6 @@ urlpatterns = [
     url(r'^admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
     url(r'^secret/', admin.site.urls),
 ]
-```
-
-
-```bash
-$ mkdir requirements
-$ pip freeze > requirements/base.txt
 ```
 
 `notes/admin.py`

@@ -157,7 +157,7 @@ DB_NAME=
 DB_USER=
 DB_PASSWORD=
 DB_HOST=
-DB_PORT
+DB_PORT=
 ```
 
 <div class="alert alert-warning">
@@ -281,10 +281,10 @@ $ docker-compose build
 $ docker-compose up
 ```
 
-```bash
-$ python manage.py migrate
-$ python manage.py runserver
-```
+![](/assets/Screen Shot 2017-09-27 at 17.15.03.png)
+
+
+![](/assets/Screen Shot 2017-09-27 at 17.15.32.png)
 
 ```bash
 $ python manage.py createsuperuser

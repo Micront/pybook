@@ -149,7 +149,7 @@ DATABASES = {
 }
 ```
 
-В `config/settings/settings.ini` укажите секретный ключ для Django, имя БД, пользователя БД и его пароль:
+В `config/settings/settings.ini` укажите секретный ключ для Django, имя БД, пользователя БД, его пароль, адрес хоста и порт, на котором будет запущена БД:
 ```python
 [settings]
 SECRET_KEY=
@@ -169,9 +169,13 @@ DB_PORT=
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 ```
 
-Установите докер для вашей системы (инструкции можно получить [тут](https://docs.docker.com/engine/installation/)).
+Создадим docker-окружение для разработки и запуска нашего проекта. 
 
-Создайте `Dokerfile` в корне вашего проекта:
+<div class="alert alert-info">
+Для знакомства с докером можно почитать статью <a href="http://djangostars.com/blog/what-is-docker-and-how-to-use-it-with-python/">What is docker and how to use it with python</a>, а также занимательную статью в <a href="http://grishaev.me/docker">блоге</a> Ивана Гришаева.
+</div>
+
+Установите докер для вашей системы (инструкции можно получить [тут](https://docs.docker.com/engine/installation/)) и создайте `Dokerfile` в корне вашего проекта:
 
 ```bash
 FROM python:3.6

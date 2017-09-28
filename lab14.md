@@ -200,7 +200,6 @@ services:
         ports:
             - "8000:8000"
         volumes:
-            - ./src:/src
             - ./deploy/nginx:/etc/nginx/conf.d
         depends_on:
             - web
@@ -235,6 +234,9 @@ die-on-term = true
 env = DJANGO_SETTINGS_MODULE=config.settings.local
 ```
 
+**TODO**: Пояснения к конфигурации uwsgi
+
+
 `deploy/nginx/elevennote.conf`
 ```
 upstream web {
@@ -251,6 +253,9 @@ server {
     server_name localhost;
 }
 ```
+
+**TODO**: Пояснения к nginx
+
 
 На текущий момент структура вашего проекта должна быть следующей:
 ```
@@ -285,10 +290,15 @@ $ docker-compose build
 $ docker-compose up
 ```
 
+Теперь приложение запущено и вы можете обратиться к нему по адресу [http://localhost:8000](http://localhost:8000), где должны увидеть стандартное приветствие Django:
+
 ![](/assets/Screen Shot 2017-09-27 at 17.15.03.png)
 
+На текущий момент осталась одна нерешенная проблема - обработка статических файлов:
 
 ![](/assets/Screen Shot 2017-09-27 at 17.15.32.png)
+
+**Задание**: Решите обозначенную проблему путем внесения соответствующих изменений в `docker-compose.yml`, `deploy/nginx/elevennote.conf` и `src/config/settings/base.py`.
 
 ```bash
 $ python manage.py createsuperuser

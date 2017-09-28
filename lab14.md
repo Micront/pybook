@@ -300,19 +300,36 @@ $ docker-compose up
 
 **Задание**: Решите обозначенную проблему путем внесения соответствующих изменений в `docker-compose.yml`, `deploy/nginx/elevennote.conf` и `src/config/settings/base.py`.
 
-```bash
-$ python manage.py createsuperuser
-```
-
-Создадим новое приложение `notes` (заметки) и нашу первую модель `Note`:
+Создадим нового суперпользователя. Для этого подключимся к контейнеру:
 
 ```bash
-$ python manage.py startapp notes
+$ docker exec -it dg01 bash
+$ root@67a3bcc5c881$ python manage.py createsuperuser
+Username (leave blank to use 'root'): 
+Email address: 
+Password: 
+Password (again): 
+Superuser created successfully.
+root@67a3bcc5c881:/src# exit
 ```
 
-Каждая заметка будет представлена следующими полями:
-- заголовком (`title`) с ограничением 200 символов;
-- текстом заметки (`body`);
+Создадим новое приложение `notes` (заметки) и добавим его в `INSTALLED_APPS`:
+
+```bash
+$ docker-compose run web python manage.py startapp notes
+```
+
+`src/config/settings/base.py`
+```python
+INSTALLED_APPS = [
+    # ...
+    'notes',
+]
+```
+
+Создадим первую модель `Note` со следующими полями:
+- заголовок (`title`) с ограничением 200 символов;
+- текст заметки (`body`);
 - и датой создания (`pub_date`).
 
 `notes/models.py`
@@ -334,11 +351,11 @@ admin.site.register(Note)
 
 И применим внесенные изменения к БД:
 ```bash
-$ python manage.py makemigrations notes
-$ python manage.py migrate
+$ docker-compose run web python manage.py makemigrations notes
+$ docker-compose run web python manage.py migrate
 ```
 
-Запустите проект `python manage.py runserver` и откройте панель администратора [http://localhost:8000/admin](http://localhost:8000/admin). Вы должны увидеть, что появился новый раздел `Notes`, в котором вы можете создавать, редактировать и удалять заметки.
+Теперь откройте панель администратора [http://localhost:8000/admin](http://localhost:8000/admin). Вы должны увидеть, что появился новый раздел `Notes`, в котором вы можете создавать, редактировать и удалять заметки.
 
 ![](/assets/Screen Shot 2017-09-16 at 18.10.05.png)
 

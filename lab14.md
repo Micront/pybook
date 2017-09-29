@@ -384,6 +384,8 @@ urlpatterns = [
 ]
 ```
 
+![](/assets/Screen Shot 2017-09-29 at 17.00.13.png)
+
 `notes/admin.py`
 ```python
 class NoteAdmin(admin.ModelAdmin):

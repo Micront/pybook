@@ -306,7 +306,7 @@ $ docker-compose up
 
 Создадим нового суперпользователя. Для этого подключимся к контейнеру:
 
-```bash
+```sh
 $ docker exec -it dg01 bash
 $ root@67a3bcc5c881$ python manage.py createsuperuser
 Username (leave blank to use 'root'): 
@@ -528,6 +528,10 @@ TEMPLATES = [
 <h1>{{ note.title }}</h1>
 <p>{{ note.body }}</p>
 ```
+
+<div class="alert alert-info">
+<b>Замечание</b>: При необходимости вы можете перезапустить контейнер <tt>web</tt> командой <tt>docker-compose restart web</tt>
+</div>
 
 `notes/tests/tests_views.py`
 ```python

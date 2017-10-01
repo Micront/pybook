@@ -540,7 +540,6 @@ TEMPLATES = [
 
 ```bash
 $ python manage.py startapp accounts
-$ touch accounts/urls.py
 ```
 
 `config/urls.py`
@@ -619,9 +618,9 @@ def detail(request):
 ```bash
 $ mkdir static
 $ cd static
-$ wget https://github.com/twbs/bootstrap/releases/download/v4.0.0-alpha.6/bootstrap-4.0.0-alpha.6-dist.zip
-$ unzip bootstrap-4.0.0-alpha.6-dist.zip
-$ mv bootstrap-4.0.0-alpha.6-dist bootstrap
+$ wget https://github.com/twbs/bootstrap/releases/download/v3.0.3/bootstrap-3.0.3-dist.zip
+$ unzip bootstrap-3.0.3-dist.zip
+$ mv dist bootstrap
 $ cd ..
 ```
 
@@ -689,6 +688,8 @@ urlpatterns = [
 # ...
 LOGIN_REDIRECT_URL = '/'
 ```
+
+![](/assets/Screen Shot 2017-10-01 at 16.29.38.png)
 
 `accounts/tests/test_views.py`
 ```python

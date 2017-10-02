@@ -628,6 +628,7 @@ $ cd ..
 ```python
 # ...
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static'
 STATICFILES_DIRS = [
     root('static'),
 ]
@@ -751,8 +752,8 @@ class NoteDetail(DetailView):
     context_object_name = 'note'
 
     @method_decorator(login_required)
-        def dispatch(self, *args, **kwargs):
-            return super(NoteDetail, self).dispatch(*args, **kwargs)
+    def dispatch(self, *args, **kwargs):
+        return super(NoteDetail, self).dispatch(*args, **kwargs)
 ```
 
 `notes/urls.py`

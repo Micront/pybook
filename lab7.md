@@ -380,6 +380,3 @@ $$P(C|D) = \ln P(C) + \sum_i \ln P(w_i|C)$$
 
 Итак, наша итоговая модель будет выглядеть следующим образом:
 
-$$
-\widehat{y} = argmax_c\Big(\ln P(C=c) + \sum_i \ln P(w_i|C = c) \Big)
-$$

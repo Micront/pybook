@@ -1,6 +1,6 @@
 {
     "plugins": [
-        "mathjax", "disqus", "python-visualizer"
+        "katex", "disqus", "python-visualizer"
     ],
     "pluginsConfig": {
         "disqus": {

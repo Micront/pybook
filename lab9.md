@@ -126,12 +126,14 @@ Running migrations:
   Applying todolist.0001_initial... OK
 ```
 
-**Замечание**: По умолчанию в Django используется `sqlite3`. В корне проекта будет создан файл `db.sqlite3`, содержимое которого вы можете просмотреть с помощью программы DB Browser for SQLite.
+<div class="alert alert-info">
+<b>Замечание</b>: По умолчанию в Django используется <tt>sqlite3</tt>. В корне проекта будет создан файл <tt>db.sqlite3</tt>, содержимое которого вы можете просмотреть с помощью программы DB Browser for SQLite.
+</div>
 
 И еще раз запустим наш тест:
 
 ```py
-(cs102) $ python3 manage.py test
+(cs102) $ python manage.py test
 Creating test database for alias 'default'...
 E
 ======================================================================

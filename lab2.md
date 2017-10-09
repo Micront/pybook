@@ -174,15 +174,26 @@ def update_cell_list(self, cell_list):
 
 ```python
 class Cell:
+    def __init__(self, row, col, state):
+        pass
+    
     def is_alive(self):
         pass
 
 
 class CellList:
-    def draw(self):
+    
+    def __init__(self, nrows, ncols, randomize=False):
+        pass
+        
+    def update(self):
         pass
     
-    def update(self):
+    def get_neighbours(self, cell):
+        pass
+    
+    @classmethod
+    def from_file(cls, filename):
         pass
     
     def __iter__(self):
@@ -213,7 +224,7 @@ class CellList:
 Также в классе `CellList` должно быть предусмотрено заполнение списка клеток данными из файла:
 
 ```python
->>> cell_list = CellList(filename = 'game.txt')
+>>> cell_list = CellList.from_file(filename = 'game.txt')
 >>> print(cell_list)
 [[1, 1, 0, 0, 1, 1, 1, 1],
  [0, 1, 1, 1, 1, 1, 1, 0],

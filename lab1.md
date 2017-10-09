@@ -11,7 +11,7 @@ $ git clone https://Dementiy@bitbucket.org/Dementiy/cs102_2016.git
 ```
 
 <div class="alert alert-danger">
-Описание работы с командой <code>git</code> читай в разделе "<a href="https://dementiy.gitbooks.io/-python/content/chapter1.html">Настройка рабочего окружения</a>".
+Описание работы с командой <code>git</code> читай в разделе "<a href="https://dementiy.gitbooks.io/-python/content/lab0.html">Настройка рабочего окружения</a>".
 </div>
 
 Все дальнейшие изменения в репозитории можно получать с помощью команды `git pull` (её рекомендуется использовать каждый раз, когда вы приступаете к выполнению новой лабораторной работы):

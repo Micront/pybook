@@ -1,4 +1,4 @@
-# Лабораторная работа №14. Eleven Note
+# Лабораторная работа №9. Eleven Note
 
 <div class="alert alert-info">
 Лабораторная работа основана на <a href="https://github.com/sixfeetup/ElevenNote">замечательном руководстве</a> по Django от компании Six Feet Up.

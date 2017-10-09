@@ -180,6 +180,7 @@ def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     :param max_retries: максимальное число повторных запросов
     :param backoff_factor: коэффициент экспоненциального нарастания задержки
     """
+    # PUT YOUR CODE HERE
     pass
 ```
 
@@ -320,6 +321,7 @@ py.iplot(data)
 ```python
 def get_network(users_ids, as_edgelist=True):
     """ Building a friend graph for an arbitrary list of users """
+    # PUT YOUR CODE HERE
     pass
 ```
 

@@ -95,18 +95,18 @@ class Task(models.Model):
 И запустим наш тест:
 
 ```
-(cs102) $ python3 manage.py test
+(cs102) $ python manage.py test
 ```
 
-Вы увидите множество ошибок, которые связаны с тем, что мы еще не создали БД и не добавили туда модель `Task`. Давайте сделаем это:
+Вы увидите множество ошибок, которые связаны с тем, что мы еще не создали БД и не добавили модель `Task`. Давайте сделаем это:
 
 ```py
-(cs102) $ python3 manage.py makemigrations
+(cs102) $ python manage.py makemigrations
 Migrations for 'todolist':
   todolist/migrations/0001_initial.py:
     - Create model Task
 
-(cs102) $ python3 manage.py migrate
+(cs102) $ python manage.py migrate
 Operations to perform:
   Apply all migrations: admin, auth, contenttypes, sessions, todolist
 Running migrations:
@@ -180,7 +180,7 @@ class Task(models.Model):
 И сохраним изменения в БД:
 
 ```py
-(cs102) $ python3 manage.py makemigrations
+(cs102) $ python manage.py makemigrations
 Migrations for 'todolist':
   todolist/migrations/0002_auto_20170225_1224.py:
     - Add field completed to task
@@ -202,7 +202,7 @@ Running migrations:
 Снова запустим тест:
 
 ```py
-(cs102) $ python3 manage.py test
+(cs102) $ python manage.py test
 Creating test database for alias 'default'...
 .
 ----------------------------------------------------------------------
@@ -214,7 +214,7 @@ Destroying test database for alias 'default'...
 
 В этот раз уже никаких ошибок не было, а это означает, что мы можем создавать модели и сохранять их в БД.
 
-Теперь нам нужно создать [сериализатор](http://www.django-rest-framework.org/api-guide/serializers/%29 %28serializer\). Сериализаторы позволяют представить множество сложных объектов, которые возможно мы получили из БД, в простой и человеко-читаемой форме, например, в формате JSON или XML.
+Теперь нам нужно создать [сериализатор](http://www.django-rest-framework.org/api-guide/serializers/). Сериализаторы позволяют представить множество сложных объектов, которые возможно мы получили из БД, в простой и человеко-читаемой форме, например, в формате JSON или XML.
 
 Создадим файл `todolist/serializers.py` со следующим содержимым:
 
@@ -308,7 +308,7 @@ urlpatterns = [
 Итак, давайте запустим сервер:
 
 ```
-(cs102) $ python3 manage.py runserver
+(cs102) $ python manage.py runserver
 Performing system checks...
 
 System check identified no issues (0 silenced).
@@ -318,7 +318,11 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-Пройдите по адресу `http://127.0.0.1:8000/todolists`, вы должны увидеть следующее окно:![](/assets/Screen Shot 2017-02-25 at 15.51.30.png)В нашей БД еще нет ни одной записи, давайте добавим новую запись, для этого достаточно заполнить поля и нажать на `POST`:
+Пройдите по адресу `http://127.0.0.1:8000/todolists`, вы должны увидеть следующее окно:
+
+![](/assets/Screen Shot 2017-02-25 at 15.51.30.png)
+
+В нашей БД еще нет ни одной записи, давайте добавим новую запись, для этого достаточно заполнить поля и нажать на `POST`:
 
 ![](/assets/Screen Shot 2017-02-25 at 15.53.36.png)
 ![](/assets/Screen Shot 2017-02-25 at 15.54.04.png)
@@ -337,7 +341,7 @@ class Tasklist(models.Model):
         return "{}".format(self.name)
 ```
 
-Теперь необходимо отразить, что задача входит в конкретный список задач \(то есть отношение один ко многим - один список задач включает множество задач\), сделаем это с помощью внешнего ключа \(про работу с внешними ключами можно почитать [тут](https://docs.djangoproject.com/en/1.10/topics/db/examples/many_to_one/%29\):
+Теперь необходимо отразить, что задача входит в конкретный список задач (то есть отношение один ко многим - один список задач включает множество задач), сделаем это с помощью внешнего ключа (про работу с внешними ключами можно почитать [тут](https://docs.djangoproject.com/en/1.10/topics/db/examples/many_to_one/):
 
 ```py
 class Task(models.Model):
@@ -363,16 +367,16 @@ class TasklistSerializer(serializers.ModelSerializer):
 Все изменения надо зафиксировать в БД:
 
 ```
-(cs102) $ python3 manage.py makemigrations
-(cs102) $ python3 manage.py migrate
+(cs102) $ python manage.py makemigrations
+(cs102) $ python manage.py migrate
 ```
 
 Прежде чем мы продолжим давайте определимся со списком методов, которые будем предоставлять пользователю:
 
-* `/todolists` - получение всех списков задач или создание нового списка \(GET и POST методы\)
-* `/todolists/list_id`_ - _редактирование или удаление списка задач с идентификатором `list_id` \(GET, PUT, DELETE\)
-* `/todolists/list_id/tasks`_ _-  просмотр задач или создание новой задачи в списке задач с идентификатором `list_id` \(GET и POST\)
-* `/todolists/list_id/tasks/task_id` - редактирование или удаление задачи `task_id` в списке задач с идентификатором `list_id` \(GET, PUT, DELETE\)
+* `/todolists` - получение всех списков задач или создание нового списка (GET и POST методы)
+* `/todolists/list_id`_ - _редактирование или удаление списка задач с идентификатором `list_id` (GET, PUT, DELETE)
+* `/todolists/list_id/tasks` -  просмотр задач или создание новой задачи в списке задач с идентификатором `list_id` (GET и POST)
+* `/todolists/list_id/tasks/task_id` - редактирование или удаление задачи `task_id` в списке задач с идентификатором `list_id` (GET, PUT, DELETE)
 
 Давайте отразим этот список методов в наших маршрутах `todolists/urls.py`:
 
@@ -439,5 +443,5 @@ class TaskDetailsView(generics.RetrieveUpdateDestroyAPIView):
 
 **Задание**:
 
-1. Добавьте возможность указания тегов для задач. Для этого вам необходимо создать новую модель `Tag`, у тега будет поле с именем \(`name`\). Следует иметь ввиду, что одна задача может иметь множество тегов, а одинаковые теги, могут быть применимы к разным задачам. Таким образом, это отношение многие ко многим. Посмотрите [этот вопрос](http://stackoverflow.com/questions/37828358/manytomany-with-django-rest-framework) и ответ для решения этого задания.
-2. Добавьте поле владелец \(`owner`\) к списку задач, таким образом, пользователь должен видеть только те списки задач \(или задачи\), которые создавал он. Для выполнения этого задания вам необходимо иметь возможность создавать пользователей.
+1. Добавьте возможность указания тегов для задач. Для этого вам необходимо создать новую модель `Tag`, у тега будет поле с именем (`name`). Следует иметь ввиду, что одна задача может иметь множество тегов, а одинаковые теги, могут быть применимы к разным задачам. Таким образом, это отношение многие ко многим. Посмотрите [этот вопрос](http://stackoverflow.com/questions/37828358/manytomany-with-django-rest-framework) и ответ для решения этого задания.
+2. Добавьте поле владелец (`owner`) к списку задач, таким образом, пользователь должен видеть только те списки задач (или задачи), которые создавал он. Для выполнения этого задания вам необходимо иметь возможность создавать пользователей.

@@ -1,4 +1,4 @@
-### Лабораторная работа №7. REST API для ведения заметок на Django
+# Лабораторная работа №7. REST API для ведения заметок на Django
 
 В этой работе мы напишем простой REST API сервис для ведения заметок. Если вы не знаете, что такое REST API, то советую обратиться к этой ссылке: [http://www.restapitutorial.ru/lessons/whatisrest.html](http://www.restapitutorial.ru/lessons/whatisrest.html).
 

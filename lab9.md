@@ -2,20 +2,24 @@
 
 В этой работе мы напишем простой REST API сервис для ведения заметок. Если вы не знаете, что такое REST API, то советую обратиться к этой ссылке: [http://www.restapitutorial.ru/lessons/whatisrest.html](http://www.restapitutorial.ru/lessons/whatisrest.html).
 
+<div class="alert alert-info">
+<b>Замечание</b>: Перед выполнением работы пройдите официальное руководство по <a href="https://docs.djangoproject.com/en/1.11/intro/">Django</a>. Затем официально руководство по <a href="http://www.django-rest-framework.org/tutorial/quickstart/">Django Rest Framework</a>.
+</div>
+
 ```py
-python3 -m pip install django
+(cs102) $ python3 -m pip install django
 ```
 
 Создадим новый проект:
 
 ```py
-django-admin startproject djangorest
+(cs102) $ django-admin startproject djangorest
 ```
 
 Установим REST API фреймворк:
 
 ```py
-python3 -m pip install djangorestframework
+(cs102) $ python3 -m pip install djangorestframework
 ```
 
 Подключим фреймворк для использования в нашем проекте. Для этого в файле `djangorest/settings.py` необходимо добавить строку `rest_framework`:
@@ -37,8 +41,8 @@ INSTALLED_APPS = [
 В одном проекте может быть задействовано несколько приложений, поэтому создадим отдельное \(и единственное\) приложение для заметок:
 
 ```py
-cd djangorest
-python3 manage.py startapp todolist
+(cs102) $ cd djangorest
+(cs102) $ python3 manage.py startapp todolist
 ```
 
 Добавим наше приложение в файле `settings.py`:
@@ -90,18 +94,18 @@ class Task(models.Model):
 И запустим наш тест:
 
 ```
-python3 manage.py test
+(cs102) $ python3 manage.py test
 ```
 
 Вы увидите множество ошибок, которые связаны с тем, что мы еще не создали БД и не добавили туда модель `Task`. Давайте сделаем это:
 
 ```py
-$ python3 manage.py makemigrations
+(cs102) $ python3 manage.py makemigrations
 Migrations for 'todolist':
   todolist/migrations/0001_initial.py:
     - Create model Task
 
-$ python3 manage.py migrate
+(cs102) $ python3 manage.py migrate
 Operations to perform:
   Apply all migrations: admin, auth, contenttypes, sessions, todolist
 Running migrations:
@@ -126,7 +130,7 @@ Running migrations:
 И еще раз запустим наш тест:
 
 ```py
-python3 manage.py test
+(cs102) $ python3 manage.py test
 Creating test database for alias 'default'...
 E
 ======================================================================
@@ -173,7 +177,7 @@ class Task(models.Model):
 И сохраним изменения в БД:
 
 ```py
-$ python3 manage.py makemigrations
+(cs102) $ python3 manage.py makemigrations
 Migrations for 'todolist':
   todolist/migrations/0002_auto_20170225_1224.py:
     - Add field completed to task
@@ -195,7 +199,7 @@ Running migrations:
 Снова запустим тест:
 
 ```py
-python3 manage.py test
+(cs102) $ python3 manage.py test
 Creating test database for alias 'default'...
 .
 ----------------------------------------------------------------------
@@ -301,7 +305,7 @@ urlpatterns = [
 Итак, давайте запустим сервер:
 
 ```
-python3 manage.py runserver
+(cs102) $ python3 manage.py runserver
 Performing system checks...
 
 System check identified no issues (0 silenced).
@@ -311,9 +315,14 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
-Пройдите по адресу `http://127.0.0.1:8000/todolists`, вы должны увидеть следующее окно:![](/assets/Screen Shot 2017-02-25 at 15.51.30.png)В нашей БД еще нет ни одной записи, давайте добавим новую запись, для этого достаточно заполнить поля и нажать на
+Пройдите по адресу `http://127.0.0.1:8000/todolists`, вы должны увидеть следующее окно:![](/assets/Screen Shot 2017-02-25 at 15.51.30.png)В нашей БД еще нет ни одной записи, давайте добавим новую запись, для этого достаточно заполнить поля и нажать на `POST`:
 
-`POST`:![](/assets/Screen Shot 2017-02-25 at 15.53.36.png%29![]%28/assets/Screen Shot 2017-02-25 at 15.54.04.png%29Также мы можем обратиться по адресу `http://127.0.0.1:8000/todolists/1/`, чтобы получить заметку с идентификатором 1:![]%28/assets/Screen Shot 2017-02-25 at 17.24.22.png)
+![](/assets/Screen Shot 2017-02-25 at 15.53.36.png)
+![](/assets/Screen Shot 2017-02-25 at 15.54.04.png)
+
+Также мы можем обратиться по адресу `http://127.0.0.1:8000/todolists/1/`, чтобы получить заметку с идентификатором 1:
+
+![](/assets/Screen Shot 2017-02-25 at 17.24.22.png)
 
 Теперь давайте добавим возможность объединения заметок в группы, назовем их "Списком задач". Для этого нам нужно добавить модель для списка задач `todolist/models.py`:
 
@@ -351,8 +360,8 @@ class TasklistSerializer(serializers.ModelSerializer):
 Все изменения надо зафиксировать в БД:
 
 ```
-python3 manage.py makemigrations
-python3 manage.py migrate
+(cs102) $ python3 manage.py makemigrations
+(cs102) $ python3 manage.py migrate
 ```
 
 Прежде чем мы продолжим давайте определимся со списком методов, которые будем предоставлять пользователю:
@@ -429,6 +438,3 @@ class TaskDetailsView(generics.RetrieveUpdateDestroyAPIView):
 
 1. Добавьте возможность указания тегов для задач. Для этого вам необходимо создать новую модель `Tag`, у тега будет поле с именем \(`name`\). Следует иметь ввиду, что одна задача может иметь множество тегов, а одинаковые теги, могут быть применимы к разным задачам. Таким образом, это отношение многие ко многим. Посмотрите [этот вопрос](http://stackoverflow.com/questions/37828358/manytomany-with-django-rest-framework) и ответ для решения этого задания.
 2. Добавьте поле владелец \(`owner`\) к списку задач, таким образом, пользователь должен видеть только те списки задач \(или задачи\), которые создавал он. Для выполнения этого задания вам необходимо иметь возможность создавать пользователей.
-
-
-

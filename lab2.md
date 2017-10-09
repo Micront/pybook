@@ -175,7 +175,7 @@ def update_cell_list(self, cell_list):
 ```python
 class Cell:
     
-    def __init__(self, row, col, state):
+    def __init__(self, row, col, state=False):
         pass
     
     def is_alive(self):

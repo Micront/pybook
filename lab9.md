@@ -17,7 +17,7 @@
 (cs102) $ django-admin startproject djangorest
 ```
 
-Установите Django Rest Framework фреймворк:
+Установите Django Rest Framework:
 
 ```py
 (cs102) $ pip install djangorestframework

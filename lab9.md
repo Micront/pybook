@@ -3,23 +3,24 @@
 В этой работе мы напишем простой REST API сервис для ведения заметок. Если вы не знаете, что такое REST API, то советую обратиться к этой ссылке: [http://www.restapitutorial.ru/lessons/whatisrest.html](http://www.restapitutorial.ru/lessons/whatisrest.html).
 
 <div class="alert alert-info">
-<b>Замечание</b>: Перед выполнением работы пройдите официальное руководство по <a href="https://docs.djangoproject.com/en/1.11/intro/">Django</a>. Затем официально руководство по <a href="http://www.django-rest-framework.org/tutorial/quickstart/">Django Rest Framework</a>.
+<b>Замечание</b>: Перед выполнением работы пройдите официальное руководство по <a href="https://docs.djangoproject.com/en/1.11/intro/">Django</a>. Затем официальное руководство по <a href="http://www.django-rest-framework.org/tutorial/quickstart/">Django Rest Framework</a>.
 </div>
 
+Установите Django, если он еще не установлен:
 ```py
-(cs102) $ python3 -m pip install django
+(cs102) $ pip install django
 ```
 
-Создадим новый проект:
+Создайте новый проект:
 
 ```py
 (cs102) $ django-admin startproject djangorest
 ```
 
-Установим REST API фреймворк:
+Установите Django Rest Framework фреймворк:
 
 ```py
-(cs102) $ python3 -m pip install djangorestframework
+(cs102) $ pip install djangorestframework
 ```
 
 Подключим фреймворк для использования в нашем проекте. Для этого в файле `djangorest/settings.py` необходимо добавить строку `rest_framework`:
@@ -38,14 +39,14 @@ INSTALLED_APPS = [
 ]
 ```
 
-В одном проекте может быть задействовано несколько приложений, поэтому создадим отдельное \(и единственное\) приложение для заметок:
+В одном проекте может быть задействовано несколько приложений, поэтому создадим отдельное (и единственное) приложение для заметок:
 
 ```py
 (cs102) $ cd djangorest
-(cs102) $ python3 manage.py startapp todolist
+(cs102) $ python manage.py startapp todolist
 ```
 
-Добавим наше приложение в файле `settings.py`:
+Добавим наше приложение в файле `djangorest/settings.py`:
 
 ```py
 # Application definition
@@ -62,7 +63,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-В этой работе для проверки нашего кода мы будем писать тесты согласно принципу \(философии\) [TDD](https://ru.wikipedia.org/wiki/Разработка_через_тестирование%29, простыми словами: сначала пишем тест - потом код. В Django для создания тестов используется [unittest-фреймворк]%28https://docs.python.org/3/library/unittest.html#module-unittest).
+В этой работе для проверки нашего кода мы будем писать тесты согласно принципу (философии) [TDD](https://ru.wikipedia.org/wiki/Разработка_через_тестирование), простыми словами: сначала пишем тест - потом код. В Django для создания тестов используется [unittest-фреймворк](https://docs.python.org/3/library/unittest.html#module-unittest).
 
 Создадим наш первый тест, который проверяет можем ли мы создавать модели и сохранять их в БД. Для этого в файле `todolist/tests.py` добавим следующий класс:
 

@@ -174,6 +174,7 @@ def update_cell_list(self, cell_list):
 
 ```python
 class Cell:
+    
     def __init__(self, row, col, state):
         pass
     

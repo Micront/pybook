@@ -79,6 +79,8 @@ def encrypt_caesar(plaintext):
     'SBWKRQ'
     >>> encrypt_caesar("python")
     'sbwkrq'
+    >>> encrypt_caesar("Python3.6")
+    'Sbwkrq3.6'
     >>> encrypt_caesar("")
     ''
     """
@@ -92,6 +94,8 @@ def decrypt_caesar(ciphertext):
     'PYTHON'
     >>> decrypt_caesar("sbwkrq")
     'python'
+    >>> decrypt_caesar("Sbwkrq3.6")
+    'Python3.6'
     >>> decrypt_caesar("")
     ''
     """
@@ -212,7 +216,12 @@ def decrypt_vigenere(ciphertext, keyword):
 (cs102) $ git commit -m "Добавлен шаблон для шифра Виженера"
 ```
 
-По окончании работы над каждой функцией не забудьте сделать соответствующие коммиты, как в примере с шифром Цезаря, а также объединенить изменения с веткой `develop`.
+По окончании работы над каждой функцией не забудьте сделать соответствующие коммиты, как в примере с шифром Цезаря, а также объединенить изменения с веткой `develop`:
+
+```sh
+(cs102) $ git checkout develop
+(cs102) $ git merge --no-ff feature/vigener
+```
 
 ### RSA шифрование
 
@@ -351,7 +360,12 @@ def multiplicative_inverse(e, phi):
 (cs102) git commit -am "Реализованы функции multiplicative_inverse() и generate_keypair()"
 ```
 
-Не забудьте сделать коммит для объединения изменений с веткой `develop`.
+Не забудьте сделать коммит для объединения изменений с веткой `develop`:
+
+```sh
+(cs102) $ git checkout develop
+(cs102) $ git merge --no-ff feature/rsa
+```
 
 ### После выполнения всех заданий
 
@@ -368,4 +382,10 @@ def multiplicative_inverse(e, phi):
 (cs102) $ git checkout master
 (cs102) $ git merge --no-ff release-1.0
 (cs102) $ git tag -a 1.0
+```
+
+Соответствующие ветви функциональности можно удалить, например:
+
+```sh
+(cs102) $ git branch -d feature/caesar
 ```

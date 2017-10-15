@@ -22,3 +22,6 @@
 Доступ в настоящий момент осуществляется по двум ссылкам:
 - Версия расположенная на [gitbooks](https://dementiy.gitbooks.io/-python/content/)
 - и копия, которую можно найти на [гитхабе](https://github.com/Dementiy/pybook)
+
+**P.S.** Можно поддержать ^_^
+<iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D1%82%D1%8C&targets-hint=&default-sum=&button-text=11&payment-type-choice=on&hint=&successURL=&quickpay=shop&account=41001313600690" width="450" height="198" frameborder="0" allowtransparency="true" scrolling="no"></iframe>

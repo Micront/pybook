@@ -937,7 +937,94 @@ assert type(Registry) is RegistryMeta
 assert type(RegistryMeta) is type
 ```
 
+- Singleton pattern
 
+Использование глобальных объектов - априори плохая затея, но если вы твердо решили идти этим путем, вам следует убедиться в корректности реализации подхода Singleton, в котором существует один единственный экземпляр какого-либо класса в любой момент выполнения, от которого невозможно наследоваться.
+
+Как мы уже убедились, если метакласс связан с основным классом, всякий раз, когда от основного класса происходит наследование, вызывается метод `__new__`. Это позволяет с легкостью обрабатывать неперехватываемую часть. Если по какой-либо причине вы хотите предотвратить возможность наследования от метакласса, вам следует реализовать метакласс для метаклассов.
+
+Когда речь идет о контролировании создаваемых экземпляров метакласса, переопределение метода `__new__` более не является достаточным: вместо него мы должны переопределить `__call__`. Легко запомнить: `__new__` срабатывает при создании нового класса, `__call__` - при создании нового экземпляра класса. Это работает аналогично в случае реализации вышеуказанных методов в обычных классах, позволяя экземплярам последних быть вызываемыми.
+
+Чтобы разобраться, как эти методы работают в связке, взглянем на следующий код:
+
+```py
+from __future__ import print_function
+import six
+
+class M(type):
+    def __new__(meta, *a, **kw):
+        print('metaclass::new')
+        return super(M, meta).__new__(meta, *a, **kw)
+
+    def __call__(cls, *a, **kw):
+        print('metaclass::call', a, kw)
+        return super(M, cls).__call__(*a, **kw)
+
+print('---')
+
+class C(six.with_metaclass(M)):
+    def __new__(cls, *a, **kw):
+        print('class::new', a, kw)
+        return super(C, cls).__new__(cls, *a, **kw)
+
+    def __init__(self, *a, **kw):
+        print('class::init', a, kw)
+
+    def __call__(self, *a, **kw):
+        print('class::call', a, kw)
+
+
+print('---')
+instance = C('foo', x=1)
+print('---')
+instance('bar', y=2)
+```
+
+Вывод будет следующим:
+
+```
+metaclass::new
+---
+metaclass::call ('foo',) {'x': 1}
+class::new ('foo',) {'x': 1}
+class::init ('foo',) {'x': 1}
+---
+class::call ('bar',) {'y': 2}
+```
+
+Возвращаясь к singleton-классу, мы должны переопределить `__call__` в метаклассе для перехвата коснтруктора экземпляров и возвращения существующих экземпляров, которые могли быть ранее сохранены прямо в классе. Если экземпляр не существует, мы можем создать его, вызвав `super`, который в свою очередь вызовет конструктор класса в случае наличия последнего.
+
+```py
+import six
+
+class Singleton(type):
+    def __new__(meta, name, bases, clsdict):
+        if any(isinstance(cls, meta) for cls in bases):
+            raise TypeError('Cannot inherit from singleton class')
+        clsdict['_instance'] = None
+        return super(Singleton, meta).__new__(meta, name, bases, clsdict)
+
+    def __call__(cls, *args, **kwargs):
+        if not isinstance(cls._instance, cls):
+            cls._instance = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instance
+
+@six.add_metaclass(Singleton)
+class A(object):
+    pass
+
+a = A()
+b = A()
+assert a is b  # all new instances point to the same object
+
+try:
+    class B(A):
+        pass
+except Exception as e:
+    assert isinstance(e, TypeError)  # cannot inherit from singleton
+```
+
+Реализация весьма проста и ясна. Для справки, `__call__` обрабатывает полученные аргументы только в первый раз; во всех остальных вызовах он лишь возвращает ранее сохраненное значение вне зависимости от чего-либо.
 
 ### Абстрактные классы
 

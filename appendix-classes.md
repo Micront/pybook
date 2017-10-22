@@ -28,10 +28,10 @@ password = 'foobar'
 ```py
 # Представление отдельно взятого пользователя
 user = {
-    'username': 'bob', 
+    'username': 'bob',
     'email': 'bob@example.com',
     'password': 'foobar'
-} 
+}
 
 # А так мы теперь можем представить список пользователей
 users_list = [
@@ -111,7 +111,7 @@ AttributeError: 'User' object has no attribute 'created_at'
 Работать с атрибутами можно с помощью следующих функций:
 
 * `hasattr(obj, attr_name)` - проверить наличие атрибута `attr_name` в объекте `obj`. Если атрибут присутствует, то функция возвращает `True`, иначе `False`.
-* `getattr(obj, attr_name[, default_value])` - получить значение атрибута. Можно указать значение по умолчанию `default_value`, которое будет возвращено, если атрибута не существует. 
+* `getattr(obj, attr_name[, default_value])` - получить значение атрибута. Можно указать значение по умолчанию `default_value`, которое будет возвращено, если атрибута не существует.
 * `setattr(obj, attr_name, value)` - изменить значение атрибута `attr_name` на `value`. Если атрибут не существовал, то он будет создан.
 
 ```py
@@ -321,7 +321,7 @@ class Row:
 
         for name, value in fields:
             setattr(self, name, value)
-    
+
     def __repr__(self):
         attrs =  ', '.join([f"{attr}={value}" for attr, value in self.__dict__.items()])
         return f"{self.__class__.__name__}({attrs})"
@@ -378,7 +378,7 @@ SELECT * FROM users
 'john'
 ```
 2. Добавьте метод `limit(N)` в класс `DataBase`, который позволяет получить не больше N записей.
-3. Добавьте метод `insert(obj)`, который создает в БД новую запись об объекте `obj`. 
+3. Добавьте метод `insert(obj)`, который создает в БД новую запись об объекте `obj`.
 
 ### "Приватные" поля класса
 
@@ -395,16 +395,16 @@ class User:
 
     def __init__(self, username, email, password):
         self.username = username
-        
+
         self.set_email(email)
         self.set_password(password)
-    
+
     def set_email(self, email):
         match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
         if not match:
             raise ValueError("Invalid email")
         self.email = email
-    
+
     # http://pythoncentral.io/hashing-strings-with-python/
     # https://docs.python.org/3.5/library/hashlib.html
     def make_salt(self):
@@ -470,7 +470,7 @@ False
 
 ### Свойства \(property\)
 
-Давайте рассмотрим следующий пример: пусть у нас есть класс "Профиль пользователя" и поле дата рождения, 
+Давайте рассмотрим следующий пример: пусть у нас есть класс "Профиль пользователя" и поле дата рождения,
 
 ```py
 class UserProfile:
@@ -481,7 +481,7 @@ class UserProfile:
         self.first_name = first_name
         self.sur_name = sur_name
         self.bdate = bdate
-    
+
         self._age = None
         self._age_last_recalculated = None
         self._recalculate_age()
@@ -612,7 +612,7 @@ class JSONSerializerMixin:
 
     def toJSON(self):
         return json.dumps(self.__dict__, default=JSONSerializerMixin.to_serializable)
-    
+
     @classmethod
     def fromJSON(cls, data):
         def datetime_parser(json_dict):
@@ -634,7 +634,85 @@ class User(TimestampedModel, JSONSerializerMixin):
 
 ### Метаклассы
 
+Похожим образом, как классы контролируют создание экземпляров и позволяют нам задавать поведение экземплярами методов, метаклассы в Python могут делать все это для объектов классов. Понять, что такое метаклассы, можно определив их как _классы классов_.
 
+Самый частоиспользуемый метакласс - `type` т.к. это метакласс для всех классов по умолчанию, все остальные метаклассы должны наследоваться от него.
+
+- Type of a type
+
+В Python всё является объектом и должно иметь тип. В действительности тип нужен для описания процесса создания экземпляров. Например, тип числа `1` - `Int`, а тип `Int` - `type`
+
+```py
+>>> type(1)
+<class 'int'>
+>>> type(int)
+<class 'type'>
+```
+
+Существует модуль `<a href="https://docs.python.org/3/library/types.html" target="_blank">types</a>`, предоставляющий стандартный набор функций для работы с типами и определения типов, используемых интерпретатором по умолчанию. Это может быть полезно для определения - является ли рассматриваемый объект функцией или модулем.
+
+```py
+>>> import types
+>>> def func():
+...     pass
+
+>>> isinstance(func, types.FunctionType)
+True
+>>> isinstance(func, types.ModuleType)
+False
+```
+
+Теперь, когда `type` тоже является объектом, каков тогда его тип? Получается, что типом типа `type` является... `type`:
+
+```py
+>>> type(type)
+<class 'type'>
+```
+
+Все создаваемые пользователем классы также имеют тип `type`:
+
+```py
+>>> class A(object):
+...     pass
+
+>>> type(A)
+<class 'type'>
+```
+
+Это происходит с 3 версии Python, однако в случае использования Python 2 вам необходимо помнить, что все классы следует наследовать от `object`. Иначе, они будут являться наследниками типа `classobj`:
+
+```py
+# Python 2.x
+>>> class B:
+...     pass
+
+>>> type(B)
+<type 'classobj'>
+```
+
+В конце концов, при передаче `type` трёх аргументов, вы получаете возможность создавать типы на ходу. Этими аргументами являются имя нового типа, кортеж основных классов и словарь класса (который содержит все то, что вы обычно размещаете в теле класса)
+
+```py
+class A(object):
+    pass
+
+def f(self, x):
+    return x + 1
+
+Type = type('Type', (A,), {'x': 42, 'f': f})
+instance = Type()
+
+>>> issubclass(Type, A)
+True
+>>> isinstance(instance, Type)
+True
+>>> Type.x
+42
+>>> instance.f(1)
+2
+```
+
+Мы вернемся к этому позже, когда будем разбирать конструктор метаклассов.
 
 ### Абстрактные классы
 
@@ -648,7 +726,7 @@ class AbstractUser:
 
     def check_password(self, raw_password):
         raise NotImplementedError()
-    
+
     def is_anonymous(self):
         raise NotImplementedError()
 ```
@@ -659,7 +737,7 @@ class AbstractUser:
 
 ```py
 class AnonymousUser(AbstractUser):
-    
+
     def is_anonymous(self):
         return True
 
@@ -689,5 +767,3 @@ class AbstractUser(metaclass=ABCMeta):
     def is_anonymous(self):
         pass
 ```
-
-

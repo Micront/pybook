@@ -879,6 +879,66 @@ assert Trackable.classes[C.id] is C
 
 Обратите внимание, что все переменные классового уровня (такие как `classes`) в этом примере могут также быть доступны наследникам. Похожим оборазом экземпляры методов метаклассов доступны как методы класса одновременно для классов и их экземпляров.
 
+- Metaclass as a registry
+
+Типичным случаем применения метаклассов является отслеживание создаваемых классов для последующего осуществления доступа к ним во время выполнения по имени или идентификатору.
+
+```py
+import six
+
+class RegistryMeta(type):
+    def __getitem__(meta, key):
+        return meta._registry[key]
+
+@six.add_metaclass(RegistryMeta)
+class Registry(type):
+    _registry = {}
+
+    def __new__(meta, name, bases, clsdict):
+        cls = super(Registry, meta).__new__(meta, name, bases, clsdict)
+        if not clsdict.pop('__base__', False):
+            meta._registry[name] = cls
+            if 'alias' in clsdict:
+                meta._registry[cls.alias] = cls
+        return cls
+
+class Base(six.with_metaclass(Registry)):
+    __base__ = True
+
+class A(Base):
+    pass
+
+class B(Base):
+    alias = 'foo'
+
+assert Registry['A'] is A  # lookup by class name
+assert Registry['B'] is B
+assert Registry['foo'] is B  # or by alias
+
+# Base is not in registry
+try:
+    Registry['Base']
+except Exception as e:
+    assert isinstance(e, KeyError)
+```
+
+В примере выше, все наследники `Base` будут отслеживаться метаклассом `Registry` и могут быть доступны позже через обращение по имени класса или значению поля `field` при его наличии.
+
+Перед тем, как зарегистрировать класс, мы проверяем наличие поля `__base__`, чтобы учитывать только прямых потомков `Base`.
+
+Для того, чтобы сделать класс `Base` индексируемым, мы должны связать метакласс `RegistryMeta` с ним, ведь в нем мы реализовали "магический" метод `__getitem__`. Насколько страшно звучит фраза "метакласс метакласса", настолько же мы в действительности следуем такой логике, реализуя метод для экземпляров в теле класса. Если вам нужен экземпляр для чего-либо, вы реализуете методы в его типе, дабы последний знал, как связать реализованную функциональность с объетом во время его создания.
+
+Подытожим иерархию метакласса следующим примером:
+```
+a = A()
+assert type(a) is A
+assert type(A) is Registry
+assert type(Registry) is RegistryMeta
+assert type(RegistryMeta) is type
+```
+
+
+
 ### Абстрактные классы
 
 Продолжим рассматривать пример с классом _Пользователь_. Мы можем разделить пользователей на два типа: **анонимные пользователи**, то есть те пользователи, которые не зарегистрированы или не вошли в систему под своим логином и паролем, и **авторизованные пользователи**.
